@@ -1,4 +1,5 @@
 ﻿using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace Business.Abstract
     public interface IDirectorService
     {
         List<Director> GetAll();
+        List<DirectorDetailDto> GetDirectorDetails();
+
         Director GetById(int id);
         void Add(Director director);
         void Update(Director director);

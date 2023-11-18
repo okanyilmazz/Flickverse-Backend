@@ -12,9 +12,8 @@ namespace Business.Abstract
     public interface IMovieService
     {
         List<Movie> GetAll();
-        List<MovieDetailDto> GetAllCarDetail();
+        List<MovieDetailDto> GetAllMovieDetails();
         Movie GetById(int id);
-
         void Add(Movie movie);
         void Update(Movie movie);
         void Delete(Movie movie);

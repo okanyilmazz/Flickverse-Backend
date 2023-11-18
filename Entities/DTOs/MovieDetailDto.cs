@@ -1,4 +1,5 @@
 ﻿using Core.Entities.Abstract;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,7 @@ namespace Entities.DTOs
         public string Duration { get; set; }
         public DateTime ProductionYear { get; set; }
         public string CountryName { get; set; }
+        public List<Cast> Casts { get; set; }
+        public List<Director> Directors { get; set; }
     }
 }

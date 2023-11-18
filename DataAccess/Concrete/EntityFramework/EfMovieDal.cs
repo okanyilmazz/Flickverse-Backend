@@ -17,19 +17,46 @@ namespace DataAccess.Concrete.EntityFramework
         {
             using (FlickVerseContext context = new FlickVerseContext())
             {
-                var result = from m in context.Movies
+                var result = from movie in context.Movies
                              join c in context.Countries
-                             on m.CountryId equals c.Id
+                             on movie.CountryId equals c.Id
                              select new MovieDetailDto
                              {
-                                 Id = m.Id,
+                                 Id = movie.Id,
                                  CountryName = c.CountryName,
-                                 Description = m.Description,
-                                 Duration = m.Duration,
-                                 IMDbRating = m.IMDbRating,
-                                 Name = m.Name,
-                                 ProductionYear = m.ProductionYear,
-                                 ReleaseDate = m.ReleaseDate
+                                 Description = movie.Description,
+                                 Duration = movie.Duration,
+                                 IMDbRating = movie.IMDbRating,
+                                 Name = movie.Name,
+                                 ProductionYear = movie.ProductionYear,
+                                 ReleaseDate = movie.ReleaseDate,
+                                 Casts = ((from movieCast in context.MovieCasts
+                                           join cast in context.Casts
+                                           on movieCast.CastId equals cast.Id
+                                           where (movieCast.MovieId == movie.Id)
+                                           select new Cast
+                                           {
+                                               FirstName = cast.FirstName,
+                                               LastName = cast.LastName,
+                                               Id = cast.Id,
+                                               Biography = cast.Biography,
+                                               CountryId = cast.CountryId,
+                                               DateOfBirth = cast.DateOfBirth
+                                           }).ToList()),
+                                 Directors = ((from movieDirector in context.MovieDirectors
+                                           join director in context.Directors
+                                           on movieDirector.DirectorId equals director.Id
+                                           where (movieDirector.MovieId == movie.Id)
+                                           select new Director
+                                           {
+                                               Id = director.Id,
+                                               FirstName = director.FirstName,
+                                               LastName = director.LastName,
+                                               Biography = director.Biography,
+                                               CountryId = director.CountryId,
+                                               DateOfBirth = director.DateOfBirth
+                                           }).ToList())
+
                              };
                 return filter == null
                     ? result.ToList()

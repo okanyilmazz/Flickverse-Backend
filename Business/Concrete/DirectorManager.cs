@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using DataAccess.Abstract.EntityFramework;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,11 @@ namespace Business.Concrete
         public void Update(Director director)
         {
             _directorDal.Update(director);
+        }
+
+        public List<DirectorDetailDto> GetDirectorDetails()
+        {
+            return _directorDal.GetDirectorDetails();
         }
     }
 }
