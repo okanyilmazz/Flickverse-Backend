@@ -1,4 +1,5 @@
 ﻿using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace Business.Abstract
     public interface ICastService
     {
         List<Cast> GetAll();
+        List<CastDetailDto> GetCastDetails();
         Cast GetById(int id);
         void Add(Cast cast);
         void Update(Cast cast);

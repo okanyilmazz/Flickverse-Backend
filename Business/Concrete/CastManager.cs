@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using DataAccess.Abstract.EntityFramework;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +45,11 @@ namespace Business.Concrete
         public void Update(Cast cast)
         {
             _castDal.Update(cast);
+        }
+
+        public List<CastDetailDto> GetCastDetails()
+        {
+            return _castDal.GetCastDetails();
         }
     }
 }

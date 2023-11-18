@@ -1,5 +1,4 @@
-﻿using Core.Entities.Abstract;
-using Entities.Concrete;
+﻿using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entities.DTOs
 {
-    public class DirectorDetailDto : IDto
+    public class CastDetailDto
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -17,7 +16,6 @@ namespace Entities.DTOs
         public string CountryName { get; set; }
         public DateTime DateOfBirth { get; set; }
         public List<Movie> Movies { get; set; }
-        public List<DirectorImage> DirectorImages { get; set; }
-
+        public List<CastImage> CastImages { get; set; }
     }
 }

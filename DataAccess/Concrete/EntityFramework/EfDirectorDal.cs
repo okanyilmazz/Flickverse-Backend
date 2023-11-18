@@ -47,7 +47,15 @@ namespace DataAccess.Concrete.EntityFramework
                                       IMDbRating = movie.IMDbRating,
                                       Description = movie.Description,
                                       CountryId = movie.CountryId
-                                  }).ToList())
+                                  }).ToList()),
+                                 DirectorImages = ((from image in context.DirectorImages
+                                                    where (image.DirectorId == director.Id)
+                                                    select new DirectorImage
+                                                    {
+                                                        DirectorId = image.DirectorId,
+                                                        Id = image.Id,
+                                                        ImagePath = image.ImagePath
+                                                    }).ToList())
                              };
                 return filter == null
                     ? result.ToList()
