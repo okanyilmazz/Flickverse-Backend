@@ -50,6 +50,10 @@ namespace ConsoleUI
                     Console.WriteLine("Director Biography :{0} ", director.Biography);
 
                 }
+                foreach(var image in movieDetails.MovieImages)
+                {
+                    Console.WriteLine("ImagePath : {0}",image.ImagePath);
+                }
 
                 Console.WriteLine("\n\n");
 

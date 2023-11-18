@@ -55,8 +55,16 @@ namespace DataAccess.Concrete.EntityFramework
                                                Biography = director.Biography,
                                                CountryId = director.CountryId,
                                                DateOfBirth = director.DateOfBirth
-                                           }).ToList())
-
+                                           }).ToList()),
+                                 MovieImages = ((from movieImage in context.MovieImages
+                                                 where movieImage.MovieId == movie.Id
+                                                 select new MovieImage
+                                                 {
+                                                     Id= movieImage.Id,
+                                                     ImagePath= movieImage.ImagePath,
+                                                     MovieId= movieImage.MovieId
+                                                 }
+                                                 ).ToList())
                              };
                 return filter == null
                     ? result.ToList()

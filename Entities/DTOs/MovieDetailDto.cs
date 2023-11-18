@@ -20,5 +20,6 @@ namespace Entities.DTOs
         public string CountryName { get; set; }
         public List<Cast> Casts { get; set; }
         public List<Director> Directors { get; set; }
+        public List<MovieImage> MovieImages { get; set; }
     }
 }
