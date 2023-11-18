@@ -1,4 +1,4 @@
-﻿using Entities.Abstract;
+﻿using Core.Entities.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Concrete
 {
-    public class MovieImage : IEntity
+    public class MovieImage:IEntity
     {
         public int Id { get; set; }
         public int MovieId { get; set; }

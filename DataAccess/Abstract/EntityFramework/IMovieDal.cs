@@ -13,7 +13,7 @@ namespace DataAccess.Abstract.EntityFramework
     public interface IMovieDal : IEntityRepository<Movie>
     {
 
-        List<MovieDetailsDTO> GetMovieDetails(Expression<Func<MovieDetailsDTO, bool>> filter = null);
+        List<MovieDetailDto> GetMovieDetails(Expression<Func<MovieDetailDto, bool>> filter = null);
 
     }
 }

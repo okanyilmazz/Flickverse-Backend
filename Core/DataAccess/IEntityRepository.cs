@@ -1,4 +1,5 @@
-﻿using Entities.Abstract;
+﻿
+using Core.Entities.Abstract;
 using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;

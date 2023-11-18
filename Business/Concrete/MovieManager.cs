@@ -35,7 +35,7 @@ namespace Business.Concrete
             return _movieDal.GetAll();
         }
 
-        public List<MovieDetailsDTO> GetAllCarDetail()
+        public List<MovieDetailDto> GetAllCarDetail()
         {
             return _movieDal.GetMovieDetails();
         }

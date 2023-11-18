@@ -12,7 +12,7 @@ namespace Business.Abstract
     public interface IMovieService
     {
         List<Movie> GetAll();
-        List<MovieDetailsDTO> GetAllCarDetail();
+        List<MovieDetailDto> GetAllCarDetail();
         Movie GetById(int id);
 
         void Add(Movie movie);
