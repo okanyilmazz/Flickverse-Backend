@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract.EntityFramework;
 using Entities.Concrete;
 using System;
@@ -18,29 +20,34 @@ namespace Business.Concrete
             _movieCategory = movieCategory;
         }
 
-        public void Add(MovieCategory movieCategory)
+        public IResult Add(MovieCategory movieCategory)
         {
             _movieCategory.Add(movieCategory);
+            return new SuccessResult(Messages.CategoryAdded);
+
         }
 
-        public void Delete(MovieCategory movieCategory)
+        public IResult Delete(MovieCategory movieCategory)
         {
             _movieCategory.Delete(movieCategory);
+            return new SuccessResult(Messages.CategoryDeleted);
+
         }
 
-        public List<MovieCategory> GetAll()
+        public IDataResult<List<MovieCategory>> GetAll()
         {
-            return _movieCategory.GetAll();
+            return new SuccessDataResult<List<MovieCategory>>(_movieCategory.GetAll(), Messages.CategoryListed);
         }
 
-        public MovieCategory GetById(int id)
+        public IDataResult<MovieCategory> GetById(int id)
         {
-            return _movieCategory.Get(x => x.Id == id);
+            return new SuccessDataResult<MovieCategory>(_movieCategory.Get(x => x.Id == id), Messages.CategoryListed);
         }
 
-        public void Update(MovieCategory movieCategory)
+        public IResult Update(MovieCategory movieCategory)
         {
             _movieCategory.Update(movieCategory);
+            return new SuccessResult(Messages.CategoryUpdated);
         }
     }
 }

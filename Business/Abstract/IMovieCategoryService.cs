@@ -1,4 +1,5 @@
-﻿using Entities.Concrete;
+﻿using Core.Utilities.Results;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,10 @@ namespace Business.Abstract
 {
     public interface IMovieCategoryService
     {
-        List<MovieCategory> GetAll();
-        MovieCategory GetById(int id);
-        void Add(MovieCategory movieCategory);
-        void Update(MovieCategory movieCategory);
-        void Delete(MovieCategory movieCategory);
+        IDataResult<List<MovieCategory>> GetAll();
+        IDataResult<MovieCategory> GetById(int id);
+        IResult Add(MovieCategory movieCategory);
+        IResult Update(MovieCategory movieCategory);
+        IResult Delete(MovieCategory movieCategory);
     }
 }

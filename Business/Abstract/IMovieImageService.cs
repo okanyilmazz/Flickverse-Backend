@@ -1,4 +1,5 @@
-﻿using Entities.Concrete;
+﻿using Core.Utilities.Results;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,10 @@ namespace Business.Abstract
 {
     public interface IMovieImageService
     {
-        List<MovieImage> GetAll();
-        MovieImage GetById(int id);
-        void Add(MovieImage movieImage);
-        void Update(MovieImage movieImage);
-        void Delete(MovieImage movieImage);
+        IDataResult<List<MovieImage>> GetAll();
+        IDataResult<MovieImage> GetById(int id);
+        IResult Add(MovieImage movieImage);
+        IResult Update(MovieImage movieImage);
+        IResult Delete(MovieImage movieImage);
     }
 }

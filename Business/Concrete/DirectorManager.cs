@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract.EntityFramework;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -19,34 +21,40 @@ namespace Business.Concrete
             _directorDal = directorDal;
         }
 
-        public void Add(Director director)
+        public IResult Add(Director director)
         {
             _directorDal.Add(director);
+            return new SuccessResult(Messages.DirectorAdded);
+
         }
 
-        public void Delete(Director director)
+        public IResult Delete(Director director)
         {
             _directorDal.Delete(director);
+            return new SuccessResult(Messages.DirectorDeleted);
+
         }
 
-        public Director GetById(int id)
+        public IDataResult<Director> GetById(int id)
         {
-            return _directorDal.Get(x => x.Id == id);
+            return new SuccessDataResult<Director>(_directorDal.Get(x => x.Id == id), Messages.DirectorListed);
         }
 
-        public List<Director> GetAll()
+        public IDataResult<List<Director>> GetAll()
         {
-            return _directorDal.GetAll();
+            return new SuccessDataResult<List<Director>>(_directorDal.GetAll(), Messages.DirectorListed);
         }
 
-        public void Update(Director director)
+        public IResult Update(Director director)
         {
             _directorDal.Update(director);
+            return new SuccessResult(Messages.DirectorUpdated);
+
         }
 
-        public List<DirectorDetailDto> GetDirectorDetails()
+        public IDataResult<List<DirectorDetailDto>> GetDirectorDetails()
         {
-            return _directorDal.GetDirectorDetails();
+            return new SuccessDataResult<List<DirectorDetailDto>>(_directorDal.GetDirectorDetails(), Messages.DirectorListed);
         }
     }
 }

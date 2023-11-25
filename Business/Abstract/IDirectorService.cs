@@ -1,4 +1,5 @@
-﻿using Entities.Concrete;
+﻿using Core.Utilities.Results;
+using Entities.Concrete;
 using Entities.DTOs;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,11 @@ namespace Business.Abstract
 {
     public interface IDirectorService
     {
-        List<Director> GetAll();
-        List<DirectorDetailDto> GetDirectorDetails();
-
-        Director GetById(int id);
-        void Add(Director director);
-        void Update(Director director);
-        void Delete(Director director);
+        IDataResult<List<Director>> GetAll();
+        IDataResult<List<DirectorDetailDto>> GetDirectorDetails();
+        IDataResult<Director> GetById(int id);
+        IResult Add(Director director);
+        IResult Update(Director director);
+        IResult Delete(Director director);
     }
 }

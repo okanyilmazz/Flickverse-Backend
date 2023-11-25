@@ -12,6 +12,7 @@ namespace ConsoleUI
             MovieManager movieManager = new MovieManager(new EfMovieDal());
             CastManager castManager = new CastManager(new EfCastDal());
             DirectorManager directorManager = new DirectorManager(new EfDirectorDal());
+            CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
 
             Movie movie = new Movie
             {
@@ -29,7 +30,7 @@ namespace ConsoleUI
 
 
             var resultMovieDetails = movieManager.GetAllMovieDetails();
-            foreach (var movieDetails in resultMovieDetails)
+            foreach (var movieDetails in resultMovieDetails.Data)
             {
                 Console.WriteLine("Film Adı : {0}", movieDetails.Name);
                 Console.WriteLine("Film Açıklaması : {0}", movieDetails.Description);
@@ -61,7 +62,7 @@ namespace ConsoleUI
 
             var resultDirectorDetails = directorManager.GetDirectorDetails();
 
-            foreach (var directorDetails in resultDirectorDetails)
+            foreach (var directorDetails in resultDirectorDetails.Data)
             {
                 Console.WriteLine("Yapımcı Adı : {0} {1}", directorDetails.FirstName, directorDetails.LastName);
                 Console.WriteLine("Yapımcı Biografisi : {0}", directorDetails.Biography);
@@ -136,7 +137,7 @@ namespace ConsoleUI
             //};
             //castManager.Update(updatedCast);
 
-            foreach (var item in castManager.GetCastDetails())
+            foreach (var item in castManager.GetCastDetails().Data)
             {
                 Console.WriteLine("Cast Adı : {0} {1} " , item.FirstName,item.LastName);
                 Console.WriteLine("Cast Ülkesi : {0}",item.CountryName);
@@ -156,6 +157,14 @@ namespace ConsoleUI
                 }
                 Console.WriteLine("\n");
             }
+
+
+            Console.WriteLine("Film Türleri:");
+
+            foreach (var item in categoryManager.GetAll().Data)
+            {
+                Console.WriteLine(item.Name);
+            };
         }
     }
 }

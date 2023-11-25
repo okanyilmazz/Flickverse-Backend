@@ -1,4 +1,5 @@
-﻿using Entities.Concrete;
+﻿using Core.Utilities.Results;
+using Entities.Concrete;
 using Entities.DTOs;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,11 @@ namespace Business.Abstract
 {
     public interface ICastService
     {
-        List<Cast> GetAll();
-        List<CastDetailDto> GetCastDetails();
-        Cast GetById(int id);
-        void Add(Cast cast);
-        void Update(Cast cast);
-        void Delete(Cast cast);
+        IDataResult<List<Cast>> GetAll();
+        IDataResult<List<CastDetailDto>> GetCastDetails();
+        IDataResult<Cast> GetById(int id);
+        IResult Add(Cast cast);
+        IResult Update(Cast cast);
+        IResult Delete(Cast cast);
     }
 }

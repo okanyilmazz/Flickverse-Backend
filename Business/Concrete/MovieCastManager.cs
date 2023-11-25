@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract.EntityFramework;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -18,29 +21,35 @@ namespace Business.Concrete
             _movieCastDal = movieCastDal;
         }
 
-        public void Add(MovieCast movieCast)
+        public IResult Add(MovieCast movieCast)
         {
-           _movieCastDal.Add(movieCast);
+            _movieCastDal.Add(movieCast);
+            return new SuccessResult(Messages.CategoryAdded);
+
         }
 
-        public void Delete(MovieCast movieCast)
+        public IResult Delete(MovieCast movieCast)
         {
             _movieCastDal.Delete(movieCast);
+            return new SuccessResult(Messages.CastDeleted);
+
         }
 
-        public MovieCast GetById(int id)
+        public IDataResult<MovieCast> GetById(int id)
         {
-           return _movieCastDal.Get(x=>x.Id == id);
+            return new SuccessDataResult<MovieCast>(_movieCastDal.Get(x => x.Id == id), Messages.CastListed);
         }
 
-        public List<MovieCast> GetAll()
+        public IDataResult<List<MovieCast>> GetAll()
         {
-            return _movieCastDal.GetAll();
+            return new SuccessDataResult<List<MovieCast>>(_movieCastDal.GetAll(), Messages.CategoryListed);
         }
 
-        public void Update(MovieCast movieCast)
+        public IResult Update(MovieCast movieCast)
         {
             _movieCastDal.Update(movieCast);
+            return new SuccessResult(Messages.CastUpdated);
+
         }
     }
 }

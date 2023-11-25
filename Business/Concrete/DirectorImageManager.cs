@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract.EntityFramework;
 using Entities.Concrete;
 using System;
@@ -18,29 +20,35 @@ namespace Business.Concrete
             _directorImageDal = directorImageDal;
         }
 
-        public void Add(DirectorImage directorImage)
+        public IResult Add(DirectorImage directorImage)
         {
             _directorImageDal.Add(directorImage);
+            return new SuccessResult(Messages.DirectorImageAdded);
+
         }
 
-        public void Delete(DirectorImage directorImage)
+        public IResult Delete(DirectorImage directorImage)
         {
             _directorImageDal.Delete(directorImage);
+            return new SuccessResult(Messages.DirectorImageDeleted);
+
         }
 
-        public DirectorImage Get(int id)
+        public IDataResult<DirectorImage> Get(int id)
         {
-            return _directorImageDal.Get(x => x.Id == id);
+            return new SuccessDataResult<DirectorImage>( _directorImageDal.Get(x => x.Id == id),Messages.DirectorImageListed);
         }
 
-        public List<DirectorImage> GetAll()
+        public IDataResult<List<DirectorImage>> GetAll()
         {
-            return _directorImageDal.GetAll();
+            return new SuccessDataResult<List<DirectorImage>>( _directorImageDal.GetAll(),Messages.DirectorImageListed);
         }
 
-        public void Update(DirectorImage directorImage)
+        public IResult Update(DirectorImage directorImage)
         {
             _directorImageDal.Update(directorImage);
+            return new SuccessResult(Messages.DirectorImageUpdated);
+
         }
     }
 }

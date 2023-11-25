@@ -1,4 +1,5 @@
-﻿using Entities.Concrete;
+﻿using Core.Utilities.Results;
+using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,10 @@ namespace Business.Abstract
 {
     public interface IDirectorImageService
     {
-        List<DirectorImage> GetAll();
-        DirectorImage Get(int id);
-        void Add(DirectorImage directorImage);
-        void Update(DirectorImage directorImage);
-        void Delete(DirectorImage directorImage);
+        IDataResult<List<DirectorImage>> GetAll();
+        IDataResult<DirectorImage> Get(int id);
+        IResult Add(DirectorImage directorImage);
+        IResult Update(DirectorImage directorImage);
+        IResult Delete(DirectorImage directorImage);
     }
 }

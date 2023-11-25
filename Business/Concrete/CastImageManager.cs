@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract.EntityFramework;
 using Entities.Concrete;
 using System;
@@ -19,31 +21,34 @@ namespace Business.Concrete
             _castImageDal = castImageDal;
         }
 
-        public void Add(CastImage castImage)
+        public IResult Add(CastImage castImage)
         {
             _castImageDal.Add(castImage);
+            return new SuccessResult(Messages.CastImageAdded);
         }
 
-        public void Delete(CastImage castImage)
+        public IResult Delete(CastImage castImage)
         {
             _castImageDal.Delete(castImage);
+            return new SuccessResult(Messages.CastImageDeleted);
+
         }
 
-        public CastImage GetById(int id)
+        public IDataResult<CastImage> GetById(int id)
         {
-            CastImage result = _castImageDal.Get(x => x.Id == id);
-            return result;
+            return new SuccessDataResult<CastImage>(_castImageDal.Get(x => x.Id == id), Messages.CastImageListed);
         }
 
-        public List<CastImage> GetAll()
+        public IDataResult<List<CastImage>> GetAll()
         {
-            var result = _castImageDal.GetAll();
-            return result;
+            return new SuccessDataResult<List<CastImage>>(_castImageDal.GetAll(), Messages.CastImageListed);
         }
 
-        public void Update(CastImage castImage)
+        public IResult Update(CastImage castImage)
         {
             _castImageDal.Update(castImage);
+            return new SuccessResult(Messages.CastImageUpdated);
+
         }
     }
 }

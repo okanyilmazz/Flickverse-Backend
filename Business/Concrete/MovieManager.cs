@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract.EntityFramework;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -17,37 +19,40 @@ namespace Business.Concrete
 
         public MovieManager(IMovieDal movieDal)
         {
-            _movieDal = movieDal;   
+            _movieDal = movieDal;
         }
 
-        public void Add(Movie movie)
+        public IResult Add(Movie movie)
         {
             _movieDal.Add(movie);
+            return new SuccessResult(Messages.MovieListed);
         }
 
-        public void Delete(Movie movie)
+        public IResult Delete(Movie movie)
         {
             _movieDal.Delete(movie);
+            return new SuccessResult(Messages.MovieDeleted);
         }
 
-        public List<Movie> GetAll()
+        public IDataResult<List<Movie>> GetAll()
         {
-            return _movieDal.GetAll();
+            return new SuccessDataResult<List<Movie>>(_movieDal.GetAll(), Messages.MovieListed);
         }
 
-        public List<MovieDetailDto> GetAllMovieDetails()
+        public IDataResult<List<MovieDetailDto>> GetAllMovieDetails()
         {
-            return _movieDal.GetMovieDetails();
+            return new SuccessDataResult<List<MovieDetailDto>>(_movieDal.GetMovieDetails(), Messages.MovieListed);
         }
 
-        public Movie GetById(int id)
+        public IDataResult<Movie> GetById(int id)
         {
-            return _movieDal.Get(x=>x.Id == id);
+            return new SuccessDataResult<Movie>(_movieDal.Get(x => x.Id == id), Messages.MovieListed);
         }
 
-        public void Update(Movie movie)
+        public IResult Update(Movie movie)
         {
             _movieDal.Update(movie);
+            return new SuccessResult(Messages.MovieUpdated);
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract.EntityFramework;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -20,36 +22,41 @@ namespace Business.Concrete
             _castDal = castDal;
         }
 
-        public void Add(Cast cast)
+        public IResult Add(Cast cast)
         {
             _castDal.Add(cast);
+
+            return new SuccessResult(Messages.CastAdded);
         }
 
-        public void Delete(Cast cast)
+        public IResult Delete(Cast cast)
         {
             _castDal.Delete(cast);
+            return new SuccessResult(Messages.CastDeleted);
+
         }
 
-        public Cast GetById(int id)
+        public IDataResult<Cast> GetById(int id)
         {
-            var result = _castDal.Get(x=>x.Id==id);
-            return result;
+            return new SuccessDataResult<Cast>(_castDal.Get(x => x.Id == id), Messages.CastListed);
         }
 
-        public List<Cast> GetAll()
+        public IDataResult<List<Cast>> GetAll()
         {
-            var result = _castDal.GetAll();
-            return result;
+            return new SuccessDataResult<List<Cast>>(_castDal.GetAll(), Messages.CastListed);
         }
 
-        public void Update(Cast cast)
+        public IResult Update(Cast cast)
         {
             _castDal.Update(cast);
+            return new SuccessResult(Messages.CastUpdated);
+
         }
 
-        public List<CastDetailDto> GetCastDetails()
+        public IDataResult<List<CastDetailDto>> GetCastDetails()
         {
-            return _castDal.GetCastDetails();
+            return new SuccessDataResult<List<CastDetailDto>>(_castDal.GetCastDetails(), Messages.CastListed);
+
         }
     }
 }
