@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.DependencyResolvers.Autofac;
+using Business.ValidationRules.FluentValidation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract.EntityFramework;
 using Entities.Concrete;
@@ -21,6 +24,8 @@ namespace Business.Concrete
         }
         public IResult Add(Category category)
         {
+            ValidationTool.Validate(new CategoryValidator(), category);
+
             _categoryDal.Add(category);
             return new SuccessResult(Messages.CategoryAdded);
 
