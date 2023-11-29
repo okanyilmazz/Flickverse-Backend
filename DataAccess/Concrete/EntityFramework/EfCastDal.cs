@@ -29,31 +29,7 @@ namespace DataAccess.Concrete.EntityFramework
                                  Biography = cast.Biography,
                                  CountryName = country.CountryName,
                                  DateOfBirth = cast.DateOfBirth,
-                                 Movies = (
-                                 (from movie in context.Movies
-                                  join movieCast in context.MovieCasts
-                                  on movie.Id equals movieCast.MovieId
-                                  where (movieCast.CastId == cast.Id)
-                                  select new Movie
-                                  {
-                                      Id = movie.Id,
-                                      Name = movie.Name,
-                                      Duration = movie.Duration,
-                                      ProductionYear = movie.ProductionYear,
-                                      ReleaseDate = movie.ReleaseDate,
-                                      LanguageId = movie.LanguageId,
-                                      IMDbRating = movie.IMDbRating,
-                                      Description = movie.Description,
-                                      CountryId = movie.CountryId
-                                  }).ToList()),
-                                 CastImages = ((from image in context.CastImages
-                                                    where (image.CastId == cast.Id)
-                                                    select new CastImage
-                                                    {
-                                                        CastId = image.CastId,
-                                                        Id = image.Id,
-                                                        ImagePath = image.ImagePath
-                                                    }).ToList())
+                                 
                              };
                 return filter == null
                     ? result.ToList()

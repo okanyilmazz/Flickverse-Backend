@@ -34,7 +34,7 @@ namespace Business.Concrete
 
         }
 
-        public IDataResult<DirectorImage> Get(int id)
+        public IDataResult<DirectorImage> GetById(int id)
         {
             return new SuccessDataResult<DirectorImage>( _directorImageDal.Get(x => x.Id == id),Messages.DirectorImageListed);
         }

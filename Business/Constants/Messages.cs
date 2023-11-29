@@ -9,6 +9,11 @@ namespace Business.Constants
     public static class Messages
     {
 
+        public static string CountryListed = "Ülkeler listelendi.";
+        public static string CountryDeleted = "Ülke silindi.";
+        public static string CountryUpdated = "Ülke güncellendi.";
+        public static string CountryAdded = "Ülke eklendi.";
+
         public static string MovieListed = "Filmler listelendi.";
         public static string MovieDeleted = "Film silindi.";
         public static string MovieUpdated = "Film güncellendi.";

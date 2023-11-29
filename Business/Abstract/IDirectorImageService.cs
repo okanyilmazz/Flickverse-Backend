@@ -12,7 +12,7 @@ namespace Business.Abstract
     public interface IDirectorImageService
     {
         IDataResult<List<DirectorImage>> GetAll();
-        IDataResult<DirectorImage> Get(int id);
+        IDataResult<DirectorImage> GetById(int id);
         IResult Add(DirectorImage directorImage);
         IResult Update(DirectorImage directorImage);
         IResult Delete(DirectorImage directorImage);
