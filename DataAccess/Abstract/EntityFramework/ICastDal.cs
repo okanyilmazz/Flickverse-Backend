@@ -12,6 +12,6 @@ namespace DataAccess.Abstract.EntityFramework
 {
     public interface ICastDal : IEntityRepository<Cast>
     {
-        List<CastDetailDto> GetCastDetails(Expression<Func<CastDetailDto, bool>> filter = null);
+        List<CastDetailsDto> GetCastDetails(Expression<Func<CastDetailsDto, bool>> filter = null);
     }
 }

@@ -39,9 +39,9 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Movie>>(_movieDal.GetAll(), Messages.MovieListed);
         }
 
-        public IDataResult<List<MovieDetailDto>> GetAllMovieDetails()
+        public IDataResult<List<MovieDetailsDto>> GetAllMovieDetails()
         {
-            return new SuccessDataResult<List<MovieDetailDto>>(_movieDal.GetMovieDetails(), Messages.MovieListed);
+            return new SuccessDataResult<List<MovieDetailsDto>>(_movieDal.GetMovieDetails(), Messages.MovieListed);
         }
 
         public IDataResult<Movie> GetById(int id)

@@ -9,6 +9,26 @@ namespace Business.Constants
     public static class Messages
     {
 
+        public static string Listed = "Listelendi.";
+        public static string Deleted = "Silindi.";
+        public static string Updated = "Güncellendi.";
+        public static string Added = "Eklendi.";
+
+        public static string AddressListed = "Adresler listelendi.";
+        public static string AddressDeleted = "Adres silindi.";
+        public static string AddressUpdated = "Adres güncellendi.";
+        public static string AddressAdded = "Adres eklendi.";
+
+        public static string CinemaHallListed = "Sinema salonları listelendi.";
+        public static string CinemaHallDeleted = "Sinema salonu silindi.";
+        public static string CinemaHallUpdated = "Sinema salonu güncellendi.";
+        public static string CinemaHallAdded = "Sinema salonu eklendi.";
+
+        public static string CityListed = "Şehirler listelendi.";
+        public static string CityDeleted = "Şehir silindi.";
+        public static string CityUpdated = "Şehir güncellendi.";
+        public static string CityAdded = "Şehir eklendi.";
+
         public static string CountryListed = "Ülkeler listelendi.";
         public static string CountryDeleted = "Ülke silindi.";
         public static string CountryUpdated = "Ülke güncellendi.";
@@ -48,6 +68,11 @@ namespace Business.Constants
         public static string DirectorImageDeleted = "Yönetmen görselleri silindi.";
         public static string DirectorImageUpdated = "Yönetmen görselleri güncellendi.";
         public static string DirectorImageAdded = "Yönetmen görselleri eklendi.";
+
+        public static string ExclusiveLoungeListed = "Ayrıcalıklı salonlar listelendi.";
+        public static string ExclusiveLoungeDeleted = "Ayrıcalıklı salon silindi.";
+        public static string ExclusiveLoungeUpdated = "Ayrıcalıklı salon güncellendi.";
+        public static string ExclusiveLoungeAdded = "Ayrıcalıklı salon eklendi.";
 
 
     }

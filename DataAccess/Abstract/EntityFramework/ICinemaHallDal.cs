@@ -1,4 +1,5 @@
 ﻿using Core.DataAccess;
+using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.DTOs;
 using System;
@@ -10,8 +11,8 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Abstract.EntityFramework
 {
-    public interface IDirectorDal : IEntityRepository<Director>
+    public interface ICinemaHallDal : IEntityRepository<CinemaHall>
     {
-        List<DirectorDetailsDto> GetDirectorDetails(Expression<Func<DirectorDetailsDto, bool>> filter = null);
+        List<CinemaHallDetailsDto> GetCinemaDetails(Expression<Func<CinemaHallDetailsDto, bool>> filter = null);
     }
 }

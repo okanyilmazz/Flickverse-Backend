@@ -13,7 +13,7 @@ namespace Business.Abstract
     public interface ICastService
     {
         IDataResult<List<Cast>> GetAll();
-        IDataResult<List<CastDetailDto>> GetCastDetails();
+        IDataResult<List<CastDetailsDto>> GetCastDetails();
         IDataResult<Cast> GetById(int id);
         IResult Add(Cast cast);
         IResult Update(Cast cast);

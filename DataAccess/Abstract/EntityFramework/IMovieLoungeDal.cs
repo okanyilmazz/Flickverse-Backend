@@ -1,17 +1,14 @@
 ﻿using Core.DataAccess;
 using Entities.Concrete;
-using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.Abstract.EntityFramework
 {
-    public interface IDirectorDal : IEntityRepository<Director>
+    public interface IMovieLoungeDal : IEntityRepository<MovieLounge>
     {
-        List<DirectorDetailsDto> GetDirectorDetails(Expression<Func<DirectorDetailsDto, bool>> filter = null);
     }
 }

@@ -8,13 +8,12 @@ using System.Threading.Tasks;
 
 namespace Business.ValidationRules.FluentValidation
 {
-    public class CategoryValidator : AbstractValidator<Category>
+    public class ExclusiveLoungeValidator : AbstractValidator<ExclusiveLounge>
     {
-        public CategoryValidator()
+        public ExclusiveLoungeValidator()
         {
-            RuleFor(c => c.Name).NotEmpty();
-            RuleFor(c => c.Name).MinimumLength(2);
-            RuleFor(c => c.Name).MaximumLength(20);
+            RuleFor(e => e.Name).NotEmpty();
+            RuleFor(e => e.Description).NotEmpty();
         }
     }
 }

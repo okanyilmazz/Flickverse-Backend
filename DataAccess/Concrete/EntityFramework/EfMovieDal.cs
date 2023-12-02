@@ -13,14 +13,14 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfMovieDal : EfEntityRepositoryBase<Movie, FlickVerseContext>, IMovieDal
     {
-        public List<MovieDetailDto> GetMovieDetails(Expression<Func<MovieDetailDto, bool>> filter = null)
+        public List<MovieDetailsDto> GetMovieDetails(Expression<Func<MovieDetailsDto, bool>> filter = null)
         {
             using (FlickVerseContext context = new FlickVerseContext())
             {
                 var result = from movie in context.Movies
                              join c in context.Countries
                              on movie.CountryId equals c.Id
-                             select new MovieDetailDto
+                             select new MovieDetailsDto
                              {
                                  Id = movie.Id,
                                  CountryName = c.CountryName,

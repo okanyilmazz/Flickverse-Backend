@@ -18,6 +18,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<MovieManager>().As<IMovieService>();
             builder.RegisterType<EfMovieDal>().As<IMovieDal>();
 
+            builder.RegisterType<AddressManager>().As<IAddressService>();
+            builder.RegisterType<EfAddressDal>().As<IAddressDal>();
+
             builder.RegisterType<DirectorManager>().As<IDirectorService>();
             builder.RegisterType<EfDirectorDal>().As<IDirectorDal>();
 
@@ -29,6 +32,10 @@ namespace Business.DependencyResolvers.Autofac
 
             builder.RegisterType<CategoryManager>().As<ICategoryService>();
             builder.RegisterType<EfCategoryDal>().As<ICategoryDal>();
+
+            builder.RegisterType<CinemaHallManager>().As<ICinemaHallService>();
+            builder.RegisterType<EfCinemaHallDal>().As<ICinemaHallDal>();
+
 
             builder.RegisterType<CountryManager>().As<ICountryService>();
             builder.RegisterType<EfCountryDal>().As<ICountryDal>();
@@ -47,6 +54,18 @@ namespace Business.DependencyResolvers.Autofac
 
             builder.RegisterType<MovieImageManager>().As<IMovieImageService>();
             builder.RegisterType<EfMovieImageDal>().As<IMovieImageDal>();
+
+            builder.RegisterType<ExclusiveLoungeManager>().As<IExclusiveLoungeService>();
+            builder.RegisterType<EfExclusiveLoungeDal>().As<IExclusiveLoungeDal>();
+
+            builder.RegisterType<CityManager>().As<ICityService>();
+            builder.RegisterType<EfCityDal>().As<ICityDal>();
+
+            builder.RegisterType<CountyManager>().As<ICountyService>();
+            builder.RegisterType<EfCountyDal>().As<ICountyDal>();
+
+            builder.RegisterType<CinemaLoungeManager>().As<ICinemaLoungeService>();
+            builder.RegisterType<EfCinemaLoungeDal>().As<ICinemaLoungeDal>();
 
 
         }

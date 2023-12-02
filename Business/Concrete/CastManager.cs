@@ -53,9 +53,9 @@ namespace Business.Concrete
 
         }
 
-        public IDataResult<List<CastDetailDto>> GetCastDetails()
+        public IDataResult<List<CastDetailsDto>> GetCastDetails()
         {
-            return new SuccessDataResult<List<CastDetailDto>>(_castDal.GetCastDetails(), Messages.CastListed);
+            return new SuccessDataResult<List<CastDetailsDto>>(_castDal.GetCastDetails(), Messages.CastListed);
 
         }
     }

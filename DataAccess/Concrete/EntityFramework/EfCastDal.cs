@@ -14,14 +14,14 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfCastDal : EfEntityRepositoryBase<Cast, FlickVerseContext>, ICastDal
     {
-        public List<CastDetailDto> GetCastDetails(Expression<Func<CastDetailDto, bool>> filter = null)
+        public List<CastDetailsDto> GetCastDetails(Expression<Func<CastDetailsDto, bool>> filter = null)
         {
             using (FlickVerseContext context = new FlickVerseContext())
             {
                 var result = from cast in context.Casts
                              join country in context.Countries
                              on cast.CountryId equals country.Id
-                             select new CastDetailDto
+                             select new CastDetailsDto
                              {
                                  Id = cast.Id,
                                  FirstName = cast.FirstName,

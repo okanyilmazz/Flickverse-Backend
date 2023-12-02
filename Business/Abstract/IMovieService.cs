@@ -13,7 +13,7 @@ namespace Business.Abstract
     public interface IMovieService
     {
         IDataResult<List<Movie>> GetAll();
-        IDataResult<List<MovieDetailDto>> GetAllMovieDetails();
+        IDataResult<List<MovieDetailsDto>> GetAllMovieDetails();
         IDataResult<Movie> GetById(int id);
         IResult Add(Movie movie);
         IResult Update(Movie movie);

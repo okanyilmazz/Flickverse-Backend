@@ -13,7 +13,7 @@ namespace Business.Abstract
     public interface IDirectorService
     {
         IDataResult<List<Director>> GetAll();
-        IDataResult<List<DirectorDetailDto>> GetDirectorDetails();
+        IDataResult<List<DirectorDetailsDto>> GetDirectorDetails();
         IDataResult<Director> GetById(int id);
         IResult Add(Director director);
         IResult Update(Director director);

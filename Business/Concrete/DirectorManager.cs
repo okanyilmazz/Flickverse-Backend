@@ -52,9 +52,9 @@ namespace Business.Concrete
 
         }
 
-        public IDataResult<List<DirectorDetailDto>> GetDirectorDetails()
+        public IDataResult<List<DirectorDetailsDto>> GetDirectorDetails()
         {
-            return new SuccessDataResult<List<DirectorDetailDto>>(_directorDal.GetDirectorDetails(), Messages.DirectorListed);
+            return new SuccessDataResult<List<DirectorDetailsDto>>(_directorDal.GetDirectorDetails(), Messages.DirectorListed);
         }
     }
 }

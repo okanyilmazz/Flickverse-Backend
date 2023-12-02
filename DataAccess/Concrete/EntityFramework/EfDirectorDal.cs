@@ -15,7 +15,7 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfDirectorDal : EfEntityRepositoryBase<Director, FlickVerseContext>, IDirectorDal
     {
-        public List<DirectorDetailDto> GetDirectorDetails(Expression<Func<DirectorDetailDto, bool>> filter = null)
+        public List<DirectorDetailsDto> GetDirectorDetails(Expression<Func<DirectorDetailsDto, bool>> filter = null)
         {
 
             using (FlickVerseContext context = new FlickVerseContext())
@@ -23,7 +23,7 @@ namespace DataAccess.Concrete.EntityFramework
                 var result = from director in context.Directors
                              join country in context.Countries
                              on director.CountryId equals country.Id
-                             select new DirectorDetailDto
+                             select new DirectorDetailsDto
                              {
                                  Id = director.Id,
                                  FirstName = director.FirstName,
