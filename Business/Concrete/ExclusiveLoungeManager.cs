@@ -1,52 +1,65 @@
-﻿using Business.Abstract;
-using Business.Constants;
-using Core.Utilities.Results;
-using DataAccess.Abstract.EntityFramework;
-using DataAccess.Concrete.EntityFramework;
+﻿using AutoMapper;
+using Business.Abstract;
+using Business.Dtos.Requests.CreateRequests;
+using Business.Dtos.Requests.DeleteRequests;
+using Business.Dtos.Requests.UpdateRequests;
+using Business.Dtos.Responses.CreatedResponses;
+using Business.Dtos.Responses.DeletedResponses;
+using Business.Dtos.Responses.GetListResponses;
+using Business.Dtos.Responses.UpdatedResponses;
+using Core.DataAccess.Paging;
+using DataAccess.Abstracts;
 using Entities.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Business.Concrete
+namespace Business.Concrete;
+
+public class ExclusiveLoungeManager : IExclusiveLoungeService
 {
-    public class ExclusiveLoungeManager : IExclusiveLoungeService
+    IExclusiveLoungeDal _exclusiveLoungeDal;
+    IMapper _mapper;
+
+    public ExclusiveLoungeManager(IExclusiveLoungeDal exclusiveLoungeDal, IMapper mapper)
     {
-        IExclusiveLoungeDal _exclusiveLoungeDal;
+        _exclusiveLoungeDal = exclusiveLoungeDal;
+        _mapper = mapper;
+    }
+    public async Task<CreatedExclusiveLoungeResponse> AddAsync(CreateExclusiveLoungeRequest createExclusiveLoungeRequest)
+    {
+        ExclusiveLounge exclusiveLounge = _mapper.Map<ExclusiveLounge>(createExclusiveLoungeRequest);
+        ExclusiveLounge addedExclusiveLounge = await _exclusiveLoungeDal.AddAsync(exclusiveLounge);
+        CreatedExclusiveLoungeResponse createdExclusiveLoungeResponse = _mapper.Map<CreatedExclusiveLoungeResponse>(addedExclusiveLounge);
+        return createdExclusiveLoungeResponse;
+    }
 
-        public ExclusiveLoungeManager(IExclusiveLoungeDal exclusiveLoungeDal)
-        {
-            _exclusiveLoungeDal = exclusiveLoungeDal;
-        }
+    public async Task<DeletedExclusiveLoungeResponse> DeleteAsync(DeleteExclusiveLoungeRequest deleteExclusiveLoungeRequest)
+    {
+        ExclusiveLounge exclusiveLounge = await _exclusiveLoungeDal.GetAsync(
+            predicate: a => a.Id == deleteExclusiveLoungeRequest.Id);
+        ExclusiveLounge deletedExclusiveLounge = await _exclusiveLoungeDal.DeleteAsync(exclusiveLounge);
+        DeletedExclusiveLoungeResponse deletedExclusiveLoungeResponse = _mapper.Map<DeletedExclusiveLoungeResponse>(deletedExclusiveLounge);
+        return deletedExclusiveLoungeResponse;
+    }
 
-        public IResult Add(ExclusiveLounge exclusiveLounge)
-        {
-            _exclusiveLoungeDal.Add(exclusiveLounge);
-            return new SuccessResult(Messages.ExclusiveLoungeAdded);
-        }
+    public async Task<GetExclusiveLoungeListResponse> GetByIdAsync(Guid id)
+    {
+        ExclusiveLounge exclusiveLounge = await _exclusiveLoungeDal.GetAsync(
+            predicate: a => a.Id == id);
+        GetExclusiveLoungeListResponse getExclusiveLoungeListResponse = _mapper.Map<GetExclusiveLoungeListResponse>(exclusiveLounge);
+        return getExclusiveLoungeListResponse;
+    }
 
-        public IResult Delete(ExclusiveLounge exclusiveLounge)
-        {
-            _exclusiveLoungeDal.Delete(exclusiveLounge);
-            return new SuccessResult(Messages.ExclusiveLoungeDeleted);
-        }
+    public async Task<IPaginate<GetExclusiveLoungeListResponse>> GetListAsync()
+    {
+        var exclusiveLoungeList = await _exclusiveLoungeDal.GetListAsync();
+        var mappedExclusiveLoungeList = _mapper.Map<Paginate<GetExclusiveLoungeListResponse>>(exclusiveLoungeList);
+        return mappedExclusiveLoungeList;
+    }
 
-        public IDataResult<List<ExclusiveLounge>> GetAll()
-        {
-            return new SuccessDataResult<List<ExclusiveLounge>>(_exclusiveLoungeDal.GetAll(), Messages.ExclusiveLoungeListed);
-        }
-
-        public IDataResult<ExclusiveLounge> GetById(int id)
-        {
-            return new SuccessDataResult<ExclusiveLounge>(_exclusiveLoungeDal.Get(a => a.Id == id), Messages.ExclusiveLoungeListed);
-        }
-
-        public IResult Update(ExclusiveLounge exclusiveLounge)
-        {
-            _exclusiveLoungeDal.Update(exclusiveLounge);
-            return new SuccessResult(Messages.ExclusiveLoungeUpdated);
-        }
+    public async Task<UpdatedExclusiveLoungeResponse> UpdateAsync(UpdateExclusiveLoungeRequest updateExclusiveLoungeRequest)
+    {
+        ExclusiveLounge exclusiveLounge = _mapper.Map<ExclusiveLounge>(updateExclusiveLoungeRequest);
+        ExclusiveLounge updatedExclusiveLounge = await _exclusiveLoungeDal.UpdateAsync(exclusiveLounge);
+        UpdatedExclusiveLoungeResponse updatedExclusiveLoungeResponse = _mapper.Map<UpdatedExclusiveLoungeResponse>(updatedExclusiveLounge);
+        return updatedExclusiveLoungeResponse;
     }
 }

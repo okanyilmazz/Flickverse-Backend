@@ -1,19 +1,19 @@
-﻿using Core.Utilities.Results;
-using Entities.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Business.Dtos.Requests.CreateRequests;
+using Business.Dtos.Requests.DeleteRequests;
+using Business.Dtos.Requests.UpdateRequests;
+using Business.Dtos.Responses.CreatedResponses;
+using Business.Dtos.Responses.DeletedResponses;
+using Business.Dtos.Responses.GetListResponses;
+using Business.Dtos.Responses.UpdatedResponses;
+using Core.DataAccess.Paging;
 
-namespace Business.Abstract
+namespace Business.Abstract;
+
+public interface IMovieDirectorService
 {
-    public interface IMovieDirectorService
-    {
-        IDataResult<List<MovieDirector>> GetAll();
-        IDataResult<MovieDirector> GetById(int id);
-        IResult Add(MovieDirector movieDirector);
-        IResult Update(MovieDirector movieDirector);
-        IResult Delete(MovieDirector movieDirector);
-    }
+    Task<CreatedMovieDirectorResponse> AddAsync(CreateMovieDirectorRequest createMovieDirectorRequest);
+    Task<UpdatedMovieDirectorResponse> UpdateAsync(UpdateMovieDirectorRequest updateMovieDirectorRequest);
+    Task<DeletedMovieDirectorResponse> DeleteAsync(DeleteMovieDirectorRequest deleteMovieDirectorRequest);
+    Task<IPaginate<GetMovieDirectorListResponse>> GetListAsync();
+    Task<GetMovieDirectorListResponse> GetByIdAsync(Guid id);
 }

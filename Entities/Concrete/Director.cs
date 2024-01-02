@@ -1,19 +1,15 @@
-﻿using Core.Entities.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Core.Entities;
 
-namespace Entities.Concrete
+namespace Entities.Concrete;
+
+public class Director : Entity<Guid>
 {
-    public class Director :  IEntity
-    {
-        public int Id { get; set; }
-        public int CountryId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Biography { get; set; }
-        public DateTime DateOfBirth { get; set; }
-    }
+    public Guid? CountryId { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Biography { get; set; }
+    public DateTime DateOfBirth { get; set; }
+
+    public Country? Country { get; set; }
+    public virtual ICollection<MovieDirector>? MovieDirectors { get; set; }
 }

@@ -1,16 +1,12 @@
-﻿using Core.Entities.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Core.Entities;
 
-namespace Entities.Concrete
+namespace Entities.Concrete;
+
+public class MovieCategory : Entity<Guid>
 {
-    public class MovieCategory : IEntity
-    {
-        public int Id { get; set; }
-        public int MovieId { get; set; }
-        public int CategoryId { get; set; }
-    }
+    public Guid? MovieId { get; set; }
+    public Guid? CategoryId { get; set; }
+
+    public Movie? Movie { get; set; }
+    public Category? Category { get; set; }
 }

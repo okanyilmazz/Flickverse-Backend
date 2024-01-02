@@ -1,57 +1,65 @@
-﻿using Business.Abstract;
-using Business.Constants;
-using Core.Utilities.Results;
-using DataAccess.Abstract.EntityFramework;
+﻿using AutoMapper;
+using Business.Abstract;
+using Business.Dtos.Requests.CreateRequests;
+using Business.Dtos.Requests.DeleteRequests;
+using Business.Dtos.Requests.UpdateRequests;
+using Business.Dtos.Responses.CreatedResponses;
+using Business.Dtos.Responses.DeletedResponses;
+using Business.Dtos.Responses.GetListResponses;
+using Business.Dtos.Responses.UpdatedResponses;
+using Core.DataAccess.Paging;
+using DataAccess.Abstracts;
 using Entities.Concrete;
-using Entities.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Business.Concrete
+namespace Business.Concrete;
+
+public class CinemaHallManager : ICinemaHallService
 {
-    public class CinemaHallManager : ICinemaHallService
+    ICinemaHallDal _cinemaHallDal;
+    IMapper _mapper;
+
+    public CinemaHallManager(ICinemaHallDal cinemaHallDal, IMapper mapper)
     {
-        ICinemaHallDal _cinemaHallDal;
+        _cinemaHallDal = cinemaHallDal;
+        _mapper = mapper;
+    }
+    public async Task<CreatedCinemaHallResponse> AddAsync(CreateCinemaHallRequest createCinemaHallRequest)
+    {
+        CinemaHall cinemaHall = _mapper.Map<CinemaHall>(createCinemaHallRequest);
+        CinemaHall addedCinemaHall = await _cinemaHallDal.AddAsync(cinemaHall);
+        CreatedCinemaHallResponse createdCinemaHallResponse = _mapper.Map<CreatedCinemaHallResponse>(addedCinemaHall);
+        return createdCinemaHallResponse;
+    }
 
-        public CinemaHallManager(ICinemaHallDal cinemaHallDal)
-        {
-            _cinemaHallDal = cinemaHallDal;
-        }
+    public async Task<DeletedCinemaHallResponse> DeleteAsync(DeleteCinemaHallRequest deleteCinemaHallRequest)
+    {
+        CinemaHall cinemaHall = await _cinemaHallDal.GetAsync(
+            predicate: a => a.Id == deleteCinemaHallRequest.Id);
+        CinemaHall deletedCinemaHall = await _cinemaHallDal.DeleteAsync(cinemaHall);
+        DeletedCinemaHallResponse deletedCinemaHallResponse = _mapper.Map<DeletedCinemaHallResponse>(deletedCinemaHall);
+        return deletedCinemaHallResponse;
+    }
 
-        public IResult Add(CinemaHall cinemaHall)
-        {
-            _cinemaHallDal.Add(cinemaHall);
-            return new SuccessResult(Messages.CinemaHallAdded);
-        }
+    public async Task<GetCinemaHallListResponse> GetByIdAsync(Guid id)
+    {
+        CinemaHall cinemaHall = await _cinemaHallDal.GetAsync(
+            predicate: a => a.Id == id);
+        GetCinemaHallListResponse getCinemaHallListResponse = _mapper.Map<GetCinemaHallListResponse>(cinemaHall);
+        return getCinemaHallListResponse;
+    }
 
-        public IResult Delete(CinemaHall cinemaHall)
-        {
-            _cinemaHallDal.Delete(cinemaHall);
-            return new SuccessResult(Messages.CinemaHallDeleted);
-        }
+    public async Task<IPaginate<GetCinemaHallListResponse>> GetListAsync()
+    {
+        var cinemaHallList = await _cinemaHallDal.GetListAsync();
+        var mappedCinemaHallList = _mapper.Map<Paginate<GetCinemaHallListResponse>>(cinemaHallList);
+        return mappedCinemaHallList;
+    }
 
-        public IDataResult<List<CinemaHall>> GetAll()
-        {
-            return new SuccessDataResult<List<CinemaHall>>(_cinemaHallDal.GetAll(), Messages.CinemaHallListed);
-        }
-
-        public IDataResult<CinemaHall> GetById(int id)
-        {
-            return new SuccessDataResult<CinemaHall>(_cinemaHallDal.Get(a => a.Id == id), Messages.CinemaHallListed);
-        }
-
-        public IDataResult<List<CinemaHallDetailsDto>> GetCinemaHallDetails()
-        {
-            return new SuccessDataResult<List<CinemaHallDetailsDto>>(_cinemaHallDal.GetCinemaDetails(),Messages.CinemaHallListed);
-        }
-
-        public IResult Update(CinemaHall cinemaHall)
-        {
-            _cinemaHallDal.Update(cinemaHall);
-            return new SuccessResult(Messages.CinemaHallUpdated);
-        }
+    public async Task<UpdatedCinemaHallResponse> UpdateAsync(UpdateCinemaHallRequest updateCinemaHallRequest)
+    {
+        CinemaHall cinemaHall = _mapper.Map<CinemaHall>(updateCinemaHallRequest);
+        CinemaHall updatedCinemaHall = await _cinemaHallDal.UpdateAsync(cinemaHall);
+        UpdatedCinemaHallResponse updatedCinemaHallResponse = _mapper.Map<UpdatedCinemaHallResponse>(updatedCinemaHall);
+        return updatedCinemaHallResponse;
     }
 }

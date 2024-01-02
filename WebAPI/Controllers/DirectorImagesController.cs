@@ -1,75 +1,54 @@
 ﻿using Business.Abstract;
-using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
+using Business.Dtos.Requests.CreateRequests;
+using Business.Dtos.Requests.DeleteRequests;
+using Business.Dtos.Requests.UpdateRequests;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebAPI.Controllers
+namespace WebAPI.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class DirectorImagesController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class DirectorImagesController : ControllerBase
+    IDirectorImageService _directorImageService;
+
+    public DirectorImagesController(IDirectorImageService directorImageService)
     {
+        _directorImageService = directorImageService;
+    }
 
-        IDirectorImageService _directorImageService;
+    [HttpGet("GetAll")]
+    public async Task<IActionResult> GetAll()
+    {
+        var result = await _directorImageService.GetListAsync();
+        return Ok(result);
+    }
 
-        public DirectorImagesController(IDirectorImageService directorImageService)
-        {
-            _directorImageService = directorImageService;
-        }
+    [HttpGet("GetById")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var result = await _directorImageService.GetByIdAsync(id);
+        return Ok(result);
+    }
 
-        [HttpGet("GetAll")]
-        public IActionResult GetAll()
-        {
-            var result = _directorImageService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Add")]
+    public async Task<IActionResult> Add(CreateDirectorImageRequest createDirectorImageRequest)
+    {
+        var result = await _directorImageService.AddAsync(createDirectorImageRequest);
+        return Ok(result);
+    }
 
-        [HttpGet("GetById")]
-        public IActionResult GetById(int id)
-        {
-            var result = _directorImageService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Update")]
+    public async Task<IActionResult> Update(UpdateDirectorImageRequest updateDirectorImageRequest)
+    {
+        var result = await _directorImageService.UpdateAsync(updateDirectorImageRequest);
+        return Ok(result);
+    }
 
-        [HttpPost("Add")]
-        public IActionResult Add(DirectorImage directorImage)
-        {
-            var result = _directorImageService.Add(directorImage);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpPost("Update")]
-        public IActionResult Update(DirectorImage directorImage)
-        {
-            var result = _directorImageService.Update(directorImage);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpPost("Delete")]
-        public IActionResult Delete(DirectorImage directorImage)
-        {
-            var result = _directorImageService.Delete(directorImage);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Delete")]
+    public async Task<IActionResult> Delete(DeleteDirectorImageRequest deleteDirectorImageRequest)
+    {
+        var result = await _directorImageService.DeleteAsync(deleteDirectorImageRequest);
+        return Ok(result);
     }
 }

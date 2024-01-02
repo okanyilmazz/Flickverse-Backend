@@ -1,74 +1,55 @@
 ﻿using Business.Abstract;
-using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
+using Business.Dtos.Requests.CreateRequests;
+using Business.Dtos.Requests.DeleteRequests;
+using Business.Dtos.Requests.UpdateRequests;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebAPI.Controllers
+namespace WebAPI.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class MovieCategoriesController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class MovieCategoriesController : ControllerBase
+
+    IMovieCategoryService _movieCategoryService;
+
+    public MovieCategoriesController(IMovieCategoryService movieCategoryService)
     {
-        IMovieCategoryService _movieCategoryService;
+        _movieCategoryService = movieCategoryService;
+    }
 
-        public MovieCategoriesController(IMovieCategoryService movieCategoryService)
-        {
-            _movieCategoryService = movieCategoryService;
-        }
+    [HttpGet("GetAll")]
+    public async Task<IActionResult> GetAll()
+    {
+        var result = await _movieCategoryService.GetListAsync();
+        return Ok(result);
+    }
 
-        [HttpGet("GetAll")]
-        public IActionResult GetAll()
-        {
-            var result = _movieCategoryService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpGet("GetById")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var result = await _movieCategoryService.GetByIdAsync(id);
+        return Ok(result);
+    }
 
-        [HttpGet("GetById")]
-        public IActionResult GetById(int id)
-        {
-            var result = _movieCategoryService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Add")]
+    public async Task<IActionResult> Add(CreateMovieCategoryRequest createMovieCategoryRequest)
+    {
+        var result = await _movieCategoryService.AddAsync(createMovieCategoryRequest);
+        return Ok(result);
+    }
 
-        [HttpPost("Add")]
-        public IActionResult Add(MovieCategory movieCategory)
-        {
-            var result = _movieCategoryService.Add(movieCategory);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Update")]
+    public async Task<IActionResult> Update(UpdateMovieCategoryRequest updateMovieCategoryRequest)
+    {
+        var result = await _movieCategoryService.UpdateAsync(updateMovieCategoryRequest);
+        return Ok(result);
+    }
 
-        [HttpPost("Update")]
-        public IActionResult Update(MovieCategory movieCategory)
-        {
-            var result = _movieCategoryService.Update(movieCategory);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpPost("Delete")]
-        public IActionResult Delete(MovieCategory movieCategory)
-        {
-            var result = _movieCategoryService.Delete(movieCategory);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Delete")]
+    public async Task<IActionResult> Delete(DeleteMovieCategoryRequest deleteMovieCategoryRequest)
+    {
+        var result = await _movieCategoryService.DeleteAsync(deleteMovieCategoryRequest);
+        return Ok(result);
     }
 }

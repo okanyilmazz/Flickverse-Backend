@@ -1,85 +1,54 @@
 ﻿using Business.Abstract;
-using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
+using Business.Dtos.Requests.CreateRequests;
+using Business.Dtos.Requests.DeleteRequests;
+using Business.Dtos.Requests.UpdateRequests;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebAPI.Controllers
+namespace WebAPI.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class CastsController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CastsController : ControllerBase
+    ICastService _castService;
+
+    public CastsController(ICastService castService)
     {
-        ICastService _castService;
+        _castService = castService;
+    }
 
-        public CastsController(ICastService castService)
-        {
-            _castService = castService;
-        }
+    [HttpGet("GetAll")]
+    public async Task<IActionResult> GetAll()
+    {
+        var result = await _castService.GetListAsync();
+        return Ok(result);
+    }
 
-        [HttpGet("GetAll")]
-        public IActionResult GetAll()
-        {
-            var result = _castService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpGet("GetById")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var result = await _castService.GetByIdAsync(id);
+        return Ok(result);
+    }
 
-        [HttpGet("GetById")]
-        public IActionResult GetById(int id)
-        {
-            var result = _castService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Add")]
+    public async Task<IActionResult> Add(CreateCastRequest createCastRequest)
+    {
+        var result = await _castService.AddAsync(createCastRequest);
+        return Ok(result);
+    }
 
-        [HttpGet("GetCastDetails")]
-        public IActionResult GetCastDetails()
-        {
-            var result = _castService.GetCastDetails();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Update")]
+    public async Task<IActionResult> Update(UpdateCastRequest updateCastRequest)
+    {
+        var result = await _castService.UpdateAsync(updateCastRequest);
+        return Ok(result);
+    }
 
-        [HttpPost("Add")]
-        public IActionResult Add(Cast cast)
-        {
-            var result = _castService.Add(cast);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpPost("Update")]
-        public IActionResult Update(Cast cast)
-        {
-            var result = _castService.Update(cast);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpPost("Delete")]
-        public IActionResult Delete(Cast cast)
-        {
-            var result = _castService.Delete(cast);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Delete")]
+    public async Task<IActionResult> Delete(DeleteCastRequest deleteCastRequest)
+    {
+        var result = await _castService.DeleteAsync(deleteCastRequest);
+        return Ok(result);
     }
 }

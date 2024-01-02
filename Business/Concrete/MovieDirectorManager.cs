@@ -1,50 +1,65 @@
-﻿using Business.Abstract;
-using Core.Utilities.Results;
-using DataAccess.Abstract.EntityFramework;
+﻿using AutoMapper;
+using Business.Abstract;
+using Business.Dtos.Requests.CreateRequests;
+using Business.Dtos.Requests.DeleteRequests;
+using Business.Dtos.Requests.UpdateRequests;
+using Business.Dtos.Responses.CreatedResponses;
+using Business.Dtos.Responses.DeletedResponses;
+using Business.Dtos.Responses.GetListResponses;
+using Business.Dtos.Responses.UpdatedResponses;
+using Core.DataAccess.Paging;
+using DataAccess.Abstracts;
 using Entities.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Business.Concrete
+namespace Business.Concrete;
+
+public class MovieDirectorManager : IMovieDirectorService
 {
-    public class MovieDirectorManager : IMovieDirectorService
+    IMovieDirectorDal _movieDirectorDal;
+    IMapper _mapper;
+
+    public MovieDirectorManager(IMovieDirectorDal movieDirectorDal, IMapper mapper)
     {
-        IMovieDirectorDal _movieDirectorDal;
+        _movieDirectorDal = movieDirectorDal;
+        _mapper = mapper;
+    }
+    public async Task<CreatedMovieDirectorResponse> AddAsync(CreateMovieDirectorRequest createMovieDirectorRequest)
+    {
+        MovieDirector movieDirector = _mapper.Map<MovieDirector>(createMovieDirectorRequest);
+        MovieDirector addedMovieDirector = await _movieDirectorDal.AddAsync(movieDirector);
+        CreatedMovieDirectorResponse createdMovieDirectorResponse = _mapper.Map<CreatedMovieDirectorResponse>(addedMovieDirector);
+        return createdMovieDirectorResponse;
+    }
 
-        public MovieDirectorManager(IMovieDirectorDal movieDirectorDal)
-        {
-            _movieDirectorDal = movieDirectorDal;
-        }
+    public async Task<DeletedMovieDirectorResponse> DeleteAsync(DeleteMovieDirectorRequest deleteMovieDirectorRequest)
+    {
+        MovieDirector movieDirector = await _movieDirectorDal.GetAsync(
+            predicate: a => a.Id == deleteMovieDirectorRequest.Id);
+        MovieDirector deletedMovieDirector = await _movieDirectorDal.DeleteAsync(movieDirector);
+        DeletedMovieDirectorResponse deletedMovieDirectorResponse = _mapper.Map<DeletedMovieDirectorResponse>(deletedMovieDirector);
+        return deletedMovieDirectorResponse;
+    }
 
-        public IResult Add(MovieDirector movieDirector)
-        {
-            _movieDirectorDal.Add(movieDirector);
-            return new SuccessResult();
-        }
+    public async Task<GetMovieDirectorListResponse> GetByIdAsync(Guid id)
+    {
+        MovieDirector movieDirector = await _movieDirectorDal.GetAsync(
+            predicate: a => a.Id == id);
+        GetMovieDirectorListResponse getMovieDirectorListResponse = _mapper.Map<GetMovieDirectorListResponse>(movieDirector);
+        return getMovieDirectorListResponse;
+    }
 
-        public IResult Delete(MovieDirector movieDirector)
-        {
-            _movieDirectorDal.Delete(movieDirector);
-            return new SuccessResult();
-        }
+    public async Task<IPaginate<GetMovieDirectorListResponse>> GetListAsync()
+    {
+        var movieDirectorList = await _movieDirectorDal.GetListAsync();
+        var mappedMovieDirectorList = _mapper.Map<Paginate<GetMovieDirectorListResponse>>(movieDirectorList);
+        return mappedMovieDirectorList;
+    }
 
-        public IDataResult<List<MovieDirector>> GetAll()
-        {
-            return new SuccessDataResult<List<MovieDirector>>(_movieDirectorDal.GetAll());
-        }
-
-        public IDataResult<MovieDirector> GetById(int id)
-        {
-            return new SuccessDataResult<MovieDirector>(_movieDirectorDal.Get(m => m.Id == id));
-        }
-
-        public IResult Update(MovieDirector movieDirector)
-        {
-            _movieDirectorDal.Update(movieDirector);
-            return new SuccessResult();
-        }
+    public async Task<UpdatedMovieDirectorResponse> UpdateAsync(UpdateMovieDirectorRequest updateMovieDirectorRequest)
+    {
+        MovieDirector movieDirector = _mapper.Map<MovieDirector>(updateMovieDirectorRequest);
+        MovieDirector updatedMovieDirector = await _movieDirectorDal.UpdateAsync(movieDirector);
+        UpdatedMovieDirectorResponse updatedMovieDirectorResponse = _mapper.Map<UpdatedMovieDirectorResponse>(updatedMovieDirector);
+        return updatedMovieDirectorResponse;
     }
 }

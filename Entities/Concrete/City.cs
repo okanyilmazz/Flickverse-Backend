@@ -1,16 +1,12 @@
-﻿using Core.Entities.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Core.Entities;
 
-namespace Entities.Concrete
+namespace Entities.Concrete;
+
+public class City : Entity<Guid>
 {
-    public class City : IEntity
-    {
-        public int Id { get; set; }
-        public int CountryId { get; set; }
-        public string Name { get; set; }
-    }
+    public Guid CountryId { get; set; }
+    public string Name { get; set; }
+
+    public Country Country { get; set; }
+    public virtual ICollection<District>? Districts { get; set; }
 }

@@ -1,16 +1,11 @@
-﻿using Core.Entities.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Core.Entities;
 
-namespace Entities.Concrete
+namespace Entities.Concrete;
+
+public class DirectorImage : Entity<Guid>
 {
-    public class DirectorImage : IEntity
-    {
-        public int Id { get; set; }
-        public int DirectorId { get; set; }
-        public string ImagePath { get; set; }
-    }
+    public Guid DirectorId { get; set; }
+    public string ImagePath { get; set; }
+
+    public Director Director { get; set; }
 }

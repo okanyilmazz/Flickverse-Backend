@@ -1,74 +1,54 @@
 ﻿using Business.Abstract;
-using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
+using Business.Dtos.Requests.CreateRequests;
+using Business.Dtos.Requests.DeleteRequests;
+using Business.Dtos.Requests.UpdateRequests;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebAPI.Controllers
+namespace WebAPI.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class ExclusiveLoungesController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ExclusiveLoungesController : ControllerBase
+    IExclusiveLoungeService _exclusiveLoungeService;
+
+    public ExclusiveLoungesController(IExclusiveLoungeService exclusiveLoungeService)
     {
-        IExclusiveLoungeService _exclusiveLoungeService;
+        _exclusiveLoungeService = exclusiveLoungeService;
+    }
 
-        public ExclusiveLoungesController(IExclusiveLoungeService exclusiveLoungeService)
-        {
-            _exclusiveLoungeService = exclusiveLoungeService;
-        }
+    [HttpGet("GetAll")]
+    public async Task<IActionResult> GetAll()
+    {
+        var result = await _exclusiveLoungeService.GetListAsync();
+        return Ok(result);
+    }
 
-        [HttpGet("GetAll")]
-        public IActionResult GetAll()
-        {
-            var result = _exclusiveLoungeService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpGet("GetById")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var result = await _exclusiveLoungeService.GetByIdAsync(id);
+        return Ok(result);
+    }
 
-        [HttpGet("GetById")]
-        public IActionResult GetById(int id)
-        {
-            var result = _exclusiveLoungeService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Add")]
+    public async Task<IActionResult> Add(CreateExclusiveLoungeRequest createExclusiveLoungeRequest)
+    {
+        var result = await _exclusiveLoungeService.AddAsync(createExclusiveLoungeRequest);
+        return Ok(result);
+    }
 
-        [HttpPost("Add")]
-        public IActionResult Add(ExclusiveLounge exclusiveLounge)
-        {
-            var result = _exclusiveLoungeService.Add(exclusiveLounge);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Update")]
+    public async Task<IActionResult> Update(UpdateExclusiveLoungeRequest updateExclusiveLoungeRequest)
+    {
+        var result = await _exclusiveLoungeService.UpdateAsync(updateExclusiveLoungeRequest);
+        return Ok(result);
+    }
 
-        [HttpPost("Update")]
-        public IActionResult Update(ExclusiveLounge exclusiveLounge)
-        {
-            var result = _exclusiveLoungeService.Update(exclusiveLounge);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpPost("Delete")]
-        public IActionResult Delete(ExclusiveLounge exclusiveLounge)
-        {
-            var result = _exclusiveLoungeService.Delete(exclusiveLounge);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Delete")]
+    public async Task<IActionResult> Delete(DeleteExclusiveLoungeRequest deleteExclusiveLoungeRequest)
+    {
+        var result = await _exclusiveLoungeService.DeleteAsync(deleteExclusiveLoungeRequest);
+        return Ok(result);
     }
 }

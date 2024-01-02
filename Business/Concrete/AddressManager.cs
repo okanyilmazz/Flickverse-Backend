@@ -1,51 +1,66 @@
-﻿using Business.Abstract;
-using Business.Constants;
-using Core.Utilities.Results;
-using DataAccess.Abstract.EntityFramework;
+﻿using AutoMapper;
+using Business.Abstract;
+using Business.Dtos.Requests.CreateRequests;
+using Business.Dtos.Requests.DeleteRequests;
+using Business.Dtos.Requests.UpdateRequests;
+using Business.Dtos.Responses.CreatedResponses;
+using Business.Dtos.Responses.DeletedResponses;
+using Business.Dtos.Responses.GetListResponses;
+using Business.Dtos.Responses.UpdatedResponses;
+using Core.DataAccess.Paging;
+using DataAccess.Abstracts;
 using Entities.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Business.Concrete
+namespace Business.Concrete;
+
+public class AddressManager : IAddressService
 {
-    public class AddressManager : IAddressService
+    IAddressDal _addressDal;
+    IMapper _mapper;
+
+    public AddressManager(IAddressDal addressDal, IMapper mapper)
     {
-        IAddressDal _addressDal;
+        _addressDal = addressDal;
+        _mapper = mapper;
+    }
 
-        public AddressManager(IAddressDal addressDal)
-        {
-            _addressDal = addressDal;
-        }
+    public async Task<CreatedAddressResponse> AddAsync(CreateAddressRequest createAddressRequest)
+    {
+        Address address = _mapper.Map<Address>(createAddressRequest);
+        Address addedAddress = await _addressDal.AddAsync(address);
+        CreatedAddressResponse createdAddressResponse = _mapper.Map<CreatedAddressResponse>(addedAddress);
+        return createdAddressResponse;
+    }
 
-        public IResult Add(Address address)
-        {
-            _addressDal.Add(address);
-            return new SuccessResult(Messages.AddressAdded);
-        }
+    public async Task<DeletedAddressResponse> DeleteAsync(DeleteAddressRequest deleteAddressRequest)
+    {
+        Address address = await _addressDal.GetAsync(
+            predicate: a => a.Id == deleteAddressRequest.Id);
+        Address deletedAddress = await _addressDal.DeleteAsync(address);
+        DeletedAddressResponse deletedAddressResponse = _mapper.Map<DeletedAddressResponse>(deletedAddress);
+        return deletedAddressResponse;
+    }
 
-        public IResult Delete(Address address)
-        {
-            _addressDal.Delete(address);
-            return new SuccessResult(Messages.AddressAdded);
-        }
+    public async Task<GetAddressListResponse> GetByIdAsync(Guid id)
+    {
+        Address address = await _addressDal.GetAsync(
+            predicate: a => a.Id == id);
+        GetAddressListResponse getAddressListResponse = _mapper.Map<GetAddressListResponse>(address);
+        return getAddressListResponse;
+    }
 
-        public IDataResult<List<Address>> GetAll()
-        {
-            return new SuccessDataResult<List<Address>>(_addressDal.GetAll(), Messages.AddressListed);
-        }
+    public async Task<IPaginate<GetAddressListResponse>> GetListAsync()
+    {
+        var addressList = await _addressDal.GetListAsync();
+        var mappedAddressList = _mapper.Map<Paginate<GetAddressListResponse>>(addressList);
+        return mappedAddressList;
+    }
 
-        public IDataResult<Address> GetById(int id)
-        {
-            return new SuccessDataResult<Address>(_addressDal.Get(a => a.Id == id), Messages.AddressListed);
-        }
-
-        public IResult Update(Address address)
-        {
-            _addressDal.Update(address);
-            return new SuccessResult(Messages.AddressAdded);
-        }
+    public async Task<UpdatedAddressResponse> UpdateAsync(UpdateAddressRequest updateAddressRequest)
+    {
+        Address address = _mapper.Map<Address>(updateAddressRequest);
+        Address updatedAddress = await _addressDal.UpdateAsync(address);
+        UpdatedAddressResponse updatedAddressResponse = _mapper.Map<UpdatedAddressResponse>(updatedAddress);
+        return updatedAddressResponse;
     }
 }

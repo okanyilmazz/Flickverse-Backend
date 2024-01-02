@@ -1,5 +1,4 @@
-﻿using Core.Entities.Abstract;
-using Entities.Concrete;
+﻿using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entities.DTOs
 {
-    public class CinemaHallDetailsDto : IDto
+    public class CinemaHallDetailsDto
     {
         public int Id { get; set; }
         public string CinemaName { get; set; }
@@ -17,6 +16,5 @@ namespace Entities.DTOs
         public string CountyName { get; set; }
         public List<ExclusiveLounge> Lounges { get; set; }
         public List<Movie> Movies { get; set; }
-
     }
 }

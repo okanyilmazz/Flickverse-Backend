@@ -1,60 +1,65 @@
-﻿using Business.Abstract;
-using Business.Constants;
-using Core.Utilities.Results;
-using DataAccess.Abstract.EntityFramework;
+﻿using AutoMapper;
+using Business.Abstract;
+using Business.Dtos.Requests.CreateRequests;
+using Business.Dtos.Requests.DeleteRequests;
+using Business.Dtos.Requests.UpdateRequests;
+using Business.Dtos.Responses.CreatedResponses;
+using Business.Dtos.Responses.DeletedResponses;
+using Business.Dtos.Responses.GetListResponses;
+using Business.Dtos.Responses.UpdatedResponses;
+using Core.DataAccess.Paging;
+using DataAccess.Abstracts;
 using Entities.Concrete;
-using Entities.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Business.Concrete
+namespace Business.Concrete;
+
+public class DirectorManager : IDirectorService
 {
-    public class DirectorManager : IDirectorService
+    IDirectorDal _directorDal;
+    IMapper _mapper;
+
+    public DirectorManager(IDirectorDal directorDal, IMapper mapper)
     {
-        IDirectorDal _directorDal;
+        _directorDal = directorDal;
+        _mapper = mapper;
+    }
+    public async Task<CreatedDirectorResponse> AddAsync(CreateDirectorRequest createDirectorRequest)
+    {
+        Director director = _mapper.Map<Director>(createDirectorRequest);
+        Director addedDirector = await _directorDal.AddAsync(director);
+        CreatedDirectorResponse createdDirectorResponse = _mapper.Map<CreatedDirectorResponse>(addedDirector);
+        return createdDirectorResponse;
+    }
 
-        public DirectorManager(IDirectorDal directorDal)
-        {
-            _directorDal = directorDal;
-        }
+    public async Task<DeletedDirectorResponse> DeleteAsync(DeleteDirectorRequest deleteDirectorRequest)
+    {
+        Director director = await _directorDal.GetAsync(
+            predicate: a => a.Id == deleteDirectorRequest.Id);
+        Director deletedDirector = await _directorDal.DeleteAsync(director);
+        DeletedDirectorResponse deletedDirectorResponse = _mapper.Map<DeletedDirectorResponse>(deletedDirector);
+        return deletedDirectorResponse;
+    }
 
-        public IResult Add(Director director)
-        {
-            _directorDal.Add(director);
-            return new SuccessResult(Messages.DirectorAdded);
+    public async Task<GetDirectorListResponse> GetByIdAsync(Guid id)
+    {
+        Director director = await _directorDal.GetAsync(
+            predicate: a => a.Id == id);
+        GetDirectorListResponse getDirectorListResponse = _mapper.Map<GetDirectorListResponse>(director);
+        return getDirectorListResponse;
+    }
 
-        }
+    public async Task<IPaginate<GetDirectorListResponse>> GetListAsync()
+    {
+        var directorList = await _directorDal.GetListAsync();
+        var mappedDirectorList = _mapper.Map<Paginate<GetDirectorListResponse>>(directorList);
+        return mappedDirectorList;
+    }
 
-        public IResult Delete(Director director)
-        {
-            _directorDal.Delete(director);
-            return new SuccessResult(Messages.DirectorDeleted);
-
-        }
-
-        public IDataResult<Director> GetById(int id)
-        {
-            return new SuccessDataResult<Director>(_directorDal.Get(x => x.Id == id), Messages.DirectorListed);
-        }
-
-        public IDataResult<List<Director>> GetAll()
-        {
-            return new SuccessDataResult<List<Director>>(_directorDal.GetAll(), Messages.DirectorListed);
-        }
-
-        public IResult Update(Director director)
-        {
-            _directorDal.Update(director);
-            return new SuccessResult(Messages.DirectorUpdated);
-
-        }
-
-        public IDataResult<List<DirectorDetailsDto>> GetDirectorDetails()
-        {
-            return new SuccessDataResult<List<DirectorDetailsDto>>(_directorDal.GetDirectorDetails(), Messages.DirectorListed);
-        }
+    public async Task<UpdatedDirectorResponse> UpdateAsync(UpdateDirectorRequest updateDirectorRequest)
+    {
+        Director director = _mapper.Map<Director>(updateDirectorRequest);
+        Director updatedDirector = await _directorDal.UpdateAsync(director);
+        UpdatedDirectorResponse updatedDirectorResponse = _mapper.Map<UpdatedDirectorResponse>(updatedDirector);
+        return updatedDirectorResponse;
     }
 }

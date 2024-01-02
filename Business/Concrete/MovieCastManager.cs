@@ -1,55 +1,47 @@
 ﻿using Business.Abstract;
-using Business.Constants;
-using Core.Utilities.Results;
-using DataAccess.Abstract.EntityFramework;
-using DataAccess.Concrete.EntityFramework;
-using Entities.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Business.Dtos.Requests.CreateRequests;
+using Business.Dtos.Requests.DeleteRequests;
+using Business.Dtos.Requests.UpdateRequests;
+using Business.Dtos.Responses.CreatedResponses;
+using Business.Dtos.Responses.DeletedResponses;
+using Business.Dtos.Responses.GetListResponses;
+using Business.Dtos.Responses.UpdatedResponses;
+using Core.DataAccess.Paging;
+using DataAccess.Abstracts;
 
-namespace Business.Concrete
+namespace Business.Concrete;
+
+public class MovieCastManager : IMovieCastService
 {
-    public class MovieCastManager : IMovieCastService
+    IMovieCastDal _movieCastDal;
+
+    public MovieCastManager(IMovieCastDal movieCastDal)
     {
-        IMovieCastDal _movieCastDal;
+        _movieCastDal = movieCastDal;
+    }
 
-        public MovieCastManager(IMovieCastDal movieCastDal)
-        {
-            _movieCastDal = movieCastDal;
-        }
+    public Task<CreatedMovieCastResponse> AddAsync(CreateMovieCastRequest createMovieCastRequest)
+    {
+        throw new NotImplementedException();
+    }
 
-        public IResult Add(MovieCast movieCast)
-        {
-            _movieCastDal.Add(movieCast);
-            return new SuccessResult(Messages.CategoryAdded);
+    public Task<DeletedMovieCastResponse> DeleteAsync(DeleteMovieCastRequest deleteMovieCastRequest)
+    {
+        throw new NotImplementedException();
+    }
 
-        }
+    public Task<GetMovieCastListResponse> GetByIdAsync(Guid id)
+    {
+        throw new NotImplementedException();
+    }
 
-        public IResult Delete(MovieCast movieCast)
-        {
-            _movieCastDal.Delete(movieCast);
-            return new SuccessResult(Messages.CastDeleted);
+    public Task<IPaginate<GetMovieCastListResponse>> GetListAsync()
+    {
+        throw new NotImplementedException();
+    }
 
-        }
-
-        public IDataResult<MovieCast> GetById(int id)
-        {
-            return new SuccessDataResult<MovieCast>(_movieCastDal.Get(x => x.Id == id), Messages.CastListed);
-        }
-
-        public IDataResult<List<MovieCast>> GetAll()
-        {
-            return new SuccessDataResult<List<MovieCast>>(_movieCastDal.GetAll(), Messages.CategoryListed);
-        }
-
-        public IResult Update(MovieCast movieCast)
-        {
-            _movieCastDal.Update(movieCast);
-            return new SuccessResult(Messages.CastUpdated);
-
-        }
+    public Task<UpdatedMovieCastResponse> UpdateAsync(UpdateMovieCastRequest updateMovieCastRequest)
+    {
+        throw new NotImplementedException();
     }
 }

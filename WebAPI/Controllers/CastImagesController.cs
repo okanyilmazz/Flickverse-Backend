@@ -1,76 +1,54 @@
 ﻿using Business.Abstract;
-using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
+using Business.Dtos.Requests.CreateRequests;
+using Business.Dtos.Requests.DeleteRequests;
+using Business.Dtos.Requests.UpdateRequests;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebAPI.Controllers
+namespace WebAPI.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class CastImagesController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CastImagesController : ControllerBase
+    ICastImageService _castImageService;
+
+    public CastImagesController(ICastImageService castImageService)
     {
+        _castImageService = castImageService;
+    }
 
-        ICastImageService _castImageService;
+    [HttpGet("GetAll")]
+    public async Task<IActionResult> GetAll()
+    {
+        var result = await _castImageService.GetListAsync();
+        return Ok(result);
+    }
 
-        public CastImagesController(ICastImageService castImageService)
-        {
-            _castImageService = castImageService;
-        }
+    [HttpGet("GetById")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var result = await _castImageService.GetByIdAsync(id);
+        return Ok(result);
+    }
 
-        [HttpGet("GetAll")]
-        public IActionResult GetAll()
-        {
-            var result = _castImageService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Add")]
+    public async Task<IActionResult> Add(CreateCastImageRequest createCastImageRequest)
+    {
+        var result = await _castImageService.AddAsync(createCastImageRequest);
+        return Ok(result);
+    }
 
-        [HttpGet("GetById")]
-        public IActionResult GetById(int id)
-        {
-            var result = _castImageService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Update")]
+    public async Task<IActionResult> Update(UpdateCastImageRequest updateCastImageRequest)
+    {
+        var result = await _castImageService.UpdateAsync(updateCastImageRequest);
+        return Ok(result);
+    }
 
-        [HttpPost("Add")]
-        public IActionResult Add(CastImage castImage)
-        {
-            var result = _castImageService.Add(castImage);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpPost("Update")]
-        public IActionResult Update(CastImage castImage)
-        {
-            var result = _castImageService.Update(castImage);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpPost("Delete")]
-        public IActionResult Delete(CastImage castImage)
-        {
-            var result = _castImageService.Delete(castImage);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
+    [HttpPost("Delete")]
+    public async Task<IActionResult> Delete(DeleteCastImageRequest deleteCastImageRequest)
+    {
+        var result = await _castImageService.DeleteAsync(deleteCastImageRequest);
+        return Ok(result);
     }
 }

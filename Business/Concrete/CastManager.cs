@@ -1,62 +1,66 @@
-﻿using Business.Abstract;
-using Business.Constants;
-using Core.Utilities.Results;
-using DataAccess.Abstract.EntityFramework;
+﻿
+using AutoMapper;
+using Business.Abstract;
+using Business.Dtos.Requests.CreateRequests;
+using Business.Dtos.Requests.DeleteRequests;
+using Business.Dtos.Requests.UpdateRequests;
+using Business.Dtos.Responses.CreatedResponses;
+using Business.Dtos.Responses.DeletedResponses;
+using Business.Dtos.Responses.GetListResponses;
+using Business.Dtos.Responses.UpdatedResponses;
+using Core.DataAccess.Paging;
+using DataAccess.Abstracts;
 using Entities.Concrete;
-using Entities.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Business.Concrete
+namespace Business.Concrete;
+
+public class CastManager : ICastService
 {
-    public class CastManager : ICastService
+    ICastDal _castDal;
+    IMapper _mapper;
+
+    public CastManager(ICastDal castDal, IMapper mapper)
     {
-        ICastDal _castDal;
+        _castDal = castDal;
+        _mapper = mapper;
+    }
+    public async Task<CreatedCastResponse> AddAsync(CreateCastRequest createCastRequest)
+    {
+        Cast cast = _mapper.Map<Cast>(createCastRequest);
+        Cast addedCast = await _castDal.AddAsync(cast);
+        CreatedCastResponse createdCastResponse = _mapper.Map<CreatedCastResponse>(addedCast);
+        return createdCastResponse;
+    }
 
-        public CastManager(ICastDal castDal)
-        {
-            _castDal = castDal;
-        }
+    public async Task<DeletedCastResponse> DeleteAsync(DeleteCastRequest deleteCastRequest)
+    {
+        Cast cast = await _castDal.GetAsync(
+            predicate: a => a.Id == deleteCastRequest.Id);
+        Cast deletedCast = await _castDal.DeleteAsync(cast);
+        DeletedCastResponse deletedCastResponse = _mapper.Map<DeletedCastResponse>(deletedCast);
+        return deletedCastResponse;
+    }
 
-        public IResult Add(Cast cast)
-        {
-            _castDal.Add(cast);
+    public async Task<GetCastListResponse> GetByIdAsync(Guid id)
+    {
+        Cast cast = await _castDal.GetAsync(
+            predicate: a => a.Id == id);
+        GetCastListResponse getCastListResponse = _mapper.Map<GetCastListResponse>(cast);
+        return getCastListResponse;
+    }
 
-            return new SuccessResult(Messages.CastAdded);
-        }
+    public async Task<IPaginate<GetCastListResponse>> GetListAsync()
+    {
+        var castList = await _castDal.GetListAsync();
+        var mappedCastList = _mapper.Map<Paginate<GetCastListResponse>>(castList);
+        return mappedCastList;
+    }
 
-        public IResult Delete(Cast cast)
-        {
-            _castDal.Delete(cast);
-            return new SuccessResult(Messages.CastDeleted);
-
-        }
-
-        public IDataResult<Cast> GetById(int id)
-        {
-            return new SuccessDataResult<Cast>(_castDal.Get(x => x.Id == id), Messages.CastListed);
-        }
-
-        public IDataResult<List<Cast>> GetAll()
-        {
-            return new SuccessDataResult<List<Cast>>(_castDal.GetAll(), Messages.CastListed);
-        }
-
-        public IResult Update(Cast cast)
-        {
-            _castDal.Update(cast);
-            return new SuccessResult(Messages.CastUpdated);
-
-        }
-
-        public IDataResult<List<CastDetailsDto>> GetCastDetails()
-        {
-            return new SuccessDataResult<List<CastDetailsDto>>(_castDal.GetCastDetails(), Messages.CastListed);
-
-        }
+    public async Task<UpdatedCastResponse> UpdateAsync(UpdateCastRequest updateCastRequest)
+    {
+        Cast cast = _mapper.Map<Cast>(updateCastRequest);
+        Cast updatedCast = await _castDal.UpdateAsync(cast);
+        UpdatedCastResponse updatedCastResponse = _mapper.Map<UpdatedCastResponse>(updatedCast);
+        return updatedCastResponse;
     }
 }

@@ -1,51 +1,65 @@
-﻿using Business.Abstract;
-using Business.Constants;
-using Core.Utilities.Results;
-using DataAccess.Abstract.EntityFramework;
+﻿using AutoMapper;
+using Business.Abstract;
+using Business.Dtos.Requests.CreateRequests;
+using Business.Dtos.Requests.DeleteRequests;
+using Business.Dtos.Requests.UpdateRequests;
+using Business.Dtos.Responses.CreatedResponses;
+using Business.Dtos.Responses.DeletedResponses;
+using Business.Dtos.Responses.GetListResponses;
+using Business.Dtos.Responses.UpdatedResponses;
+using Core.DataAccess.Paging;
+using DataAccess.Abstracts;
 using Entities.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Business.Concrete
+namespace Business.Concrete;
+
+public class CityManager : ICityService
 {
-    public class CityManager : ICityService
+    ICityDal _cityDal;
+    IMapper _mapper;
+
+    public CityManager(ICityDal cityDal, IMapper mapper)
     {
-        ICityDal _cityDal;
+        _cityDal = cityDal;
+        _mapper = mapper;
+    }
+    public async Task<CreatedCityResponse> AddAsync(CreateCityRequest createCityRequest)
+    {
+        City city = _mapper.Map<City>(createCityRequest);
+        City addedCity = await _cityDal.AddAsync(city);
+        CreatedCityResponse createdCityResponse = _mapper.Map<CreatedCityResponse>(addedCity);
+        return createdCityResponse;
+    }
 
-        public CityManager(ICityDal cityDal)
-        {
-            _cityDal = cityDal;
-        }
+    public async Task<DeletedCityResponse> DeleteAsync(DeleteCityRequest deleteCityRequest)
+    {
+        City city = await _cityDal.GetAsync(
+            predicate: a => a.Id == deleteCityRequest.Id);
+        City deletedCity = await _cityDal.DeleteAsync(city);
+        DeletedCityResponse deletedCityResponse = _mapper.Map<DeletedCityResponse>(deletedCity);
+        return deletedCityResponse;
+    }
 
-        public IResult Add(City city)
-        {
-            _cityDal.Add(city);
-            return new SuccessResult(Messages.CityAdded);
-        }
+    public async Task<GetCityListResponse> GetByIdAsync(Guid id)
+    {
+        City city = await _cityDal.GetAsync(
+            predicate: a => a.Id == id);
+        GetCityListResponse getCityListResponse = _mapper.Map<GetCityListResponse>(city);
+        return getCityListResponse;
+    }
 
-        public IResult Delete(City city)
-        {
-            _cityDal.Delete(city);
-            return new SuccessResult(Messages.CityDeleted);
-        }
+    public async Task<IPaginate<GetCityListResponse>> GetListAsync()
+    {
+        var cityList = await _cityDal.GetListAsync();
+        var mappedCityList = _mapper.Map<Paginate<GetCityListResponse>>(cityList);
+        return mappedCityList;
+    }
 
-        public IDataResult<List<City>> GetAll()
-        {
-            return new SuccessDataResult<List<City>>(_cityDal.GetAll(), Messages.CityListed);
-        }
-
-        public IDataResult<City> GetById(int id)
-        {
-            return new SuccessDataResult<City>(_cityDal.Get(a => a.Id == id), Messages.CityListed);
-        }
-
-        public IResult Update(City city)
-        {
-            _cityDal.Update(city);
-            return new SuccessResult(Messages.CityUpdated);
-        }
+    public async Task<UpdatedCityResponse> UpdateAsync(UpdateCityRequest updateCityRequest)
+    {
+        City city = _mapper.Map<City>(updateCityRequest);
+        City updatedCity = await _cityDal.UpdateAsync(city);
+        UpdatedCityResponse updatedCityResponse = _mapper.Map<UpdatedCityResponse>(updatedCity);
+        return updatedCityResponse;
     }
 }

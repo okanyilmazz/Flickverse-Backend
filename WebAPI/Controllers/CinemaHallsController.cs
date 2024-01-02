@@ -1,85 +1,49 @@
 ﻿using Business.Abstract;
-using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
+using Business.Dtos.Requests.CreateRequests;
+using Business.Dtos.Requests.DeleteRequests;
+using Business.Dtos.Requests.UpdateRequests;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebAPI.Controllers
+namespace WebAPI.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class CinemaHallsController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CinemaHallsController : ControllerBase
+    ICinemaHallService _cinemaHallService;
+
+    [HttpGet("GetAll")]
+    public async Task<IActionResult> GetAll()
     {
-        ICinemaHallService _cinemaHallService;
+        var result = await _cinemaHallService.GetListAsync();
+        return Ok(result);
+    }
 
-        public CinemaHallsController(ICinemaHallService cinemaHallService)
-        {
-            _cinemaHallService = cinemaHallService;
-        }
+    [HttpGet("GetById")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var result = await _cinemaHallService.GetByIdAsync(id);
+        return Ok(result);
+    }
 
-        [HttpGet("GetAll")]
-        public IActionResult GetAll()
-        {
-            var result = _cinemaHallService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Add")]
+    public async Task<IActionResult> Add(CreateCinemaHallRequest createCinemaHallRequest)
+    {
+        var result = await _cinemaHallService.AddAsync(createCinemaHallRequest);
+        return Ok(result);
+    }
 
-        [HttpGet("GetById")]
-        public IActionResult GetById(int id)
-        {
-            var result = _cinemaHallService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Update")]
+    public async Task<IActionResult> Update(UpdateCinemaHallRequest updateCinemaHallRequest)
+    {
+        var result = await _cinemaHallService.UpdateAsync(updateCinemaHallRequest);
+        return Ok(result);
+    }
 
-        [HttpGet("GetCinemaHallDetails")]
-        public IActionResult GetCinemaHallDetails()
-        {
-            var result = _cinemaHallService.GetCinemaHallDetails();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpPost("Add")]
-        public IActionResult Add(CinemaHall cinemaHall)
-        {
-            var result = _cinemaHallService.Add(cinemaHall);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpPost("Update")]
-        public IActionResult Update(CinemaHall cinemaHall)
-        {
-            var result = _cinemaHallService.Update(cinemaHall);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpPost("Delete")]
-        public IActionResult Delete(CinemaHall cinemaHall)
-        {
-            var result = _cinemaHallService.Delete(cinemaHall);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Delete")]
+    public async Task<IActionResult> Delete(DeleteCinemaHallRequest deleteCinemaHallRequest)
+    {
+        var result = await _cinemaHallService.DeleteAsync(deleteCinemaHallRequest);
+        return Ok(result);
     }
 }

@@ -1,4 +1,7 @@
 ﻿using Business.Abstract;
+using Business.Dtos.Requests.CreateRequests;
+using Business.Dtos.Requests.DeleteRequests;
+using Business.Dtos.Requests.UpdateRequests;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,60 +19,39 @@ namespace WebAPI.Controllers
             _countryService = countryService;
         }
 
-
         [HttpGet("GetAll")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var result = _countryService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            var result = await _countryService.GetListAsync();
+            return Ok(result);
         }
 
         [HttpGet("GetById")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(Guid id)
         {
-            var result = _countryService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            var result = await _countryService.GetByIdAsync(id);
+            return Ok(result);
         }
 
         [HttpPost("Add")]
-        public IActionResult Add(Country country)
+        public async Task<IActionResult> Add(CreateCountryRequest createCountryRequest)
         {
-            var result = _countryService.Add(country);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            var result = await _countryService.AddAsync(createCountryRequest);
+            return Ok(result);
         }
 
         [HttpPost("Update")]
-        public IActionResult Update(Country country)
+        public async Task<IActionResult> Update(UpdateCountryRequest updateCountryRequest)
         {
-            var result = _countryService.Update(country);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            var result = await _countryService.UpdateAsync(updateCountryRequest);
+            return Ok(result);
         }
 
         [HttpPost("Delete")]
-        public IActionResult Delete(Country country)
+        public async Task<IActionResult> Delete(DeleteCountryRequest deleteCountryRequest)
         {
-            var result = _countryService.Delete(country);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            var result = await _countryService.DeleteAsync(deleteCountryRequest);
+            return Ok(result);
         }
     }
 }

@@ -1,16 +1,11 @@
-﻿using Core.Entities.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Core.Entities;
 
-namespace Entities.Concrete
+namespace Entities.Concrete;
+
+public class CastImage : Entity<Guid>
 {
-    public class CastImage : IEntity
-    {
-        public int Id { get; set; }
-        public int CastId { get; set; }
-        public string ImagePath { get; set; }
-    }
+    public Guid CastId { get; set; }
+    public string ImagePath { get; set; }
+
+    public Cast Cast { get; set; }
 }

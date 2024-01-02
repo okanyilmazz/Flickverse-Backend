@@ -1,85 +1,54 @@
 ﻿using Business.Abstract;
-using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
+using Business.Dtos.Requests.CreateRequests;
+using Business.Dtos.Requests.DeleteRequests;
+using Business.Dtos.Requests.UpdateRequests;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebAPI.Controllers
+namespace WebAPI.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class DirectorsController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class DirectorsController : ControllerBase
+    IDirectorService _directorService;
+
+    public DirectorsController(IDirectorService directorService)
     {
+        _directorService = directorService;
+    }
 
-        IDirectorService _directorService;
-        public DirectorsController(IDirectorService directorService)
-        {
-            _directorService = directorService;
-        }
+    [HttpGet("GetAll")]
+    public async Task<IActionResult> GetAll()
+    {
+        var result = await _directorService.GetListAsync();
+        return Ok(result);
+    }
 
-        [HttpGet("GetAll")]
-        public IActionResult GetAll()
-        {
-            var result = _directorService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpGet("GetById")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var result = await _directorService.GetByIdAsync(id);
+        return Ok(result);
+    }
 
-        [HttpGet("GetById")]
-        public IActionResult GetById(int id)
-        {
-            var result = _directorService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-        [HttpGet("GetDirectorDetails")]
-        public IActionResult GetDirectorDetails()
-        {
-            var result = _directorService.GetDirectorDetails();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Add")]
+    public async Task<IActionResult> Add(CreateDirectorRequest createDirectorRequest)
+    {
+        var result = await _directorService.AddAsync(createDirectorRequest);
+        return Ok(result);
+    }
 
-        [HttpPost("Add")]
-        public IActionResult Add(Director director)
-        {
-            var result = _directorService.Add(director);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Update")]
+    public async Task<IActionResult> Update(UpdateDirectorRequest updateDirectorRequest)
+    {
+        var result = await _directorService.UpdateAsync(updateDirectorRequest);
+        return Ok(result);
+    }
 
-        [HttpPost("Update")]
-        public IActionResult Update(Director director)
-        {
-            var result = _directorService.Update(director);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpPost("Delete")]
-        public IActionResult Delete(Director director)
-        {
-            var result = _directorService.Delete(director);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
+    [HttpPost("Delete")]
+    public async Task<IActionResult> Delete(DeleteDirectorRequest deleteDirectorRequest)
+    {
+        var result = await _directorService.DeleteAsync(deleteDirectorRequest);
+        return Ok(result);
     }
 }

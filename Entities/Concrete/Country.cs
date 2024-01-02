@@ -1,17 +1,8 @@
-﻿using Core.Entities.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Core.Entities;
 
-namespace Entities.Concrete
+namespace Entities.Concrete;
+
+public class Country : Entity<Guid>
 {
-    public class Country : IEntity
-    {
-        public int Id { get; set; }
-        public string CountryCode { get; set; }
-        public string CountryName { get; set; }
-        public string CountryAreaCode { get; set; }
-    }
+    public string Name { get; set; }
 }

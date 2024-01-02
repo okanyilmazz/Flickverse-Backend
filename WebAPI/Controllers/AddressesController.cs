@@ -1,75 +1,54 @@
 ﻿using Business.Abstract;
-using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
+using Business.Dtos.Requests.CreateRequests;
+using Business.Dtos.Requests.DeleteRequests;
+using Business.Dtos.Requests.UpdateRequests;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
-namespace WebAPI.Controllers
+namespace WebAPI.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class AddressesController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AddressesController : ControllerBase
+    IAddressService _addressService;
+
+    public AddressesController(IAddressService addressService)
     {
-        IAddressService _addressService;
+        _addressService = addressService;
+    }
 
-        public AddressesController(IAddressService addressService)
-        {
-            _addressService = addressService;
-        }
+    [HttpGet("GetAll")]
+    public async Task<IActionResult> GetAll()
+    {
+        var result = await _addressService.GetListAsync();
+        return Ok(result);
+    }
 
-        [HttpGet("GetAll")]
-        public IActionResult GetAll()
-        {
-            var result = _addressService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpGet("GetById")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var result = await _addressService.GetByIdAsync(id);
+        return Ok(result);
+    }
 
-        [HttpGet("GetById")]
-        public IActionResult GetById(int id)
-        {
-            var result = _addressService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Add")]
+    public async Task<IActionResult> Add(CreateAddressRequest createAddressRequest)
+    {
+        var result = await _addressService.AddAsync(createAddressRequest);
+        return Ok(result);
+    }
 
-        [HttpPost("Add")]
-        public IActionResult Add(Address address)
-        {
-            var result = _addressService.Add(address);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Update")]
+    public async Task<IActionResult> Update(UpdateAddressRequest updateAddressRequest)
+    {
+        var result = await _addressService.UpdateAsync(updateAddressRequest);
+        return Ok(result);
+    }
 
-        [HttpPost("Update")]
-        public IActionResult Update(Address address)
-        {
-            var result = _addressService.Update(address);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpPost("Delete")]
-        public IActionResult Delete(Address address)
-        {
-            var result = _addressService.Delete(address);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+    [HttpPost("Delete")]
+    public async Task<IActionResult> Delete(DeleteAddressRequest deleteAddressRequest)
+    {
+        var result = await _addressService.DeleteAsync(deleteAddressRequest);
+        return Ok(result);
     }
 }

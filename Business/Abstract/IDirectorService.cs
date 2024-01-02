@@ -1,22 +1,19 @@
-﻿using Core.Utilities.Results;
-using Entities.Concrete;
-using Entities.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Business.Dtos.Requests.CreateRequests;
+using Business.Dtos.Requests.DeleteRequests;
+using Business.Dtos.Requests.UpdateRequests;
+using Business.Dtos.Responses.CreatedResponses;
+using Business.Dtos.Responses.DeletedResponses;
+using Business.Dtos.Responses.GetListResponses;
+using Business.Dtos.Responses.UpdatedResponses;
+using Core.DataAccess.Paging;
 
-namespace Business.Abstract
+namespace Business.Abstract;
+
+public interface IDirectorService
 {
-    public interface IDirectorService
-    {
-        IDataResult<List<Director>> GetAll();
-        IDataResult<List<DirectorDetailsDto>> GetDirectorDetails();
-        IDataResult<Director> GetById(int id);
-        IResult Add(Director director);
-        IResult Update(Director director);
-        IResult Delete(Director director);
-    }
+    Task<CreatedDirectorResponse> AddAsync(CreateDirectorRequest createDirectorRequest);
+    Task<UpdatedDirectorResponse> UpdateAsync(UpdateDirectorRequest updateDirectorRequest);
+    Task<DeletedDirectorResponse> DeleteAsync(DeleteDirectorRequest deleteDirectorRequest);
+    Task<IPaginate<GetDirectorListResponse>> GetListAsync();
+    Task<GetDirectorListResponse> GetByIdAsync(Guid id);
 }

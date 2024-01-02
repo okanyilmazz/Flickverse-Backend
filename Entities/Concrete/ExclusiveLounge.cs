@@ -1,16 +1,12 @@
-﻿using Core.Entities.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Core.Entities;
 
-namespace Entities.Concrete
+namespace Entities.Concrete;
+
+public class ExclusiveLounge : Entity<Guid>
 {
-    public class ExclusiveLounge : IEntity
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-    }
+    public string Name { get; set; }
+    public string Description { get; set; }
+
+    public virtual ICollection<CinemaHallExclusiveLounge> CinemaHallExclusiveLounges { get; set; }
+    public virtual ICollection<MovieExclusiveLounge> MovieExclusiveLounges { get; set; }
 }

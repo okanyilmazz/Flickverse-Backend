@@ -1,58 +1,65 @@
-﻿using Business.Abstract;
-using Business.Constants;
-using Core.Utilities.Results;
-using DataAccess.Abstract.EntityFramework;
+﻿using AutoMapper;
+using Business.Abstract;
+using Business.Dtos.Requests.CreateRequests;
+using Business.Dtos.Requests.DeleteRequests;
+using Business.Dtos.Requests.UpdateRequests;
+using Business.Dtos.Responses.CreatedResponses;
+using Business.Dtos.Responses.DeletedResponses;
+using Business.Dtos.Responses.GetListResponses;
+using Business.Dtos.Responses.UpdatedResponses;
+using Core.DataAccess.Paging;
+using DataAccess.Abstracts;
 using Entities.Concrete;
-using Entities.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Business.Concrete
+namespace Business.Concrete;
+
+public class MovieManager : IMovieService
 {
-    public class MovieManager : IMovieService
+    IMovieDal _movieDal;
+    IMapper _mapper;
+
+    public MovieManager(IMovieDal movieDal, IMapper mapper)
     {
-        IMovieDal _movieDal;
+        _movieDal = movieDal;
+        _mapper = mapper;
+    }
+    public async Task<CreatedMovieResponse> AddAsync(CreateMovieRequest createMovieRequest)
+    {
+        Movie movie = _mapper.Map<Movie>(createMovieRequest);
+        Movie addedMovie = await _movieDal.AddAsync(movie);
+        CreatedMovieResponse createdMovieResponse = _mapper.Map<CreatedMovieResponse>(addedMovie);
+        return createdMovieResponse;
+    }
 
-        public MovieManager(IMovieDal movieDal)
-        {
-            _movieDal = movieDal;
-        }
+    public async Task<DeletedMovieResponse> DeleteAsync(DeleteMovieRequest deleteMovieRequest)
+    {
+        Movie movie = await _movieDal.GetAsync(
+            predicate: a => a.Id == deleteMovieRequest.Id);
+        Movie deletedMovie = await _movieDal.DeleteAsync(movie);
+        DeletedMovieResponse deletedMovieResponse = _mapper.Map<DeletedMovieResponse>(deletedMovie);
+        return deletedMovieResponse;
+    }
 
-        public IResult Add(Movie movie)
-        {
-            _movieDal.Add(movie);
-            return new SuccessResult(Messages.MovieListed);
-        }
+    public async Task<GetMovieListResponse> GetByIdAsync(Guid id)
+    {
+        Movie movie = await _movieDal.GetAsync(
+            predicate: a => a.Id == id);
+        GetMovieListResponse getMovieListResponse = _mapper.Map<GetMovieListResponse>(movie);
+        return getMovieListResponse;
+    }
 
-        public IResult Delete(Movie movie)
-        {
-            _movieDal.Delete(movie);
-            return new SuccessResult(Messages.MovieDeleted);
-        }
+    public async Task<IPaginate<GetMovieListResponse>> GetListAsync()
+    {
+        var movieList = await _movieDal.GetListAsync();
+        var mappedMovieList = _mapper.Map<Paginate<GetMovieListResponse>>(movieList);
+        return mappedMovieList;
+    }
 
-        public IDataResult<List<Movie>> GetAll()
-        {
-            return new SuccessDataResult<List<Movie>>(_movieDal.GetAll(), Messages.MovieListed);
-        }
-
-        public IDataResult<List<MovieDetailsDto>> GetAllMovieDetails()
-        {
-            return new SuccessDataResult<List<MovieDetailsDto>>(_movieDal.GetMovieDetails(), Messages.MovieListed);
-        }
-
-        public IDataResult<Movie> GetById(int id)
-        {
-            return new SuccessDataResult<Movie>(_movieDal.Get(x => x.Id == id), Messages.MovieListed);
-        }
-
-        public IResult Update(Movie movie)
-        {
-            _movieDal.Update(movie);
-            return new SuccessResult(Messages.MovieUpdated);
-        }
+    public async Task<UpdatedMovieResponse> UpdateAsync(UpdateMovieRequest updateMovieRequest)
+    {
+        Movie movie = _mapper.Map<Movie>(updateMovieRequest);
+        Movie updatedMovie = await _movieDal.UpdateAsync(movie);
+        UpdatedMovieResponse updatedMovieResponse = _mapper.Map<UpdatedMovieResponse>(updatedMovie);
+        return updatedMovieResponse;
     }
 }

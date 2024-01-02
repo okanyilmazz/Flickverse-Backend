@@ -1,21 +1,19 @@
-﻿using Core.DataAccess;
-using Core.Entities.Abstract;
-using Core.Utilities.Results;
-using Entities.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Business.Dtos.Requests.CreateRequests;
+using Business.Dtos.Requests.DeleteRequests;
+using Business.Dtos.Requests.UpdateRequests;
+using Business.Dtos.Responses.CreatedResponses;
+using Business.Dtos.Responses.DeletedResponses;
+using Business.Dtos.Responses.GetListResponses;
+using Business.Dtos.Responses.UpdatedResponses;
+using Core.DataAccess.Paging;
 
-namespace Business.Abstract
+namespace Business.Abstract;
+
+public interface ICityService
 {
-    public interface ICityService
-    {
-        IDataResult<List<City>> GetAll();
-        IDataResult<City> GetById(int id);
-        IResult Add(City city);
-        IResult Update(City city);
-        IResult Delete(City city);
-    }
+    Task<CreatedCityResponse> AddAsync(CreateCityRequest createCityRequest);
+    Task<UpdatedCityResponse> UpdateAsync(UpdateCityRequest updateCityRequest);
+    Task<DeletedCityResponse> DeleteAsync(DeleteCityRequest deleteCityRequest);
+    Task<IPaginate<GetCityListResponse>> GetListAsync();
+    Task<GetCityListResponse> GetByIdAsync(Guid id);
 }
