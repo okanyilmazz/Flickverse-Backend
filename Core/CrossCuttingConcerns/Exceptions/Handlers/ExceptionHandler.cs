@@ -1,14 +1,16 @@
-﻿namespace Core.CrossCuttingConcerns.Exceptions.Handlers;
+﻿using Core.CrossCuttingConcerns.Validation.HttpProblemDetails.Types;
+
+namespace Core.CrossCuttingConcerns.Exceptions.Handlers;
 
 public abstract class ExceptionHandler
 {
     public Task HandleExceptionAsync(Exception exception) =>
         exception switch
         {
-            BusinessException businessException => HandleException(businessException)
-            //ValidationException validationException => HandleException(validationException)
+            BusinessException businessException => HandleException(businessException),
+            ValidationException validationException => HandleException(validationException)
         };
 
     protected abstract Task HandleException(BusinessException businessException);
-    //protected abstract Task HandleException(ValidationException validationException);
+    protected abstract Task HandleException(ValidationException validationException);
 }

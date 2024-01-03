@@ -16,7 +16,8 @@ public class CountryBusinessRules : BaseBusinessRules
     public async Task IsExistsCountry(Guid countryId)
     {
         var result = await _countryDal.GetAsync(
-            predicate: a => a.Id == countryId);
+            predicate: a => a.Id == countryId,
+            enableTracking: false);
         if (result == null)
         {
             throw new BusinessException(BusinessMessages.DataNotFound);

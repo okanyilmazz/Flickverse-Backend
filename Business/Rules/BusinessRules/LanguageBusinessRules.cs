@@ -16,7 +16,8 @@ public class LanguageBusinessRules : BaseBusinessRules
     public async Task IsExistsLanguage(Guid languageId)
     {
         var result = await _languageDal.GetAsync(
-            predicate: a => a.Id == languageId);
+            predicate: a => a.Id == languageId,
+            enableTracking: false);
         if (result == null)
         {
             throw new BusinessException(BusinessMessages.DataNotFound);

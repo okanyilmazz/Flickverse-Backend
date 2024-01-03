@@ -2,6 +2,9 @@
 using Business.Dtos.Requests.CreateRequests;
 using Business.Dtos.Requests.DeleteRequests;
 using Business.Dtos.Requests.UpdateRequests;
+using Business.Rules.ValidationRules.FluentValidation.CreateRequestValidators;
+using Business.Rules.ValidationRules.FluentValidation.UpdateRequestValidators;
+using Core.CrossCuttingConcerns.Validation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
@@ -31,6 +34,7 @@ public class CastImagesController : ControllerBase
         return Ok(result);
     }
 
+    [CustomValidation(typeof(CreateCastImageRequestValidator))]
     [HttpPost("Add")]
     public async Task<IActionResult> Add(CreateCastImageRequest createCastImageRequest)
     {
@@ -38,6 +42,7 @@ public class CastImagesController : ControllerBase
         return Ok(result);
     }
 
+    [CustomValidation(typeof(UpdateCastImageRequestValidator))]
     [HttpPost("Update")]
     public async Task<IActionResult> Update(UpdateCastImageRequest updateCastImageRequest)
     {

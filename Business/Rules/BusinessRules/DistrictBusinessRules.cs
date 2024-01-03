@@ -16,7 +16,8 @@ public class DistrictBusinessRules : BaseBusinessRules
     public async Task IsExistsDistrict(Guid districtId)
     {
         var result = await _districtDal.GetAsync(
-            predicate: a => a.Id == districtId);
+            predicate: a => a.Id == districtId,
+            enableTracking: false);
         if (result == null)
         {
             throw new BusinessException(BusinessMessages.DataNotFound);

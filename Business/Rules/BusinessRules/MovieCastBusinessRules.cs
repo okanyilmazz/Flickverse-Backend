@@ -16,7 +16,8 @@ public class MovieCastBusinessRules : BaseBusinessRules
     public async Task IsExistsMovieCast(Guid movieCastId)
     {
         var result = await _movieCastDal.GetAsync(
-            predicate: a => a.Id == movieCastId);
+            predicate: a => a.Id == movieCastId,
+            enableTracking: false);
         if (result == null)
         {
             throw new BusinessException(BusinessMessages.DataNotFound);

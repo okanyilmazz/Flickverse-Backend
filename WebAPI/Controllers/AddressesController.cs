@@ -2,7 +2,11 @@
 using Business.Dtos.Requests.CreateRequests;
 using Business.Dtos.Requests.DeleteRequests;
 using Business.Dtos.Requests.UpdateRequests;
+using Business.Rules.ValidationRules.FluentValidation.CreateRequestValidators;
+using Business.Rules.ValidationRules.FluentValidation.UpdateRequestValidators;
+using Core.CrossCuttingConcerns.Validation;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace WebAPI.Controllers;
 
@@ -31,6 +35,7 @@ public class AddressesController : ControllerBase
         return Ok(result);
     }
 
+    [CustomValidation(typeof(CreateAddressRequestValidator))]
     [HttpPost("Add")]
     public async Task<IActionResult> Add(CreateAddressRequest createAddressRequest)
     {
@@ -38,6 +43,7 @@ public class AddressesController : ControllerBase
         return Ok(result);
     }
 
+    [CustomValidation(typeof(UpdateAddressRequestValidator))]
     [HttpPost("Update")]
     public async Task<IActionResult> Update(UpdateAddressRequest updateAddressRequest)
     {

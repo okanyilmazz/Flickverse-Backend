@@ -16,7 +16,8 @@ public class CityBusinessRules : BaseBusinessRules
     public async Task IsExistsCity(Guid cityId)
     {
         var result = await _cityDal.GetAsync(
-            predicate: a => a.Id == cityId);
+            predicate: a => a.Id == cityId,
+            enableTracking: false);
         if (result == null)
         {
             throw new BusinessException(BusinessMessages.DataNotFound);

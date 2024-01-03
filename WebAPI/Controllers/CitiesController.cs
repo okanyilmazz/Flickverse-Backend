@@ -2,6 +2,9 @@
 using Business.Dtos.Requests.CreateRequests;
 using Business.Dtos.Requests.DeleteRequests;
 using Business.Dtos.Requests.UpdateRequests;
+using Business.Rules.ValidationRules.FluentValidation.CreateRequestValidators;
+using Business.Rules.ValidationRules.FluentValidation.UpdateRequestValidators;
+using Core.CrossCuttingConcerns.Validation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
@@ -31,6 +34,7 @@ public class CitiesController : ControllerBase
         return Ok(result);
     }
 
+    [CustomValidation(typeof(CreateCityRequestValidator))]
     [HttpPost("Add")]
     public async Task<IActionResult> Add(CreateCityRequest createCityRequest)
     {
@@ -38,6 +42,8 @@ public class CitiesController : ControllerBase
         return Ok(result);
     }
 
+
+    [CustomValidation(typeof(UpdateCityRequestValidator))]
     [HttpPost("Update")]
     public async Task<IActionResult> Update(UpdateCityRequest updateCityRequest)
     {

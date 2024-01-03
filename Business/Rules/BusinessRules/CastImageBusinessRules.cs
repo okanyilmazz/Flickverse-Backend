@@ -16,7 +16,8 @@ public class CastImageBusinessRules : BaseBusinessRules
     public async Task IsExistsCastImage(Guid castImageId)
     {
         var result = await _castImageDal.GetAsync(
-            predicate: a => a.Id == castImageId);
+            predicate: a => a.Id == castImageId,
+            enableTracking: false);
         if (result == null)
         {
             throw new BusinessException(BusinessMessages.DataNotFound);

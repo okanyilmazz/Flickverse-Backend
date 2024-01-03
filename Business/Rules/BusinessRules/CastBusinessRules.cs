@@ -16,7 +16,8 @@ public class CastBusinessRules : BaseBusinessRules
     public async Task IsExistsCast(Guid castId)
     {
         var result = await _castDal.GetAsync(
-            predicate: a => a.Id == castId);
+            predicate: a => a.Id == castId,
+            enableTracking: false);
         if (result == null)
         {
             throw new BusinessException(BusinessMessages.DataNotFound);

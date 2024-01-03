@@ -16,7 +16,8 @@ public class AddressBusinessRules : BaseBusinessRules
     public async Task IsExistsAddress(Guid addressId)
     {
         var result = await _addressDal.GetAsync(
-            predicate: a => a.Id == addressId);
+            predicate: a => a.Id == addressId,
+            enableTracking: false);
         if (result == null)
         {
             throw new BusinessException(BusinessMessages.DataNotFound);

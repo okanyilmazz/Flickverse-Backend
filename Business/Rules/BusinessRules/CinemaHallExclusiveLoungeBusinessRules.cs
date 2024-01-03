@@ -16,7 +16,8 @@ public class CinemaHallExclusiveLoungeBusinessRules : BaseBusinessRules
     public async Task IsExistsCinemaHallExclusiveLounge(Guid cinemaHallExclusiveLoungeId)
     {
         var result = await _cinemaHallExclusiveLoungeDal.GetAsync(
-            predicate: a => a.Id == cinemaHallExclusiveLoungeId);
+            predicate: a => a.Id == cinemaHallExclusiveLoungeId,
+            enableTracking: false);
         if (result == null)
         {
             throw new BusinessException(BusinessMessages.DataNotFound);

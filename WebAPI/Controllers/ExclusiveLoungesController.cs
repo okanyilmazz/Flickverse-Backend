@@ -2,6 +2,9 @@
 using Business.Dtos.Requests.CreateRequests;
 using Business.Dtos.Requests.DeleteRequests;
 using Business.Dtos.Requests.UpdateRequests;
+using Business.Rules.ValidationRules.FluentValidation.CreateRequestValidators;
+using Business.Rules.ValidationRules.FluentValidation.UpdateRequestValidators;
+using Core.CrossCuttingConcerns.Validation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
@@ -31,6 +34,7 @@ public class ExclusiveLoungesController : ControllerBase
         return Ok(result);
     }
 
+    [CustomValidation(typeof(CreateExclusiveLoungeRequestValidator))]
     [HttpPost("Add")]
     public async Task<IActionResult> Add(CreateExclusiveLoungeRequest createExclusiveLoungeRequest)
     {
@@ -38,6 +42,7 @@ public class ExclusiveLoungesController : ControllerBase
         return Ok(result);
     }
 
+    [CustomValidation(typeof(UpdateExclusiveLoungeRequestValidator))]
     [HttpPost("Update")]
     public async Task<IActionResult> Update(UpdateExclusiveLoungeRequest updateExclusiveLoungeRequest)
     {

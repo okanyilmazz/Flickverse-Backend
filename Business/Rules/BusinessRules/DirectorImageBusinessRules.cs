@@ -16,7 +16,8 @@ public class DirectorImageBusinessRules : BaseBusinessRules
     public async Task IsExistsDirectorImage(Guid directorImageId)
     {
         var result = await _directorImageDal.GetAsync(
-            predicate: a => a.Id == directorImageId);
+            predicate: a => a.Id == directorImageId,
+            enableTracking: false);
         if (result == null)
         {
             throw new BusinessException(BusinessMessages.DataNotFound);

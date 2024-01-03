@@ -2,6 +2,9 @@
 using Business.Dtos.Requests.CreateRequests;
 using Business.Dtos.Requests.DeleteRequests;
 using Business.Dtos.Requests.UpdateRequests;
+using Business.Rules.ValidationRules.FluentValidation.CreateRequestValidators;
+using Business.Rules.ValidationRules.FluentValidation.UpdateRequestValidators;
+using Core.CrossCuttingConcerns.Validation;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +36,7 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [CustomValidation(typeof(CreateDistrictRequestValidator))]
         [HttpPost("Add")]
         public async Task<IActionResult> Add(CreateDistrictRequest createDistrictRequest)
         {
@@ -40,6 +44,7 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [CustomValidation(typeof(UpdateDistrictRequestValidator))]
         [HttpPost("Update")]
         public async Task<IActionResult> Update(UpdateDistrictRequest updateDistrictRequest)
         {

@@ -16,7 +16,8 @@ public class CategoryBusinessRules : BaseBusinessRules
     public async Task IsExistsCategory(Guid categoryId)
     {
         var result = await _categoryDal.GetAsync(
-            predicate: a => a.Id == categoryId);
+            predicate: a => a.Id == categoryId,
+            enableTracking: false);
         if (result == null)
         {
             throw new BusinessException(BusinessMessages.DataNotFound);

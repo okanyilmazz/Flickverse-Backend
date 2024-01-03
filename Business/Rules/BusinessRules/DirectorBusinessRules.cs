@@ -16,7 +16,8 @@ public class DirectorBusinessRules : BaseBusinessRules
     public async Task IsExistsDirector(Guid directorId)
     {
         var result = await _directorDal.GetAsync(
-            predicate: a => a.Id == directorId);
+            predicate: a => a.Id == directorId,
+            enableTracking: false);
         if (result == null)
         {
             throw new BusinessException(BusinessMessages.DataNotFound);
