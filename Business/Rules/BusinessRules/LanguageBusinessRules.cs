@@ -19,7 +19,7 @@ public class LanguageBusinessRules : BaseBusinessRules
             predicate: a => a.Id == languageId);
         if (result == null)
         {
-            throw new Exception(BusinessMessages.DataNotFound);
+            throw new BusinessException(BusinessMessages.DataNotFound);
         }
     }
 }

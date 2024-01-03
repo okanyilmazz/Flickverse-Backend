@@ -19,7 +19,7 @@ public class DistrictBusinessRules : BaseBusinessRules
             predicate: a => a.Id == districtId);
         if (result == null)
         {
-            throw new Exception(BusinessMessages.DataNotFound);
+            throw new BusinessException(BusinessMessages.DataNotFound);
         }
     }
 }

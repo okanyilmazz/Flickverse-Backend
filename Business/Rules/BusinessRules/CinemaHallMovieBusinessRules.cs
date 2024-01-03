@@ -19,7 +19,7 @@ public class CinemaHallMovieBusinessRules : BaseBusinessRules
             predicate: a => a.Id == cinemaHallMovieId);
         if (result == null)
         {
-            throw new Exception(BusinessMessages.DataNotFound);
+            throw new BusinessException(BusinessMessages.DataNotFound);
         }
     }
 }

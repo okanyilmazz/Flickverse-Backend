@@ -19,7 +19,7 @@ public class MovieCastBusinessRules : BaseBusinessRules
             predicate: a => a.Id == movieCastId);
         if (result == null)
         {
-            throw new Exception(BusinessMessages.DataNotFound);
+            throw new BusinessException(BusinessMessages.DataNotFound);
         }
     }
 }

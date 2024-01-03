@@ -1,6 +1,7 @@
 using Business;
 using DataAccess;
 using System.Text.Json.Serialization;
+using Core.CrossCuttingConcerns.Exceptions.Extensions;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +31,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.ConfigureCustomExceptionMiddleware();
 
 app.UseAuthorization();
 

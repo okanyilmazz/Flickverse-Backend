@@ -19,7 +19,7 @@ public class MovieImageBusinessRules : BaseBusinessRules
             predicate: a => a.Id == movieImageId);
         if (result == null)
         {
-            throw new Exception(BusinessMessages.DataNotFound);
+            throw new BusinessException(BusinessMessages.DataNotFound);
         }
     }
 }

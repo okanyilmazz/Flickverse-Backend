@@ -19,7 +19,7 @@ public class DirectorBusinessRules : BaseBusinessRules
             predicate: a => a.Id == directorId);
         if (result == null)
         {
-            throw new Exception(BusinessMessages.DataNotFound);
+            throw new BusinessException(BusinessMessages.DataNotFound);
         }
     }
 }
