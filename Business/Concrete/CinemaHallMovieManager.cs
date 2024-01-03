@@ -7,6 +7,7 @@ using Business.Dtos.Responses.CreatedResponses;
 using Business.Dtos.Responses.DeletedResponses;
 using Business.Dtos.Responses.GetListResponses;
 using Business.Dtos.Responses.UpdatedResponses;
+using Business.Rules.BusinessRules;
 using Core.DataAccess.Paging;
 using DataAccess.Abstracts;
 using Entities.Concrete;
@@ -17,11 +18,13 @@ public class CinemaHallMovieManager : ICinemaHallMovieService
 {
     ICinemaHallMovieDal _cinemaHallMovieDal;
     IMapper _mapper;
+    CinemaHallMovieBusinessRules _cinemaHallMovieBusinessRules;
 
-    public CinemaHallMovieManager(ICinemaHallMovieDal cinemaHallMovieDal, IMapper mapper)
+    public CinemaHallMovieManager(ICinemaHallMovieDal cinemaHallMovieDal, IMapper mapper, CinemaHallMovieBusinessRules cinemaHallMovieBusinessRules)
     {
         _cinemaHallMovieDal = cinemaHallMovieDal;
         _mapper = mapper;
+        _cinemaHallMovieBusinessRules = cinemaHallMovieBusinessRules;
     }
     public async Task<CreatedCinemaHallMovieResponse> AddAsync(CreateCinemaHallMovieRequest createCinemaHallMovieRequest)
     {
@@ -33,6 +36,7 @@ public class CinemaHallMovieManager : ICinemaHallMovieService
 
     public async Task<DeletedCinemaHallMovieResponse> DeleteAsync(DeleteCinemaHallMovieRequest deleteCinemaHallMovieRequest)
     {
+        await _cinemaHallMovieBusinessRules.IsExistsCinemaHallMovie(deleteCinemaHallMovieRequest.Id);
         CinemaHallMovie cinemaHallMovie = await _cinemaHallMovieDal.GetAsync(
             predicate: a => a.Id == deleteCinemaHallMovieRequest.Id);
         CinemaHallMovie deletedCinemaHallMovie = await _cinemaHallMovieDal.DeleteAsync(cinemaHallMovie);
@@ -57,6 +61,7 @@ public class CinemaHallMovieManager : ICinemaHallMovieService
 
     public async Task<UpdatedCinemaHallMovieResponse> UpdateAsync(UpdateCinemaHallMovieRequest updateCinemaHallMovieRequest)
     {
+        await _cinemaHallMovieBusinessRules.IsExistsCinemaHallMovie(updateCinemaHallMovieRequest.Id);
         CinemaHallMovie cinemaHallMovie = _mapper.Map<CinemaHallMovie>(updateCinemaHallMovieRequest);
         CinemaHallMovie updatedCinemaHallMovie = await _cinemaHallMovieDal.UpdateAsync(cinemaHallMovie);
         UpdatedCinemaHallMovieResponse updatedCinemaHallMovieResponse = _mapper.Map<UpdatedCinemaHallMovieResponse>(updatedCinemaHallMovie);

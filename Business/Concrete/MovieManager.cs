@@ -7,6 +7,7 @@ using Business.Dtos.Responses.CreatedResponses;
 using Business.Dtos.Responses.DeletedResponses;
 using Business.Dtos.Responses.GetListResponses;
 using Business.Dtos.Responses.UpdatedResponses;
+using Business.Rules.BusinessRules;
 using Core.DataAccess.Paging;
 using DataAccess.Abstracts;
 using Entities.Concrete;
@@ -17,11 +18,13 @@ public class MovieManager : IMovieService
 {
     IMovieDal _movieDal;
     IMapper _mapper;
+    MovieBusinessRules _movieBusinessRules;
 
-    public MovieManager(IMovieDal movieDal, IMapper mapper)
+    public MovieManager(IMovieDal movieDal, IMapper mapper, MovieBusinessRules movieBusinessRules)
     {
         _movieDal = movieDal;
         _mapper = mapper;
+        _movieBusinessRules = movieBusinessRules;
     }
     public async Task<CreatedMovieResponse> AddAsync(CreateMovieRequest createMovieRequest)
     {
@@ -33,6 +36,7 @@ public class MovieManager : IMovieService
 
     public async Task<DeletedMovieResponse> DeleteAsync(DeleteMovieRequest deleteMovieRequest)
     {
+        await _movieBusinessRules.IsExistsMovie(deleteMovieRequest.Id);
         Movie movie = await _movieDal.GetAsync(
             predicate: a => a.Id == deleteMovieRequest.Id);
         Movie deletedMovie = await _movieDal.DeleteAsync(movie);
@@ -57,6 +61,7 @@ public class MovieManager : IMovieService
 
     public async Task<UpdatedMovieResponse> UpdateAsync(UpdateMovieRequest updateMovieRequest)
     {
+        await _movieBusinessRules.IsExistsMovie(updateMovieRequest.Id);
         Movie movie = _mapper.Map<Movie>(updateMovieRequest);
         Movie updatedMovie = await _movieDal.UpdateAsync(movie);
         UpdatedMovieResponse updatedMovieResponse = _mapper.Map<UpdatedMovieResponse>(updatedMovie);

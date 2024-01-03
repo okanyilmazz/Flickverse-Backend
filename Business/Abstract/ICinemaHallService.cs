@@ -11,7 +11,6 @@ namespace Business.Abstract;
 
 public interface ICinemaHallService
 {
-
     Task<CreatedCinemaHallResponse> AddAsync(CreateCinemaHallRequest createCinemaHallRequest);
     Task<UpdatedCinemaHallResponse> UpdateAsync(UpdateCinemaHallRequest updateCinemaHallRequest);
     Task<DeletedCinemaHallResponse> DeleteAsync(DeleteCinemaHallRequest deleteCinemaHallRequest);

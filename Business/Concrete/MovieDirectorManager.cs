@@ -7,6 +7,7 @@ using Business.Dtos.Responses.CreatedResponses;
 using Business.Dtos.Responses.DeletedResponses;
 using Business.Dtos.Responses.GetListResponses;
 using Business.Dtos.Responses.UpdatedResponses;
+using Business.Rules.BusinessRules;
 using Core.DataAccess.Paging;
 using DataAccess.Abstracts;
 using Entities.Concrete;
@@ -17,11 +18,13 @@ public class MovieDirectorManager : IMovieDirectorService
 {
     IMovieDirectorDal _movieDirectorDal;
     IMapper _mapper;
+    MovieDirectorBusinessRules _movieDirectorBusinessRules;
 
-    public MovieDirectorManager(IMovieDirectorDal movieDirectorDal, IMapper mapper)
+    public MovieDirectorManager(IMovieDirectorDal movieDirectorDal, IMapper mapper, MovieDirectorBusinessRules movieDirectorBusinessRules)
     {
         _movieDirectorDal = movieDirectorDal;
         _mapper = mapper;
+        _movieDirectorBusinessRules = movieDirectorBusinessRules;
     }
     public async Task<CreatedMovieDirectorResponse> AddAsync(CreateMovieDirectorRequest createMovieDirectorRequest)
     {
@@ -33,6 +36,7 @@ public class MovieDirectorManager : IMovieDirectorService
 
     public async Task<DeletedMovieDirectorResponse> DeleteAsync(DeleteMovieDirectorRequest deleteMovieDirectorRequest)
     {
+        await _movieDirectorBusinessRules.IsExistsMovieDirector(deleteMovieDirectorRequest.Id);
         MovieDirector movieDirector = await _movieDirectorDal.GetAsync(
             predicate: a => a.Id == deleteMovieDirectorRequest.Id);
         MovieDirector deletedMovieDirector = await _movieDirectorDal.DeleteAsync(movieDirector);
@@ -57,6 +61,7 @@ public class MovieDirectorManager : IMovieDirectorService
 
     public async Task<UpdatedMovieDirectorResponse> UpdateAsync(UpdateMovieDirectorRequest updateMovieDirectorRequest)
     {
+        await _movieDirectorBusinessRules.IsExistsMovieDirector(updateMovieDirectorRequest.Id);
         MovieDirector movieDirector = _mapper.Map<MovieDirector>(updateMovieDirectorRequest);
         MovieDirector updatedMovieDirector = await _movieDirectorDal.UpdateAsync(movieDirector);
         UpdatedMovieDirectorResponse updatedMovieDirectorResponse = _mapper.Map<UpdatedMovieDirectorResponse>(updatedMovieDirector);

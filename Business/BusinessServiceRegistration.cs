@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Concrete;
+using Core.Business.Rules;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -31,6 +32,7 @@ public static class BusinessServiceRegistration
         services.AddScoped<IMovieImageService, MovieImageManager>();
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));
         return services;
     }
 

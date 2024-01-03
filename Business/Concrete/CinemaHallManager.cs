@@ -7,6 +7,7 @@ using Business.Dtos.Responses.CreatedResponses;
 using Business.Dtos.Responses.DeletedResponses;
 using Business.Dtos.Responses.GetListResponses;
 using Business.Dtos.Responses.UpdatedResponses;
+using Business.Rules.BusinessRules;
 using Core.DataAccess.Paging;
 using DataAccess.Abstracts;
 using Entities.Concrete;
@@ -17,11 +18,13 @@ public class CinemaHallManager : ICinemaHallService
 {
     ICinemaHallDal _cinemaHallDal;
     IMapper _mapper;
+    CinemaHallBusinessRules _cinemaHallBusinessRules;
 
-    public CinemaHallManager(ICinemaHallDal cinemaHallDal, IMapper mapper)
+    public CinemaHallManager(ICinemaHallDal cinemaHallDal, IMapper mapper, CinemaHallBusinessRules cinemaHallBusinessRules)
     {
         _cinemaHallDal = cinemaHallDal;
         _mapper = mapper;
+        _cinemaHallBusinessRules = cinemaHallBusinessRules;
     }
     public async Task<CreatedCinemaHallResponse> AddAsync(CreateCinemaHallRequest createCinemaHallRequest)
     {
@@ -33,6 +36,7 @@ public class CinemaHallManager : ICinemaHallService
 
     public async Task<DeletedCinemaHallResponse> DeleteAsync(DeleteCinemaHallRequest deleteCinemaHallRequest)
     {
+        await _cinemaHallBusinessRules.IsExistsCinemaHall(deleteCinemaHallRequest.Id);
         CinemaHall cinemaHall = await _cinemaHallDal.GetAsync(
             predicate: a => a.Id == deleteCinemaHallRequest.Id);
         CinemaHall deletedCinemaHall = await _cinemaHallDal.DeleteAsync(cinemaHall);
@@ -57,6 +61,7 @@ public class CinemaHallManager : ICinemaHallService
 
     public async Task<UpdatedCinemaHallResponse> UpdateAsync(UpdateCinemaHallRequest updateCinemaHallRequest)
     {
+        await _cinemaHallBusinessRules.IsExistsCinemaHall(updateCinemaHallRequest.Id);
         CinemaHall cinemaHall = _mapper.Map<CinemaHall>(updateCinemaHallRequest);
         CinemaHall updatedCinemaHall = await _cinemaHallDal.UpdateAsync(cinemaHall);
         UpdatedCinemaHallResponse updatedCinemaHallResponse = _mapper.Map<UpdatedCinemaHallResponse>(updatedCinemaHall);

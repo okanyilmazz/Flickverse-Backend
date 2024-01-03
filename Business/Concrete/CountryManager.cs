@@ -7,6 +7,7 @@ using Business.Dtos.Responses.CreatedResponses;
 using Business.Dtos.Responses.DeletedResponses;
 using Business.Dtos.Responses.GetListResponses;
 using Business.Dtos.Responses.UpdatedResponses;
+using Business.Rules.BusinessRules;
 using Core.DataAccess.Paging;
 using DataAccess.Abstracts;
 using Entities.Concrete;
@@ -17,11 +18,13 @@ public class CountryManager : ICountryService
 {
     ICountryDal _countryDal;
     IMapper _mapper;
+    CountryBusinessRules _countryBusinessRules;
 
-    public CountryManager(ICountryDal countryDal, IMapper mapper)
+    public CountryManager(ICountryDal countryDal, IMapper mapper, CountryBusinessRules countryBusinessRules)
     {
         _countryDal = countryDal;
         _mapper = mapper;
+        _countryBusinessRules = countryBusinessRules;
     }
     public async Task<CreatedCountryResponse> AddAsync(CreateCountryRequest createCountryRequest)
     {
@@ -33,6 +36,7 @@ public class CountryManager : ICountryService
 
     public async Task<DeletedCountryResponse> DeleteAsync(DeleteCountryRequest deleteCountryRequest)
     {
+        await _countryBusinessRules.IsExistsCountry(deleteCountryRequest.Id);
         Country country = await _countryDal.GetAsync(
             predicate: a => a.Id == deleteCountryRequest.Id);
         Country deletedCountry = await _countryDal.DeleteAsync(country);
@@ -57,6 +61,7 @@ public class CountryManager : ICountryService
 
     public async Task<UpdatedCountryResponse> UpdateAsync(UpdateCountryRequest updateCountryRequest)
     {
+        await _countryBusinessRules.IsExistsCountry(updateCountryRequest.Id);
         Country country = _mapper.Map<Country>(updateCountryRequest);
         Country updatedCountry = await _countryDal.UpdateAsync(country);
         UpdatedCountryResponse updatedCountryResponse = _mapper.Map<UpdatedCountryResponse>(updatedCountry);

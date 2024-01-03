@@ -7,6 +7,7 @@ using Business.Dtos.Responses.CreatedResponses;
 using Business.Dtos.Responses.DeletedResponses;
 using Business.Dtos.Responses.GetListResponses;
 using Business.Dtos.Responses.UpdatedResponses;
+using Business.Rules.BusinessRules;
 using Core.DataAccess.Paging;
 using DataAccess.Abstracts;
 using Entities.Concrete;
@@ -17,11 +18,13 @@ public class DirectorManager : IDirectorService
 {
     IDirectorDal _directorDal;
     IMapper _mapper;
+    DirectorBusinessRules _directorBusinessRules;
 
-    public DirectorManager(IDirectorDal directorDal, IMapper mapper)
+    public DirectorManager(IDirectorDal directorDal, IMapper mapper, DirectorBusinessRules directorBusinessRules)
     {
         _directorDal = directorDal;
         _mapper = mapper;
+        _directorBusinessRules = directorBusinessRules;
     }
     public async Task<CreatedDirectorResponse> AddAsync(CreateDirectorRequest createDirectorRequest)
     {
@@ -33,6 +36,7 @@ public class DirectorManager : IDirectorService
 
     public async Task<DeletedDirectorResponse> DeleteAsync(DeleteDirectorRequest deleteDirectorRequest)
     {
+        await _directorBusinessRules.IsExistsDirector(deleteDirectorRequest.Id);
         Director director = await _directorDal.GetAsync(
             predicate: a => a.Id == deleteDirectorRequest.Id);
         Director deletedDirector = await _directorDal.DeleteAsync(director);
@@ -57,6 +61,7 @@ public class DirectorManager : IDirectorService
 
     public async Task<UpdatedDirectorResponse> UpdateAsync(UpdateDirectorRequest updateDirectorRequest)
     {
+        await _directorBusinessRules.IsExistsDirector(updateDirectorRequest.Id);
         Director director = _mapper.Map<Director>(updateDirectorRequest);
         Director updatedDirector = await _directorDal.UpdateAsync(director);
         UpdatedDirectorResponse updatedDirectorResponse = _mapper.Map<UpdatedDirectorResponse>(updatedDirector);

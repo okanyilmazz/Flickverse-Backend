@@ -8,6 +8,7 @@ using Business.Dtos.Responses.CreatedResponses;
 using Business.Dtos.Responses.DeletedResponses;
 using Business.Dtos.Responses.GetListResponses;
 using Business.Dtos.Responses.UpdatedResponses;
+using Business.Rules.BusinessRules;
 using Core.DataAccess.Paging;
 using DataAccess.Abstracts;
 using Entities.Concrete;
@@ -18,11 +19,13 @@ public class CastManager : ICastService
 {
     ICastDal _castDal;
     IMapper _mapper;
+    CastBusinessRules _castBusinessRules;
 
-    public CastManager(ICastDal castDal, IMapper mapper)
+    public CastManager(ICastDal castDal, IMapper mapper, CastBusinessRules castBusinessRules)
     {
         _castDal = castDal;
         _mapper = mapper;
+        _castBusinessRules = castBusinessRules;
     }
     public async Task<CreatedCastResponse> AddAsync(CreateCastRequest createCastRequest)
     {
@@ -34,6 +37,7 @@ public class CastManager : ICastService
 
     public async Task<DeletedCastResponse> DeleteAsync(DeleteCastRequest deleteCastRequest)
     {
+        await _castBusinessRules.IsExistsCast(deleteCastRequest.Id);
         Cast cast = await _castDal.GetAsync(
             predicate: a => a.Id == deleteCastRequest.Id);
         Cast deletedCast = await _castDal.DeleteAsync(cast);
@@ -58,6 +62,7 @@ public class CastManager : ICastService
 
     public async Task<UpdatedCastResponse> UpdateAsync(UpdateCastRequest updateCastRequest)
     {
+        await _castBusinessRules.IsExistsCast(updateCastRequest.Id);
         Cast cast = _mapper.Map<Cast>(updateCastRequest);
         Cast updatedCast = await _castDal.UpdateAsync(cast);
         UpdatedCastResponse updatedCastResponse = _mapper.Map<UpdatedCastResponse>(updatedCast);

@@ -7,6 +7,7 @@ using Business.Dtos.Responses.CreatedResponses;
 using Business.Dtos.Responses.DeletedResponses;
 using Business.Dtos.Responses.GetListResponses;
 using Business.Dtos.Responses.UpdatedResponses;
+using Business.Rules.BusinessRules;
 using Core.DataAccess.Paging;
 using DataAccess.Abstracts;
 using Entities.Concrete;
@@ -17,11 +18,13 @@ public class CategoryManager : ICategoryService
 {
     ICategoryDal _categoryDal;
     IMapper _mapper;
+    CategoryBusinessRules _categoryBusinessRules;
 
-    public CategoryManager(ICategoryDal categoryDal, IMapper mapper)
+    public CategoryManager(ICategoryDal categoryDal, IMapper mapper, CategoryBusinessRules categoryBusinessRules)
     {
         _categoryDal = categoryDal;
         _mapper = mapper;
+        _categoryBusinessRules = categoryBusinessRules;
     }
     public async Task<CreatedCategoryResponse> AddAsync(CreateCategoryRequest createCategoryRequest)
     {
@@ -33,6 +36,7 @@ public class CategoryManager : ICategoryService
 
     public async Task<DeletedCategoryResponse> DeleteAsync(DeleteCategoryRequest deleteCategoryRequest)
     {
+        await _categoryBusinessRules.IsExistsCategory(deleteCategoryRequest.Id);
         Category category = await _categoryDal.GetAsync(
             predicate: a => a.Id == deleteCategoryRequest.Id);
         Category deletedCategory = await _categoryDal.DeleteAsync(category);
@@ -57,6 +61,7 @@ public class CategoryManager : ICategoryService
 
     public async Task<UpdatedCategoryResponse> UpdateAsync(UpdateCategoryRequest updateCategoryRequest)
     {
+        await _categoryBusinessRules.IsExistsCategory(updateCategoryRequest.Id);
         Category category = _mapper.Map<Category>(updateCategoryRequest);
         Category updatedCategory = await _categoryDal.UpdateAsync(category);
         UpdatedCategoryResponse updatedCategoryResponse = _mapper.Map<UpdatedCategoryResponse>(updatedCategory);

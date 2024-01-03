@@ -7,6 +7,7 @@ using Business.Dtos.Responses.CreatedResponses;
 using Business.Dtos.Responses.DeletedResponses;
 using Business.Dtos.Responses.GetListResponses;
 using Business.Dtos.Responses.UpdatedResponses;
+using Business.Rules.BusinessRules;
 using Core.DataAccess.Paging;
 using DataAccess.Abstracts;
 using Entities.Concrete;
@@ -17,11 +18,13 @@ public class CityManager : ICityService
 {
     ICityDal _cityDal;
     IMapper _mapper;
+    CityBusinessRules _cityBusinessRules;
 
-    public CityManager(ICityDal cityDal, IMapper mapper)
+    public CityManager(ICityDal cityDal, IMapper mapper, CityBusinessRules cityBusinessRules)
     {
         _cityDal = cityDal;
         _mapper = mapper;
+        _cityBusinessRules = cityBusinessRules;
     }
     public async Task<CreatedCityResponse> AddAsync(CreateCityRequest createCityRequest)
     {
@@ -33,6 +36,7 @@ public class CityManager : ICityService
 
     public async Task<DeletedCityResponse> DeleteAsync(DeleteCityRequest deleteCityRequest)
     {
+        await _cityBusinessRules.IsExistsCity(deleteCityRequest.Id);
         City city = await _cityDal.GetAsync(
             predicate: a => a.Id == deleteCityRequest.Id);
         City deletedCity = await _cityDal.DeleteAsync(city);
@@ -57,6 +61,7 @@ public class CityManager : ICityService
 
     public async Task<UpdatedCityResponse> UpdateAsync(UpdateCityRequest updateCityRequest)
     {
+        await _cityBusinessRules.IsExistsCity(updateCityRequest.Id);
         City city = _mapper.Map<City>(updateCityRequest);
         City updatedCity = await _cityDal.UpdateAsync(city);
         UpdatedCityResponse updatedCityResponse = _mapper.Map<UpdatedCityResponse>(updatedCity);

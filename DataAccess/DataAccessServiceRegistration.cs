@@ -4,6 +4,7 @@ using DataAccess.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace DataAccess;
 
@@ -11,6 +12,9 @@ public static class DataAccessServiceRegistration
 {
     public static IServiceCollection AddDataAccessServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddDbContext<FlickVerseContext>(options => options.UseSqlServer(configuration.GetConnectionString("FlickVerseContext")));
+
+
         services.AddScoped<IAddressDal,EfAddressDal>();
         services.AddScoped<ICastDal, EfCastDal>();
         services.AddScoped<ICastImageDal, EfCastImageDal>();
@@ -32,7 +36,6 @@ public static class DataAccessServiceRegistration
         services.AddScoped<IMovieExclusiveLoungeDal, EfMovieExclusiveLoungeDal>();
         services.AddScoped<IMovieImageDal, EfMovieImageDal>();
 
-        services.AddDbContext<FlickVerseContext>(options => options.UseSqlServer(configuration.GetConnectionString("FlickVerseContext")));
         return services;
     }
 }

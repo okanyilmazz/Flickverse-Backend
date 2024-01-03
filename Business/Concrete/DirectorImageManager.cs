@@ -7,6 +7,7 @@ using Business.Dtos.Responses.CreatedResponses;
 using Business.Dtos.Responses.DeletedResponses;
 using Business.Dtos.Responses.GetListResponses;
 using Business.Dtos.Responses.UpdatedResponses;
+using Business.Rules.BusinessRules;
 using Core.DataAccess.Paging;
 using DataAccess.Abstracts;
 using Entities.Concrete;
@@ -17,11 +18,13 @@ public class DirectorImageManager : IDirectorImageService
 {
     IDirectorImageDal _directorImageDal;
     IMapper _mapper;
+    DirectorImageBusinessRules _directorImageBusinessRules;
 
-    public DirectorImageManager(IDirectorImageDal directorImageDal, IMapper mapper)
+    public DirectorImageManager(IDirectorImageDal directorImageDal, IMapper mapper, DirectorImageBusinessRules directorImageBusinessRules)
     {
         _directorImageDal = directorImageDal;
         _mapper = mapper;
+        _directorImageBusinessRules = directorImageBusinessRules;
     }
     public async Task<CreatedDirectorImageResponse> AddAsync(CreateDirectorImageRequest createDirectorImageRequest)
     {
@@ -33,6 +36,7 @@ public class DirectorImageManager : IDirectorImageService
 
     public async Task<DeletedDirectorImageResponse> DeleteAsync(DeleteDirectorImageRequest deleteDirectorImageRequest)
     {
+        await _directorImageBusinessRules.IsExistsDirectorImage(deleteDirectorImageRequest.Id);
         DirectorImage directorImage = await _directorImageDal.GetAsync(
             predicate: a => a.Id == deleteDirectorImageRequest.Id);
         DirectorImage deletedDirectorImage = await _directorImageDal.DeleteAsync(directorImage);
@@ -57,6 +61,7 @@ public class DirectorImageManager : IDirectorImageService
 
     public async Task<UpdatedDirectorImageResponse> UpdateAsync(UpdateDirectorImageRequest updateDirectorImageRequest)
     {
+        await _directorImageBusinessRules.IsExistsDirectorImage(updateDirectorImageRequest.Id);
         DirectorImage directorImage = _mapper.Map<DirectorImage>(updateDirectorImageRequest);
         DirectorImage updatedDirectorImage = await _directorImageDal.UpdateAsync(directorImage);
         UpdatedDirectorImageResponse updatedDirectorImageResponse = _mapper.Map<UpdatedDirectorImageResponse>(updatedDirectorImage);

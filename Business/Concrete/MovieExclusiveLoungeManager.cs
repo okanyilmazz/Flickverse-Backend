@@ -7,6 +7,7 @@ using Business.Dtos.Responses.CreatedResponses;
 using Business.Dtos.Responses.DeletedResponses;
 using Business.Dtos.Responses.GetListResponses;
 using Business.Dtos.Responses.UpdatedResponses;
+using Business.Rules.BusinessRules;
 using Core.DataAccess.Paging;
 using DataAccess.Abstracts;
 using Entities.Concrete;
@@ -17,11 +18,13 @@ public class MovieExclusiveLoungeManager : IMovieExclusiveLoungeService
 {
     IMovieExclusiveLoungeDal _movieExclusiveLoungeDal;
     IMapper _mapper;
+    MovieExclusiveLoungeBusinessRules _movieExclusiveLoungeBusinessRules;
 
-    public MovieExclusiveLoungeManager(IMovieExclusiveLoungeDal movieExclusiveLoungeDal, IMapper mapper)
+    public MovieExclusiveLoungeManager(IMovieExclusiveLoungeDal movieExclusiveLoungeDal, IMapper mapper, MovieExclusiveLoungeBusinessRules movieExclusiveLoungeBusinessRules)
     {
         _movieExclusiveLoungeDal = movieExclusiveLoungeDal;
         _mapper = mapper;
+        _movieExclusiveLoungeBusinessRules = movieExclusiveLoungeBusinessRules;
     }
     public async Task<CreatedMovieExclusiveLoungeResponse> AddAsync(CreateMovieExclusiveLoungeRequest createMovieExclusiveLoungeRequest)
     {
@@ -33,6 +36,7 @@ public class MovieExclusiveLoungeManager : IMovieExclusiveLoungeService
 
     public async Task<DeletedMovieExclusiveLoungeResponse> DeleteAsync(DeleteMovieExclusiveLoungeRequest deleteMovieExclusiveLoungeRequest)
     {
+        await _movieExclusiveLoungeBusinessRules.IsExistsMovieExclusiveLounge(deleteMovieExclusiveLoungeRequest.Id);
         MovieExclusiveLounge movieExclusiveLounge = await _movieExclusiveLoungeDal.GetAsync(
             predicate: a => a.Id == deleteMovieExclusiveLoungeRequest.Id);
         MovieExclusiveLounge deletedMovieExclusiveLounge = await _movieExclusiveLoungeDal.DeleteAsync(movieExclusiveLounge);
@@ -57,6 +61,7 @@ public class MovieExclusiveLoungeManager : IMovieExclusiveLoungeService
 
     public async Task<UpdatedMovieExclusiveLoungeResponse> UpdateAsync(UpdateMovieExclusiveLoungeRequest updateMovieExclusiveLoungeRequest)
     {
+        await _movieExclusiveLoungeBusinessRules.IsExistsMovieExclusiveLounge(updateMovieExclusiveLoungeRequest.Id);
         MovieExclusiveLounge movieExclusiveLounge = _mapper.Map<MovieExclusiveLounge>(updateMovieExclusiveLoungeRequest);
         MovieExclusiveLounge updatedMovieExclusiveLounge = await _movieExclusiveLoungeDal.UpdateAsync(movieExclusiveLounge);
         UpdatedMovieExclusiveLoungeResponse updatedMovieExclusiveLoungeResponse = _mapper.Map<UpdatedMovieExclusiveLoungeResponse>(updatedMovieExclusiveLounge);

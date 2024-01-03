@@ -7,6 +7,7 @@ using Business.Dtos.Responses.CreatedResponses;
 using Business.Dtos.Responses.DeletedResponses;
 using Business.Dtos.Responses.GetListResponses;
 using Business.Dtos.Responses.UpdatedResponses;
+using Business.Rules.BusinessRules;
 using Core.DataAccess.Paging;
 using DataAccess.Abstracts;
 using Entities.Concrete;
@@ -17,7 +18,7 @@ public class DistrictManager : IDistrictService
 {
     IDistrictDal _districtDal;
     IMapper _mapper;
-
+    DistrictBusinessRules _districtBusinessRules;
     public DistrictManager(IDistrictDal districtDal, IMapper mapper)
     {
         _districtDal = districtDal;
@@ -33,6 +34,7 @@ public class DistrictManager : IDistrictService
 
     public async Task<DeletedDistrictResponse> DeleteAsync(DeleteDistrictRequest deleteDistrictRequest)
     {
+        await _districtBusinessRules.IsExistsDistrict(deleteDistrictRequest.Id);
         District district = await _districtDal.GetAsync(
             predicate: a => a.Id == deleteDistrictRequest.Id);
         District deletedDistrict = await _districtDal.DeleteAsync(district);
@@ -57,6 +59,7 @@ public class DistrictManager : IDistrictService
 
     public async Task<UpdatedDistrictResponse> UpdateAsync(UpdateDistrictRequest updateDistrictRequest)
     {
+        await _districtBusinessRules.IsExistsDistrict(updateDistrictRequest.Id);
         District district = _mapper.Map<District>(updateDistrictRequest);
         District updatedDistrict = await _districtDal.UpdateAsync(district);
         UpdatedDistrictResponse updatedDistrictResponse = _mapper.Map<UpdatedDistrictResponse>(updatedDistrict);

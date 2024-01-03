@@ -7,6 +7,7 @@ using Business.Dtos.Responses.CreatedResponses;
 using Business.Dtos.Responses.DeletedResponses;
 using Business.Dtos.Responses.GetListResponses;
 using Business.Dtos.Responses.UpdatedResponses;
+using Business.Rules.BusinessRules;
 using Core.DataAccess.Paging;
 using DataAccess.Abstracts;
 using Entities.Concrete;
@@ -17,11 +18,13 @@ public class CastImageManager : ICastImageService
 {
     ICastImageDal _castImageDal;
     IMapper _mapper;
+    CastImageBusinessRules _castImageBusinessRules;
 
-    public CastImageManager(ICastImageDal castImageDal, IMapper mapper)
+    public CastImageManager(ICastImageDal castImageDal, IMapper mapper, CastImageBusinessRules castImageBusinessRules)
     {
         _castImageDal = castImageDal;
         _mapper = mapper;
+        _castImageBusinessRules = castImageBusinessRules;
     }
     public async Task<CreatedCastImageResponse> AddAsync(CreateCastImageRequest createCastImageRequest)
     {
@@ -33,6 +36,7 @@ public class CastImageManager : ICastImageService
 
     public async Task<DeletedCastImageResponse> DeleteAsync(DeleteCastImageRequest deleteCastImageRequest)
     {
+        await _castImageBusinessRules.IsExistsCastImage(deleteCastImageRequest.Id);
         CastImage castImage = await _castImageDal.GetAsync(
             predicate: a => a.Id == deleteCastImageRequest.Id);
         CastImage deletedCastImage = await _castImageDal.DeleteAsync(castImage);
@@ -57,6 +61,7 @@ public class CastImageManager : ICastImageService
 
     public async Task<UpdatedCastImageResponse> UpdateAsync(UpdateCastImageRequest updateCastImageRequest)
     {
+        await _castImageBusinessRules.IsExistsCastImage(updateCastImageRequest.Id);
         CastImage castImage = _mapper.Map<CastImage>(updateCastImageRequest);
         CastImage updatedCastImage = await _castImageDal.UpdateAsync(castImage);
         UpdatedCastImageResponse updatedCastImageResponse = _mapper.Map<UpdatedCastImageResponse>(updatedCastImage);

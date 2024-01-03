@@ -7,6 +7,7 @@ using Business.Dtos.Responses.CreatedResponses;
 using Business.Dtos.Responses.DeletedResponses;
 using Business.Dtos.Responses.GetListResponses;
 using Business.Dtos.Responses.UpdatedResponses;
+using Business.Rules.BusinessRules;
 using Core.DataAccess.Paging;
 using DataAccess.Abstracts;
 using Entities.Concrete;
@@ -17,11 +18,13 @@ public class MovieCategoryManager : IMovieCategoryService
 {
     IMovieCategoryDal _movieCategoryDal;
     IMapper _mapper;
+    MovieCategoryBusinessRules _movieCategoryBusinessRules;
 
-    public MovieCategoryManager(IMovieCategoryDal movieCategoryDal, IMapper mapper)
+    public MovieCategoryManager(IMovieCategoryDal movieCategoryDal, IMapper mapper, MovieCategoryBusinessRules movieCategoryBusinessRules)
     {
         _movieCategoryDal = movieCategoryDal;
         _mapper = mapper;
+        _movieCategoryBusinessRules = movieCategoryBusinessRules;
     }
     public async Task<CreatedMovieCategoryResponse> AddAsync(CreateMovieCategoryRequest createMovieCategoryRequest)
     {
@@ -33,6 +36,7 @@ public class MovieCategoryManager : IMovieCategoryService
 
     public async Task<DeletedMovieCategoryResponse> DeleteAsync(DeleteMovieCategoryRequest deleteMovieCategoryRequest)
     {
+        await _movieCategoryBusinessRules.IsExistsMovieCategory(deleteMovieCategoryRequest.Id);
         MovieCategory movieCategory = await _movieCategoryDal.GetAsync(
             predicate: a => a.Id == deleteMovieCategoryRequest.Id);
         MovieCategory deletedMovieCategory = await _movieCategoryDal.DeleteAsync(movieCategory);
@@ -57,6 +61,7 @@ public class MovieCategoryManager : IMovieCategoryService
 
     public async Task<UpdatedMovieCategoryResponse> UpdateAsync(UpdateMovieCategoryRequest updateMovieCategoryRequest)
     {
+        await _movieCategoryBusinessRules.IsExistsMovieCategory(updateMovieCategoryRequest.Id);
         MovieCategory movieCategory = _mapper.Map<MovieCategory>(updateMovieCategoryRequest);
         MovieCategory updatedMovieCategory = await _movieCategoryDal.UpdateAsync(movieCategory);
         UpdatedMovieCategoryResponse updatedMovieCategoryResponse = _mapper.Map<UpdatedMovieCategoryResponse>(updatedMovieCategory);
