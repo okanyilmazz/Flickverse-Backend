@@ -4,6 +4,7 @@ using Business.Dtos.Requests.DeleteRequests;
 using Business.Dtos.Requests.UpdateRequests;
 using Business.Rules.ValidationRules.FluentValidation.CreateRequestValidators;
 using Business.Rules.ValidationRules.FluentValidation.UpdateRequestValidators;
+using Core.CrossCuttingConcerns.Cache;
 using Core.CrossCuttingConcerns.Validation;
 using Core.DataAccess.Paging;
 using Microsoft.AspNetCore.Mvc;
@@ -22,38 +23,43 @@ public class AddressesController : ControllerBase
         _addressService = addressService;
     }
 
+    [Cache]
     [HttpGet("GetList")]
-    public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
+    public async Task<IActionResult> GetListAsync([FromQuery] PageRequest pageRequest)
     {
         var result = await _addressService.GetListAsync(pageRequest);
         return Ok(result);
     }
 
+    [Cache]
     [HttpGet("GetById")]
-    public async Task<IActionResult> GetById(Guid id)
+    public async Task<IActionResult> GetByIdAsync(Guid id)
     {
         var result = await _addressService.GetByIdAsync(id);
         return Ok(result);
     }
 
+    [CacheRemove("Addresses.Get")]
     [CustomValidation(typeof(CreateAddressRequestValidator))]
     [HttpPost("Add")]
-    public async Task<IActionResult> Add(CreateAddressRequest createAddressRequest)
+    public async Task<IActionResult> AddAsync(CreateAddressRequest createAddressRequest)
     {
         var result = await _addressService.AddAsync(createAddressRequest);
         return Ok(result);
     }
 
+    [CacheRemove("Addresses.Get")]
     [CustomValidation(typeof(UpdateAddressRequestValidator))]
     [HttpPost("Update")]
-    public async Task<IActionResult> Update(UpdateAddressRequest updateAddressRequest)
+    public async Task<IActionResult> UpdateAsync(UpdateAddressRequest updateAddressRequest)
     {
         var result = await _addressService.UpdateAsync(updateAddressRequest);
         return Ok(result);
     }
 
+    [CacheRemove("Addresses.Get")]
     [HttpPost("Delete")]
-    public async Task<IActionResult> Delete(DeleteAddressRequest deleteAddressRequest)
+    public async Task<IActionResult> DeleteAsync(DeleteAddressRequest deleteAddressRequest)
     {
         var result = await _addressService.DeleteAsync(deleteAddressRequest);
         return Ok(result);

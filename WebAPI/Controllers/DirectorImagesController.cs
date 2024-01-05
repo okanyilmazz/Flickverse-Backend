@@ -4,6 +4,7 @@ using Business.Dtos.Requests.DeleteRequests;
 using Business.Dtos.Requests.UpdateRequests;
 using Business.Rules.ValidationRules.FluentValidation.CreateRequestValidators;
 using Business.Rules.ValidationRules.FluentValidation.UpdateRequestValidators;
+using Core.CrossCuttingConcerns.Cache;
 using Core.CrossCuttingConcerns.Validation;
 using Core.DataAccess.Paging;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,7 @@ public class DirectorImagesController : ControllerBase
         _directorImageService = directorImageService;
     }
 
+    [Cache]
     [HttpGet("GetList")]
     public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
     {
@@ -28,6 +30,7 @@ public class DirectorImagesController : ControllerBase
         return Ok(result);
     }
 
+    [Cache]
     [HttpGet("GetById")]
     public async Task<IActionResult> GetById(Guid id)
     {
@@ -35,6 +38,7 @@ public class DirectorImagesController : ControllerBase
         return Ok(result);
     }
 
+    [CacheRemove("DirectorImages.Get")]
     [CustomValidation(typeof(CreateDirectorImageRequestValidator))]
     [HttpPost("Add")]
     public async Task<IActionResult> Add(CreateDirectorImageRequest createDirectorImageRequest)
@@ -43,6 +47,7 @@ public class DirectorImagesController : ControllerBase
         return Ok(result);
     }
 
+    [CacheRemove("DirectorImages.Get")]
     [CustomValidation(typeof(UpdateDirectorImageRequestValidator))]
     [HttpPost("Update")]
     public async Task<IActionResult> Update(UpdateDirectorImageRequest updateDirectorImageRequest)
@@ -51,6 +56,7 @@ public class DirectorImagesController : ControllerBase
         return Ok(result);
     }
 
+    [CacheRemove("DirectorImages.Get")]
     [HttpPost("Delete")]
     public async Task<IActionResult> Delete(DeleteDirectorImageRequest deleteDirectorImageRequest)
     {
