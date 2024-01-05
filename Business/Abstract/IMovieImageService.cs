@@ -14,6 +14,6 @@ public interface IMovieImageService
     Task<CreatedMovieImageResponse> AddAsync(CreateMovieImageRequest createMovieImageRequest);
     Task<UpdatedMovieImageResponse> UpdateAsync(UpdateMovieImageRequest updateMovieImageRequest);
     Task<DeletedMovieImageResponse> DeleteAsync(DeleteMovieImageRequest deleteMovieImageRequest);
-    Task<IPaginate<GetMovieImageListResponse>> GetListAsync();
+    Task<IPaginate<GetMovieImageListResponse>> GetListAsync(PageRequest pageRequest);
     Task<GetMovieImageListResponse> GetByIdAsync(Guid id);
 }

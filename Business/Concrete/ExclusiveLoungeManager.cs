@@ -52,9 +52,11 @@ public class ExclusiveLoungeManager : IExclusiveLoungeService
         return getExclusiveLoungeListResponse;
     }
 
-    public async Task<IPaginate<GetExclusiveLoungeListResponse>> GetListAsync()
+    public async Task<IPaginate<GetExclusiveLoungeListResponse>> GetListAsync(PageRequest pageRequest)
     {
-        var exclusiveLoungeList = await _exclusiveLoungeDal.GetListAsync();
+        var exclusiveLoungeList = await _exclusiveLoungeDal.GetListAsync(
+            size: pageRequest.PageSize,
+            index: pageRequest.PageIndex);
         var mappedExclusiveLoungeList = _mapper.Map<Paginate<GetExclusiveLoungeListResponse>>(exclusiveLoungeList);
         return mappedExclusiveLoungeList;
     }

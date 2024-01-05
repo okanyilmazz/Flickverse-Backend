@@ -53,9 +53,11 @@ public class LanguageManager : ILanguageService
         return getLanguageListResponse;
     }
 
-    public async Task<IPaginate<GetLanguageListResponse>> GetListAsync()
+    public async Task<IPaginate<GetLanguageListResponse>> GetListAsync(PageRequest pageRequest)
     {
-        var languageList = await _languageDal.GetListAsync();
+        var languageList = await _languageDal.GetListAsync(
+            size: pageRequest.PageSize,
+            index: pageRequest.PageIndex);
         var mappedLanguageList = _mapper.Map<Paginate<GetLanguageListResponse>>(languageList);
         return mappedLanguageList;
     }

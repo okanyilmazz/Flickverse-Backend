@@ -52,9 +52,11 @@ public class CinemaHallManager : ICinemaHallService
         return getCinemaHallListResponse;
     }
 
-    public async Task<IPaginate<GetCinemaHallListResponse>> GetListAsync()
+    public async Task<IPaginate<GetCinemaHallListResponse>> GetListAsync(PageRequest pageRequest)
     {
-        var cinemaHallList = await _cinemaHallDal.GetListAsync();
+        var cinemaHallList = await _cinemaHallDal.GetListAsync(
+            size: pageRequest.PageSize,
+            index: pageRequest.PageIndex);
         var mappedCinemaHallList = _mapper.Map<Paginate<GetCinemaHallListResponse>>(cinemaHallList);
         return mappedCinemaHallList;
     }

@@ -14,6 +14,6 @@ public interface IDirectorService
     Task<CreatedDirectorResponse> AddAsync(CreateDirectorRequest createDirectorRequest);
     Task<UpdatedDirectorResponse> UpdateAsync(UpdateDirectorRequest updateDirectorRequest);
     Task<DeletedDirectorResponse> DeleteAsync(DeleteDirectorRequest deleteDirectorRequest);
-    Task<IPaginate<GetDirectorListResponse>> GetListAsync();
+    Task<IPaginate<GetDirectorListResponse>> GetListAsync(PageRequest pageRequest);
     Task<GetDirectorListResponse> GetByIdAsync(Guid id);
 }

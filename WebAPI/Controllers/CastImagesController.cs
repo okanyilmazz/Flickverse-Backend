@@ -5,6 +5,7 @@ using Business.Dtos.Requests.UpdateRequests;
 using Business.Rules.ValidationRules.FluentValidation.CreateRequestValidators;
 using Business.Rules.ValidationRules.FluentValidation.UpdateRequestValidators;
 using Core.CrossCuttingConcerns.Validation;
+using Core.DataAccess.Paging;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
@@ -20,10 +21,10 @@ public class CastImagesController : ControllerBase
         _castImageService = castImageService;
     }
 
-    [HttpGet("GetAll")]
-    public async Task<IActionResult> GetAll()
+    [HttpGet("GetList")]
+    public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
     {
-        var result = await _castImageService.GetListAsync();
+        var result = await _castImageService.GetListAsync(pageRequest);
         return Ok(result);
     }
 

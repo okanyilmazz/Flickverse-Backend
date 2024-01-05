@@ -52,9 +52,11 @@ public class DirectorImageManager : IDirectorImageService
         return getDirectorImageListResponse;
     }
 
-    public async Task<IPaginate<GetDirectorImageListResponse>> GetListAsync()
+    public async Task<IPaginate<GetDirectorImageListResponse>> GetListAsync(PageRequest pageRequest)
     {
-        var directorImageList = await _directorImageDal.GetListAsync();
+        var directorImageList = await _directorImageDal.GetListAsync(
+            size: pageRequest.PageSize,
+            index: pageRequest.PageIndex);
         var mappedDirectorImageList = _mapper.Map<Paginate<GetDirectorImageListResponse>>(directorImageList);
         return mappedDirectorImageList;
     }

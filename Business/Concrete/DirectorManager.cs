@@ -52,9 +52,11 @@ public class DirectorManager : IDirectorService
         return getDirectorListResponse;
     }
 
-    public async Task<IPaginate<GetDirectorListResponse>> GetListAsync()
+    public async Task<IPaginate<GetDirectorListResponse>> GetListAsync(PageRequest pageRequest)
     {
-        var directorList = await _directorDal.GetListAsync();
+        var directorList = await _directorDal.GetListAsync(
+            size: pageRequest.PageSize,
+            index: pageRequest.PageIndex);
         var mappedDirectorList = _mapper.Map<Paginate<GetDirectorListResponse>>(directorList);
         return mappedDirectorList;
     }

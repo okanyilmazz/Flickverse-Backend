@@ -52,9 +52,11 @@ public class MovieDirectorManager : IMovieDirectorService
         return getMovieDirectorListResponse;
     }
 
-    public async Task<IPaginate<GetMovieDirectorListResponse>> GetListAsync()
+    public async Task<IPaginate<GetMovieDirectorListResponse>> GetListAsync(PageRequest pageRequest)
     {
-        var movieDirectorList = await _movieDirectorDal.GetListAsync();
+        var movieDirectorList = await _movieDirectorDal.GetListAsync(
+            size: pageRequest.PageSize,
+            index: pageRequest.PageIndex);
         var mappedMovieDirectorList = _mapper.Map<Paginate<GetMovieDirectorListResponse>>(movieDirectorList);
         return mappedMovieDirectorList;
     }

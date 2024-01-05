@@ -52,9 +52,11 @@ public class MovieImageManager : IMovieImageService
         return getMovieImageListResponse;
     }
 
-    public async Task<IPaginate<GetMovieImageListResponse>> GetListAsync()
+    public async Task<IPaginate<GetMovieImageListResponse>> GetListAsync(PageRequest pageRequest)
     {
-        var movieImageList = await _movieImageDal.GetListAsync();
+        var movieImageList = await _movieImageDal.GetListAsync(
+            size: pageRequest.PageSize,
+            index: pageRequest.PageIndex);
         var mappedMovieImageList = _mapper.Map<Paginate<GetMovieImageListResponse>>(movieImageList);
         return mappedMovieImageList;
     }

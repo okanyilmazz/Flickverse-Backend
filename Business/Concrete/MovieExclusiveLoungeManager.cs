@@ -52,9 +52,11 @@ public class MovieExclusiveLoungeManager : IMovieExclusiveLoungeService
         return getMovieExclusiveLoungeListResponse;
     }
 
-    public async Task<IPaginate<GetMovieExclusiveLoungeListResponse>> GetListAsync()
+    public async Task<IPaginate<GetMovieExclusiveLoungeListResponse>> GetListAsync(PageRequest pageRequest)
     {
-        var movieExclusiveLoungeList = await _movieExclusiveLoungeDal.GetListAsync();
+        var movieExclusiveLoungeList = await _movieExclusiveLoungeDal.GetListAsync(
+            size: pageRequest.PageSize,
+            index: pageRequest.PageIndex);
         var mappedMovieExclusiveLoungeList = _mapper.Map<Paginate<GetMovieExclusiveLoungeListResponse>>(movieExclusiveLoungeList);
         return mappedMovieExclusiveLoungeList;
     }

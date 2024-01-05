@@ -52,9 +52,11 @@ public class CityManager : ICityService
         return getCityListResponse;
     }
 
-    public async Task<IPaginate<GetCityListResponse>> GetListAsync()
+    public async Task<IPaginate<GetCityListResponse>> GetListAsync(PageRequest pageRequest)
     {
-        var cityList = await _cityDal.GetListAsync();
+        var cityList = await _cityDal.GetListAsync(
+            size: pageRequest.PageSize,
+            index: pageRequest.PageIndex);
         var mappedCityList = _mapper.Map<Paginate<GetCityListResponse>>(cityList);
         return mappedCityList;
     }

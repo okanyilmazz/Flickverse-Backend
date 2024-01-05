@@ -14,6 +14,6 @@ public interface IExclusiveLoungeService
     Task<CreatedExclusiveLoungeResponse> AddAsync(CreateExclusiveLoungeRequest createExclusiveLoungeRequest);
     Task<UpdatedExclusiveLoungeResponse> UpdateAsync(UpdateExclusiveLoungeRequest updateExclusiveLoungeRequest);
     Task<DeletedExclusiveLoungeResponse> DeleteAsync(DeleteExclusiveLoungeRequest deleteExclusiveLoungeRequest);
-    Task<IPaginate<GetExclusiveLoungeListResponse>> GetListAsync();
+    Task<IPaginate<GetExclusiveLoungeListResponse>> GetListAsync(PageRequest pageRequest);
     Task<GetExclusiveLoungeListResponse> GetByIdAsync(Guid id);
 }

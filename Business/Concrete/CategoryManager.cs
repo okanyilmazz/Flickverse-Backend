@@ -52,9 +52,11 @@ public class CategoryManager : ICategoryService
         return getCategoryListResponse;
     }
 
-    public async Task<IPaginate<GetCategoryListResponse>> GetListAsync()
+    public async Task<IPaginate<GetCategoryListResponse>> GetListAsync(PageRequest pageRequest)
     {
-        var categoryList = await _categoryDal.GetListAsync();
+        var categoryList = await _categoryDal.GetListAsync(
+            size: pageRequest.PageSize,
+            index: pageRequest.PageIndex);
         var mappedCategoryList = _mapper.Map<Paginate<GetCategoryListResponse>>(categoryList);
         return mappedCategoryList;
     }

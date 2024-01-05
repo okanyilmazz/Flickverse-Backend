@@ -14,6 +14,6 @@ public interface ICastImageService
     Task<CreatedCastImageResponse> AddAsync(CreateCastImageRequest createCastImageRequest);
     Task<UpdatedCastImageResponse> UpdateAsync(UpdateCastImageRequest updateCastImageRequest);
     Task<DeletedCastImageResponse> DeleteAsync(DeleteCastImageRequest deleteCastImageRequest);
-    Task<IPaginate<GetCastImageListResponse>> GetListAsync();
+    Task<IPaginate<GetCastImageListResponse>> GetListAsync(PageRequest pageRequest);
     Task<GetCastImageListResponse> GetByIdAsync(Guid id);
 }

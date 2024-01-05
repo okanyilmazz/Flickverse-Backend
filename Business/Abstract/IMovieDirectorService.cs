@@ -14,6 +14,6 @@ public interface IMovieDirectorService
     Task<CreatedMovieDirectorResponse> AddAsync(CreateMovieDirectorRequest createMovieDirectorRequest);
     Task<UpdatedMovieDirectorResponse> UpdateAsync(UpdateMovieDirectorRequest updateMovieDirectorRequest);
     Task<DeletedMovieDirectorResponse> DeleteAsync(DeleteMovieDirectorRequest deleteMovieDirectorRequest);
-    Task<IPaginate<GetMovieDirectorListResponse>> GetListAsync();
+    Task<IPaginate<GetMovieDirectorListResponse>> GetListAsync(PageRequest pageRequest);
     Task<GetMovieDirectorListResponse> GetByIdAsync(Guid id);
 }

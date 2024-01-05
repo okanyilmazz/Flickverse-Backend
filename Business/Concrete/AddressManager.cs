@@ -52,9 +52,11 @@ public class AddressManager : IAddressService
         return getAddressListResponse;
     }
 
-    public async Task<IPaginate<GetAddressListResponse>> GetListAsync()
+    public async Task<IPaginate<GetAddressListResponse>> GetListAsync(PageRequest pageRequest)
     {
-        var addressList = await _addressDal.GetListAsync();
+        var addressList = await _addressDal.GetListAsync(
+            size: pageRequest.PageSize,
+            index:pageRequest.PageIndex);
         var mappedAddressList = _mapper.Map<Paginate<GetAddressListResponse>>(addressList);
         return mappedAddressList;
     }

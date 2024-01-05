@@ -52,9 +52,11 @@ public class CinemaHallExclusiveLoungeManager : ICinemaHallExclusiveLoungeServic
         return getCinemaHallExclusiveLoungeListResponse;
     }
 
-    public async Task<IPaginate<GetCinemaHallExclusiveLoungeListResponse>> GetListAsync()
+    public async Task<IPaginate<GetCinemaHallExclusiveLoungeListResponse>> GetListAsync(PageRequest pageRequest)
     {
-        var cinemaHallList = await _cinemaHallDal.GetListAsync();
+        var cinemaHallList = await _cinemaHallDal.GetListAsync(
+            size: pageRequest.PageSize,
+            index: pageRequest.PageIndex);
         var mappedCinemaHallExclusiveLoungeList = _mapper.Map<Paginate<GetCinemaHallExclusiveLoungeListResponse>>(cinemaHallList);
         return mappedCinemaHallExclusiveLoungeList;
     }

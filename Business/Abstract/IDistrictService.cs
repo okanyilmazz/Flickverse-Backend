@@ -14,6 +14,6 @@ public interface IDistrictService
     Task<CreatedDistrictResponse> AddAsync(CreateDistrictRequest createDistrictRequest);
     Task<UpdatedDistrictResponse> UpdateAsync(UpdateDistrictRequest updateDistrictRequest);
     Task<DeletedDistrictResponse> DeleteAsync(DeleteDistrictRequest deleteDistrictRequest);
-    Task<IPaginate<GetDistrictListResponse>> GetListAsync();
+    Task<IPaginate<GetDistrictListResponse>> GetListAsync(PageRequest pageRequest);
     Task<GetDistrictListResponse> GetByIdAsync(Guid id);
 }

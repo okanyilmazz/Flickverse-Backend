@@ -2,10 +2,10 @@
 using Business.Dtos.Requests.CreateRequests;
 using Business.Dtos.Requests.DeleteRequests;
 using Business.Dtos.Requests.UpdateRequests;
-using Business.Rules.ValidationRules.FluentValidation;
 using Business.Rules.ValidationRules.FluentValidation.CreateRequestValidators;
 using Business.Rules.ValidationRules.FluentValidation.UpdateRequestValidators;
 using Core.CrossCuttingConcerns.Validation;
+using Core.DataAccess.Paging;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
@@ -21,10 +21,10 @@ public class CountriesController : ControllerBase
         _countryService = countryService;
     }
 
-    [HttpGet("GetAll")]
-    public async Task<IActionResult> GetAll()
+    [HttpGet("GetList")]
+    public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
     {
-        var result = await _countryService.GetListAsync();
+        var result = await _countryService.GetListAsync(pageRequest);
         return Ok(result);
     }
 
@@ -34,6 +34,7 @@ public class CountriesController : ControllerBase
         var result = await _countryService.GetByIdAsync(id);
         return Ok(result);
     }
+
     [CustomValidation(typeof(CreateCountryRequestValidator))]
     [HttpPost("Add")]
     public async Task<IActionResult> Add(CreateCountryRequest createCountryRequest)

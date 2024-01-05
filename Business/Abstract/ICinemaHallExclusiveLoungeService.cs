@@ -14,6 +14,6 @@ public interface ICinemaHallExclusiveLoungeService
     Task<CreatedCinemaHallExclusiveLoungeResponse> AddAsync(CreateCinemaHallExclusiveLoungeRequest createCinemaHallExclusiveLoungeRequest);
     Task<UpdatedCinemaHallExclusiveLoungeResponse> UpdateAsync(UpdateCinemaHallExclusiveLoungeRequest updateCinemaHallExclusiveLoungeRequest);
     Task<DeletedCinemaHallExclusiveLoungeResponse> DeleteAsync(DeleteCinemaHallExclusiveLoungeRequest deleteCinemaHallExclusiveLoungeRequest);
-    Task<IPaginate<GetCinemaHallExclusiveLoungeListResponse>> GetListAsync();
+    Task<IPaginate<GetCinemaHallExclusiveLoungeListResponse>> GetListAsync(PageRequest pageRequest);
     Task<GetCinemaHallExclusiveLoungeListResponse> GetByIdAsync(Guid id);
 }

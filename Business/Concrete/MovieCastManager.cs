@@ -53,9 +53,11 @@ public class MovieCastManager : IMovieCastService
         return getMovieCastListResponse;
     }
 
-    public async Task<IPaginate<GetMovieCastListResponse>> GetListAsync()
+    public async Task<IPaginate<GetMovieCastListResponse>> GetListAsync(PageRequest pageRequest)
     {
-        var movieCastList = await _movieCastDal.GetListAsync();
+        var movieCastList = await _movieCastDal.GetListAsync(
+            size: pageRequest.PageSize,
+            index: pageRequest.PageIndex);
         var mappedMovieCastList = _mapper.Map<Paginate<GetMovieCastListResponse>>(movieCastList);
         return mappedMovieCastList;
     }

@@ -50,9 +50,11 @@ public class DistrictManager : IDistrictService
         return getDistrictListResponse;
     }
 
-    public async Task<IPaginate<GetDistrictListResponse>> GetListAsync()
+    public async Task<IPaginate<GetDistrictListResponse>> GetListAsync(PageRequest pageRequest)
     {
-        var districtList = await _districtDal.GetListAsync();
+        var districtList = await _districtDal.GetListAsync(
+            size: pageRequest.PageSize,
+            index: pageRequest.PageIndex);
         var mappedDistrictList = _mapper.Map<Paginate<GetDistrictListResponse>>(districtList);
         return mappedDistrictList;
     }

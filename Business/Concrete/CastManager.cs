@@ -53,9 +53,11 @@ public class CastManager : ICastService
         return getCastListResponse;
     }
 
-    public async Task<IPaginate<GetCastListResponse>> GetListAsync()
+    public async Task<IPaginate<GetCastListResponse>> GetListAsync(PageRequest pageRequest)
     {
-        var castList = await _castDal.GetListAsync();
+        var castList = await _castDal.GetListAsync(
+            size: pageRequest.PageSize,
+            index: pageRequest.PageIndex);
         var mappedCastList = _mapper.Map<Paginate<GetCastListResponse>>(castList);
         return mappedCastList;
     }

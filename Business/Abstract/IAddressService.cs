@@ -14,6 +14,6 @@ public interface IAddressService
     Task<CreatedAddressResponse> AddAsync(CreateAddressRequest createAddressRequest);
     Task<UpdatedAddressResponse> UpdateAsync(UpdateAddressRequest updateAddressRequest);
     Task<DeletedAddressResponse> DeleteAsync(DeleteAddressRequest deleteAddressRequest);
-    Task<IPaginate<GetAddressListResponse>> GetListAsync();
+    Task<IPaginate<GetAddressListResponse>> GetListAsync(PageRequest pageRequest);
     Task<GetAddressListResponse> GetByIdAsync(Guid id);
 }

@@ -52,9 +52,11 @@ public class CastImageManager : ICastImageService
         return getCastImageListResponse;
     }
 
-    public async Task<IPaginate<GetCastImageListResponse>> GetListAsync()
+    public async Task<IPaginate<GetCastImageListResponse>> GetListAsync(PageRequest pageRequest)
     {
-        var castImageList = await _castImageDal.GetListAsync();
+        var castImageList = await _castImageDal.GetListAsync(
+            size: pageRequest.PageSize,
+            index: pageRequest.PageIndex);
         var mappedCastImageList = _mapper.Map<Paginate<GetCastImageListResponse>>(castImageList);
         return mappedCastImageList;
     }
