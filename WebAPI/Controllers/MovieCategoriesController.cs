@@ -5,6 +5,8 @@ using Business.Dtos.Requests.UpdateRequests;
 using Business.Rules.ValidationRules.FluentValidation.CreateRequestValidators;
 using Business.Rules.ValidationRules.FluentValidation.UpdateRequestValidators;
 using Core.CrossCuttingConcerns.Cache;
+using Core.CrossCuttingConcerns.Logging.SeriLog.Logger;
+using Core.CrossCuttingConcerns.Logging;
 using Core.CrossCuttingConcerns.Validation;
 using Core.DataAccess.Paging;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +25,8 @@ public class MovieCategoriesController : ControllerBase
         _movieCategoryService = movieCategoryService;
     }
 
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
     [Cache]
     [HttpGet("GetList")]
     public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
@@ -31,6 +35,8 @@ public class MovieCategoriesController : ControllerBase
         return Ok(result);
     }
 
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
     [Cache]
     [HttpGet("GetById")]
     public async Task<IActionResult> GetById(Guid id)
@@ -39,6 +45,8 @@ public class MovieCategoriesController : ControllerBase
         return Ok(result);
     }
 
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
     [CacheRemove("MovieCategories.Get")]
     [CustomValidation(typeof(CreateMovieCategoryRequestValidator))]
     [HttpPost("Add")]
@@ -48,6 +56,8 @@ public class MovieCategoriesController : ControllerBase
         return Ok(result);
     }
 
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
     [CacheRemove("MovieCategories.Get")]
     [CustomValidation(typeof(UpdateMovieCategoryRequestValidator))]
     [HttpPost("Update")]
@@ -57,6 +67,8 @@ public class MovieCategoriesController : ControllerBase
         return Ok(result);
     }
 
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
     [CacheRemove("MovieCategories.Get")]
     [HttpPost("Delete")]
     public async Task<IActionResult> Delete(DeleteMovieCategoryRequest deleteMovieCategoryRequest)

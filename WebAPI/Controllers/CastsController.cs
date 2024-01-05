@@ -5,6 +5,8 @@ using Business.Dtos.Requests.UpdateRequests;
 using Business.Rules.ValidationRules.FluentValidation.CreateRequestValidators;
 using Business.Rules.ValidationRules.FluentValidation.UpdateRequestValidators;
 using Core.CrossCuttingConcerns.Cache;
+using Core.CrossCuttingConcerns.Logging.SeriLog.Logger;
+using Core.CrossCuttingConcerns.Logging;
 using Core.CrossCuttingConcerns.Validation;
 using Core.DataAccess.Paging;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +24,8 @@ public class CastsController : ControllerBase
         _castService = castService;
     }
 
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
     [Cache]
     [HttpGet("GetList")]
     public async Task<IActionResult> GetListAsync([FromQuery] PageRequest pageRequest)
@@ -30,6 +34,8 @@ public class CastsController : ControllerBase
         return Ok(result);
     }
 
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
     [Cache]
     [HttpGet("GetById")]
     public async Task<IActionResult> GetByIdAsync(Guid id)
@@ -38,6 +44,8 @@ public class CastsController : ControllerBase
         return Ok(result);
     }
 
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
     [CacheRemove("Casts.Get")]
     [CustomValidation(typeof(CreateCastRequestValidator))]
     [HttpPost("Add")]
@@ -47,6 +55,8 @@ public class CastsController : ControllerBase
         return Ok(result);
     }
 
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
     [CacheRemove("Casts.Get")]
     [CustomValidation(typeof(UpdateCastRequestValidator))]
     [HttpPost("Update")]
@@ -56,6 +66,8 @@ public class CastsController : ControllerBase
         return Ok(result);
     }
 
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
     [CacheRemove("Casts.Get")]
     [HttpPost("Delete")]
     public async Task<IActionResult> DeleteAsync(DeleteCastRequest deleteCastRequest)

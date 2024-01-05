@@ -5,6 +5,8 @@ using Business.Dtos.Requests.UpdateRequests;
 using Business.Rules.ValidationRules.FluentValidation.CreateRequestValidators;
 using Business.Rules.ValidationRules.FluentValidation.UpdateRequestValidators;
 using Core.CrossCuttingConcerns.Cache;
+using Core.CrossCuttingConcerns.Logging.SeriLog.Logger;
+using Core.CrossCuttingConcerns.Logging;
 using Core.CrossCuttingConcerns.Validation;
 using Core.DataAccess.Paging;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +24,8 @@ public class DistrictsController : ControllerBase
         _districtService = districtService;
     }
 
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
     [Cache]
     [HttpGet("GetList")]
     public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
@@ -30,6 +34,8 @@ public class DistrictsController : ControllerBase
         return Ok(result);
     }
 
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
     [Cache]
     [HttpGet("GetById")]
     public async Task<IActionResult> GetById(Guid id)
@@ -38,6 +44,8 @@ public class DistrictsController : ControllerBase
         return Ok(result);
     }
 
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
     [CacheRemove("Districts.Get")]
     [CustomValidation(typeof(CreateDistrictRequestValidator))]
     [HttpPost("Add")]
@@ -47,6 +55,8 @@ public class DistrictsController : ControllerBase
         return Ok(result);
     }
 
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
     [CacheRemove("Districts.Get")]
     [CustomValidation(typeof(UpdateDistrictRequestValidator))]
     [HttpPost("Update")]
@@ -56,6 +66,8 @@ public class DistrictsController : ControllerBase
         return Ok(result);
     }
 
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
     [CacheRemove("Districts.Get")]
     [HttpPost("Delete")]
     public async Task<IActionResult> Delete(DeleteDistrictRequest deleteDistrictRequest)

@@ -5,6 +5,8 @@ using Business.Dtos.Requests.UpdateRequests;
 using Business.Rules.ValidationRules.FluentValidation.CreateRequestValidators;
 using Business.Rules.ValidationRules.FluentValidation.UpdateRequestValidators;
 using Core.CrossCuttingConcerns.Cache;
+using Core.CrossCuttingConcerns.Logging;
+using Core.CrossCuttingConcerns.Logging.SeriLog.Logger;
 using Core.CrossCuttingConcerns.Validation;
 using Core.DataAccess.Paging;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +25,8 @@ public class AddressesController : ControllerBase
         _addressService = addressService;
     }
 
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
     [Cache]
     [HttpGet("GetList")]
     public async Task<IActionResult> GetListAsync([FromQuery] PageRequest pageRequest)
@@ -31,6 +35,8 @@ public class AddressesController : ControllerBase
         return Ok(result);
     }
 
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
     [Cache]
     [HttpGet("GetById")]
     public async Task<IActionResult> GetByIdAsync(Guid id)
@@ -39,6 +45,8 @@ public class AddressesController : ControllerBase
         return Ok(result);
     }
 
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
     [CacheRemove("Addresses.Get")]
     [CustomValidation(typeof(CreateAddressRequestValidator))]
     [HttpPost("Add")]
@@ -48,6 +56,8 @@ public class AddressesController : ControllerBase
         return Ok(result);
     }
 
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
     [CacheRemove("Addresses.Get")]
     [CustomValidation(typeof(UpdateAddressRequestValidator))]
     [HttpPost("Update")]
@@ -57,6 +67,8 @@ public class AddressesController : ControllerBase
         return Ok(result);
     }
 
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
     [CacheRemove("Addresses.Get")]
     [HttpPost("Delete")]
     public async Task<IActionResult> DeleteAsync(DeleteAddressRequest deleteAddressRequest)
