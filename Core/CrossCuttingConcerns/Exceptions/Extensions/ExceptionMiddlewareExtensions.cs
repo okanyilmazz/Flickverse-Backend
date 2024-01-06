@@ -1,4 +1,5 @@
 ﻿using Core.CrossCuttingConcerns.Cache;
+using Core.CrossCuttingConcerns.Caching.Microsoft;
 using Core.CrossCuttingConcerns.Logging.SeriLog;
 using Microsoft.AspNetCore.Builder;
 

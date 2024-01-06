@@ -36,7 +36,7 @@ public class CountriesController : ControllerBase
 
     [Logging(typeof(FileLogger))]
     [Logging(typeof(MsSqlLogger))]
-    [Cache]
+    [Cache(50)]
     [HttpGet("GetById")]
     public async Task<IActionResult> GetById(Guid id)
     {

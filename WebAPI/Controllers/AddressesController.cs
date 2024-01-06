@@ -37,7 +37,7 @@ public class AddressesController : ControllerBase
 
     [Logging(typeof(FileLogger))]
     [Logging(typeof(MsSqlLogger))]
-    [Cache]
+    [Cache(5)]
     [HttpGet("GetById")]
     public async Task<IActionResult> GetByIdAsync(Guid id)
     {

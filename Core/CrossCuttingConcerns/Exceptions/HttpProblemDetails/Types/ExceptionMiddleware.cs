@@ -7,6 +7,7 @@ using Serilog.Context;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 public class ExceptionMiddleware
 {
@@ -60,10 +61,13 @@ public class ExceptionMiddleware
         LogContext.PushProperty("Username", username);
         LogContext.PushProperty("MethodName", MethodName);
 
+        var options = new JsonSerializerOptions
+        {
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            WriteIndented = true 
+        };
 
-        var serializedLogDetail = JsonSerializer.Serialize(logDetail);
-        System.Text.RegularExpressions.Regex.Unescape(serializedLogDetail);
-
+        var serializedLogDetail = JsonSerializer.Serialize(logDetail,options);
 
         _fileLoggerService.Error(serializedLogDetail);
         _mssqlLoggerService.Error(serializedLogDetail);

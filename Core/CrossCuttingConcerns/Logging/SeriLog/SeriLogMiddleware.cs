@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
-using Newtonsoft.Json;
 using Serilog.Context;
 using System.Security.Claims;
+using System.Text.Json;
+
 
 namespace Core.CrossCuttingConcerns.Logging.SeriLog;
 
@@ -68,7 +69,11 @@ public class SeriLogMiddleware
         LogContext.PushProperty("Username", username);
         LogContext.PushProperty("MethodName", MethodName);
 
-
-        return JsonConvert.SerializeObject(logDetail);
+        var options = new JsonSerializerOptions
+        {
+            Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+            WriteIndented = true
+        };
+        return JsonSerializer.Serialize(logDetail,options);
     }
 }

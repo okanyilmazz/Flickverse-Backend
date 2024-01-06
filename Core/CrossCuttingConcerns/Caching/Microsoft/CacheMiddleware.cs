@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Core.CrossCuttingConcerns.Cache;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace Core.CrossCuttingConcerns.Cache;
+namespace Core.CrossCuttingConcerns.Caching.Microsoft;
 
 public class CacheMiddleware
 {
@@ -26,7 +27,9 @@ public class CacheMiddleware
 
         if (cacheAttribute != null)
         {
-            await AddCache(context);
+            int duration = cacheAttribute.Duration > 0 ? cacheAttribute.Duration : 60;
+
+            await AddCache(context, duration);
         }
         else if (cacheRemoveAttribute != null)
         {
@@ -38,7 +41,7 @@ public class CacheMiddleware
         }
     }
 
-    private async Task AddCache(HttpContext context)
+    private async Task AddCache(HttpContext context, int duration)
     {
         if (context.Request.Method == HttpMethod.Get.ToString())
         {
@@ -62,7 +65,7 @@ public class CacheMiddleware
                 memoryStream.Position = 0;
                 var responseBody = new StreamReader(memoryStream).ReadToEnd();
                 var jsonResponse = JsonConvert.DeserializeObject(responseBody);
-                _cache.Set(cacheKey, jsonResponse, TimeSpan.FromSeconds(30));
+                _cache.Set(cacheKey, jsonResponse, TimeSpan.FromSeconds(duration));
 
                 memoryStream.Position = 0;
                 await memoryStream.CopyToAsync(originalResponseBody);
@@ -109,7 +112,7 @@ public class CacheMiddleware
     {
 
         var strArray = cacheRemoveAttribute.CacheType.Split(new[] { "." }, StringSplitOptions.None);
-        var pattern = String.Join("/", strArray);
+        var pattern = string.Join("/", strArray);
 
         return pattern;
     }
