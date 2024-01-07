@@ -1,6 +1,4 @@
-﻿using Core.CrossCuttingConcerns.Logging.SeriLog;
-
-namespace Core.CrossCuttingConcerns.Logging;
+﻿namespace Core.CrossCuttingConcerns.Logging;
 
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 public class LoggingAttribute : Attribute

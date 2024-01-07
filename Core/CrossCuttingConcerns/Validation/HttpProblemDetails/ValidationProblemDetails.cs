@@ -1,4 +1,4 @@
-﻿using Core.CrossCuttingConcerns.Validation.HttpProblemDetails.Types;
+﻿using Core.CrossCuttingConcerns.Exceptions.HttpProblemDetails.Types;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

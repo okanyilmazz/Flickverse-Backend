@@ -4,7 +4,7 @@ using Business.Dtos.Requests.DeleteRequests;
 using Business.Dtos.Requests.UpdateRequests;
 using Business.Rules.ValidationRules.FluentValidation.CreateRequestValidators;
 using Business.Rules.ValidationRules.FluentValidation.UpdateRequestValidators;
-using Core.CrossCuttingConcerns.Cache;
+using Core.CrossCuttingConcerns.Caching;
 using Core.CrossCuttingConcerns.Logging;
 using Core.CrossCuttingConcerns.Logging.SeriLog.Logger;
 using Core.CrossCuttingConcerns.Validation;

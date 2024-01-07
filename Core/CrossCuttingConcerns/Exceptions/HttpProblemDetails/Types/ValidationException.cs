@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace Core.CrossCuttingConcerns.Validation.HttpProblemDetails.Types;
+namespace Core.CrossCuttingConcerns.Exceptions.HttpProblemDetails.Types;
 
 public class ValidationException : Exception
 {

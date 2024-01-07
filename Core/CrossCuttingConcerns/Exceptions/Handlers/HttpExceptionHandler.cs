@@ -1,8 +1,8 @@
 ﻿using Core.CrossCuttingConcerns.Exceptions.Extensions;
 using Core.CrossCuttingConcerns.Exceptions.Handlers;
 using Core.CrossCuttingConcerns.Exceptions.HttpProblemDetails;
+using Core.CrossCuttingConcerns.Exceptions.HttpProblemDetails.Types;
 using Core.CrossCuttingConcerns.Validation.HttpProblemDetails;
-using Core.CrossCuttingConcerns.Validation.HttpProblemDetails.Types;
 using Microsoft.AspNetCore.Http;
 
 namespace Core.Exceptions.Handlers;

@@ -13,7 +13,6 @@ public class FlickVerseContext : DbContext
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Cast> Casts { get; set; }
     public DbSet<Category> Categories { get; set; }
-    //public DbSet<CinemaHallExclusiveLounge> CinemaHallExclusiveLounges { get; set; }
     public DbSet<City> Cities { get; set; }
     public DbSet<Country> Countries { get; set; }
     public DbSet<District> Districts { get; set; }

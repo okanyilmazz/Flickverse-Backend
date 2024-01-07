@@ -1,4 +1,4 @@
-﻿namespace Core.CrossCuttingConcerns.Cache;
+﻿namespace Core.CrossCuttingConcerns.Caching;
 
 public class CacheAttribute : Attribute
 {

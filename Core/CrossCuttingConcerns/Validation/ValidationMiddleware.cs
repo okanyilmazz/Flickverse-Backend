@@ -4,7 +4,7 @@ using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Newtonsoft.Json;
-using ValidationException = Core.CrossCuttingConcerns.Validation.HttpProblemDetails.Types.ValidationException;
+using ValidationException = Core.CrossCuttingConcerns.Exceptions.HttpProblemDetails.Types.ValidationException;
 public class ValidationMiddleware
 {
     private readonly RequestDelegate _next;

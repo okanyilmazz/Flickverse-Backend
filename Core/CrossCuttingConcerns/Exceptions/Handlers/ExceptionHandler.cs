@@ -1,4 +1,4 @@
-﻿using Core.CrossCuttingConcerns.Validation.HttpProblemDetails.Types;
+﻿using Core.CrossCuttingConcerns.Exceptions.HttpProblemDetails.Types;
 
 namespace Core.CrossCuttingConcerns.Exceptions.Handlers;
 

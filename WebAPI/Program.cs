@@ -1,9 +1,8 @@
 using Business;
-using Core.CrossCuttingConcerns.Exceptions.Extensions;
-using Core.CrossCuttingConcerns.Logging.SeriLog;
-using Core.CrossCuttingConcerns.Logging.SeriLog.Logger;
+using Core.DependencyResolvers;
+using Core.Extensions;
+using Core.Utilities.IoC;
 using DataAccess;
-using Serilog;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,12 +16,8 @@ builder.Services.AddControllers()
         });
 builder.Services.AddBusinessServices();
 builder.Services.AddDataAccessServices(builder.Configuration);
+builder.Services.AddCoreDependencies(new ICoreModule[] { new CoreModule() });
 
-#region Logger-Service
-builder.Services.AddTransient<MsSqlLogger>();
-builder.Services.AddTransient<FileLogger>();
-builder.Services.AddSingleton(Log.Logger);
-#endregion
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -1,11 +1,10 @@
-﻿using Core.CrossCuttingConcerns.Cache;
-using Core.CrossCuttingConcerns.Caching.Microsoft;
+﻿using Core.CrossCuttingConcerns.Caching;
 using Core.CrossCuttingConcerns.Logging.SeriLog;
 using Microsoft.AspNetCore.Builder;
 
-namespace Core.CrossCuttingConcerns.Exceptions.Extensions;
+namespace Core.Extensions;
 
-public static class ExceptionMiddlewareExtensions
+public static class MiddlewareExtensions
 {
     public static void ConfigureCustomExceptionMiddleware(this IApplicationBuilder app)
         => app.UseMiddleware<ExceptionMiddleware>().
