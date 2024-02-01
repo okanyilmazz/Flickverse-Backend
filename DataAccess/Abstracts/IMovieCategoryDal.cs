@@ -1,9 +1,8 @@
 ﻿using Core.DataAccess.Repositories;
-using Entities.Concrete;
+using Entities.Concretes;
 
-namespace DataAccess.Abstracts
+namespace DataAccess.Abstracts;
+
+public interface IMovieCategoryDal : IRepository<MovieCategory, Guid>, IAsyncRepository<MovieCategory, Guid>
 {
-    public interface IMovieCategoryDal : IRepository<MovieCategory, Guid>, IAsyncRepository<MovieCategory, Guid>
-    {
-    }
 }

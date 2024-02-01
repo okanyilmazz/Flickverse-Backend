@@ -1,9 +1,8 @@
 ﻿using Core.DataAccess.Repositories;
-using Entities.Concrete;
+using Entities.Concretes;
 
-namespace DataAccess.Abstracts
+namespace DataAccess.Abstracts;
+
+public interface IMovieDirectorDal : IRepository<MovieDirector, Guid>, IAsyncRepository<MovieDirector, Guid>
 {
-    public interface IMovieDirectorDal : IRepository<MovieDirector, Guid>, IAsyncRepository<MovieDirector, Guid>
-    {
-    }
 }

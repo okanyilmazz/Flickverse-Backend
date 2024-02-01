@@ -1,4 +1,4 @@
-﻿using Entities.Concrete;
+﻿using Entities.Concretes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -29,6 +29,8 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
         builder.HasMany(m => m.MovieCategories);
         builder.HasMany(m => m.MovieDirectors);
         builder.HasMany(m => m.MovieExclusiveLounges);
+        builder.HasMany(m => m.MovieImages);
+
 
         builder.HasQueryFilter(a => !a.DeletedDate.HasValue);
     }

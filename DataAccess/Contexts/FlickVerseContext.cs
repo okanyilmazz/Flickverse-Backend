@@ -1,4 +1,4 @@
-﻿using Entities.Concrete;
+﻿using Entities.Concretes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
@@ -19,6 +19,8 @@ public class FlickVerseContext : DbContext
     public DbSet<ExclusiveLounge> ExclusiveLounges { get; set; }
     public DbSet<Language> Languages { get; set; }
     public DbSet<Movie> Movies { get; set; }
+    public DbSet<MovieImage> MovieImages { get; set; }
+
 
 
     public FlickVerseContext(DbContextOptions dbContextOptions, IConfiguration configuration) : base(dbContextOptions)

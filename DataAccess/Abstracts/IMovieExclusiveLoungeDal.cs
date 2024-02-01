@@ -1,9 +1,8 @@
 ﻿using Core.DataAccess.Repositories;
-using Entities.Concrete;
+using Entities.Concretes;
 
-namespace DataAccess.Abstracts
+namespace DataAccess.Abstracts;
+
+public interface IMovieExclusiveLoungeDal : IRepository<MovieExclusiveLounge, Guid>, IAsyncRepository<MovieExclusiveLounge, Guid>
 {
-    public interface IMovieExclusiveLoungeDal : IRepository<MovieExclusiveLounge, Guid>, IAsyncRepository<MovieExclusiveLounge, Guid>
-    {
-    }
 }

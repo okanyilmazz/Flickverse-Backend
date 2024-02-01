@@ -1,9 +1,6 @@
-﻿using Business.Abstract;
-using Business.Dtos.Requests.CreateRequests;
-using Business.Dtos.Requests.DeleteRequests;
-using Business.Dtos.Requests.UpdateRequests;
-using Business.Rules.ValidationRules.FluentValidation.CreateRequestValidators;
-using Business.Rules.ValidationRules.FluentValidation.UpdateRequestValidators;
+﻿using Business.Abstracts;
+using Business.Dtos.Requests.MovieRequests;
+using Business.Rules.ValidationRules.FluentValidation.MovieValidators;
 using Core.CrossCuttingConcerns.Caching;
 using Core.CrossCuttingConcerns.Logging;
 using Core.CrossCuttingConcerns.Logging.SeriLog.Logger;
@@ -72,6 +69,25 @@ public class MoviesController : ControllerBase
     public async Task<IActionResult> Delete(DeleteMovieRequest deleteMovieRequest)
     {
         var result = await _movieService.DeleteAsync(deleteMovieRequest);
+        return Ok(result);
+    }
+
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
+    [Cache]
+    [HttpGet("GetUpComingMovies")]
+    public async Task<IActionResult> GetUpComingMoviesAsync([FromQuery] PageRequest pageRequest)
+    {
+        var result = await _movieService.GetUpComingMoviesAsync(pageRequest);
+        return Ok(result);
+    }
+
+    [Logging(typeof(FileLogger))]
+    [Logging(typeof(MsSqlLogger))]
+    [HttpGet("GetMoviesInVision")]
+    public async Task<IActionResult> GetMoviesInVisionAsync([FromQuery] PageRequest pageRequest)
+    {
+        var result = await _movieService.GetMoviesInVisionAsync(pageRequest);
         return Ok(result);
     }
 }

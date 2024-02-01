@@ -14,6 +14,18 @@ builder.Services.AddControllers()
             options.JsonSerializerOptions.ReferenceHandler =
             ReferenceHandler.IgnoreCycles;
         });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("myPolicy",
+    builder =>
+    {
+        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+});
+
+
+
 builder.Services.AddBusinessServices();
 builder.Services.AddDataAccessServices(builder.Configuration);
 builder.Services.AddCoreDependencies(new ICoreModule[] { new CoreModule() });
@@ -36,5 +48,5 @@ app.ConfigureCustomExceptionMiddleware();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.UseCors("myPolicy");
 app.Run();

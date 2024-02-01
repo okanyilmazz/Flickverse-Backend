@@ -1,15 +1,12 @@
-﻿using Business.Abstract;
-using Business.Dtos.Requests.CreateRequests;
-using Business.Dtos.Requests.DeleteRequests;
-using Business.Dtos.Requests.UpdateRequests;
-using Business.Rules.ValidationRules.FluentValidation.CreateRequestValidators;
-using Business.Rules.ValidationRules.FluentValidation.UpdateRequestValidators;
+﻿using Business.Abstracts;
 using Core.CrossCuttingConcerns.Caching;
 using Core.CrossCuttingConcerns.Logging.SeriLog.Logger;
 using Core.CrossCuttingConcerns.Logging;
 using Core.CrossCuttingConcerns.Validation;
 using Core.DataAccess.Paging;
 using Microsoft.AspNetCore.Mvc;
+using Business.Rules.ValidationRules.FluentValidation.CinemaHallExclusiveLoungeValidators;
+using Business.Dtos.Requests.CinemaHallExclusiveLoungeRequests;
 
 namespace WebAPI.Controllers;
 

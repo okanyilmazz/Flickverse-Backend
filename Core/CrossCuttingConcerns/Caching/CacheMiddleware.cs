@@ -51,6 +51,7 @@ public class CacheMiddleware
 
             var jsonBody = JsonConvert.DeserializeObject((string)cachedValue);
             context.Response.ContentType = "application/json";
+            context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
             await context.Response.WriteAsync(JsonConvert.SerializeObject(jsonBody));
             return;
         }
