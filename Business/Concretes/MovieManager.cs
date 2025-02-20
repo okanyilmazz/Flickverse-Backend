@@ -62,6 +62,7 @@ public class MovieManager : IMovieService
     public async Task<IPaginate<GetMovieListResponse>> GetUpComingMoviesAsync(PageRequest pageRequest)
     {
         var movieList = await _movieDal.GetListAsync(
+             include: a => a.Include(a => a.MovieImages),
             predicate: m => m.ReleaseDate.Date > currentDate.Date,
             size: pageRequest.PageSize,
             index: pageRequest.PageIndex);
@@ -74,6 +75,7 @@ public class MovieManager : IMovieService
     public async Task<IPaginate<GetMovieListResponse>> GetMoviesInVisionAsync(PageRequest pageRequest)
     {
         var movieList = await _movieDal.GetListAsync(
+             include: a => a.Include(a => a.MovieImages),
             predicate: m => m.ReleaseDate.Date < currentDate.Date,
             size: pageRequest.PageSize,
             index: pageRequest.PageIndex);

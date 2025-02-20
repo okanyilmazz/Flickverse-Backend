@@ -19,6 +19,9 @@ public class MovieProfile : Profile
         CreateMap<Movie, DeletedMovieResponse>().ReverseMap();
 
         CreateMap<IPaginate<Movie>, Paginate<GetMovieListResponse>>().ReverseMap();
-        CreateMap<Movie, GetMovieListResponse>().ReverseMap();
+        CreateMap<Movie, GetMovieListResponse>()
+            .ForMember(dest => dest.ImagePath,
+            opt => opt.MapFrom(src => src.MovieImages
+            .Select(eq => eq.ImagePath).FirstOrDefault())).ReverseMap();
     }
 }

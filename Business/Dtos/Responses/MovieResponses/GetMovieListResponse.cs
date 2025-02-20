@@ -11,5 +11,6 @@
         public DateTime ReleaseDate { get; set; }
         public string Duration { get; set; }
         public DateTime ProductionYear { get; set; }
+        public string ImagePath { get; set; }
     }
 }
