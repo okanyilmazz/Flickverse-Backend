@@ -20,6 +20,8 @@ public class FlickVerseContext : DbContext
     public DbSet<Language> Languages { get; set; }
     public DbSet<Movie> Movies { get; set; }
     public DbSet<MovieImage> MovieImages { get; set; }
+    public DbSet<Campaign> Campaigns { get; set; }
+
 
 
 

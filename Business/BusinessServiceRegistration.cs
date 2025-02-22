@@ -30,6 +30,8 @@ public static class BusinessServiceRegistration
         services.AddScoped<IMovieDirectorService, MovieDirectorManager>();
         services.AddScoped<IMovieExclusiveLoungeService, MovieExclusiveLoungeManager>();
         services.AddScoped<IMovieImageService, MovieImageManager>();
+        services.AddScoped<ICampaignService, CampaignManager>();
+
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddSubClassesOfType(Assembly.GetExecutingAssembly(), typeof(BaseBusinessRules));

@@ -35,6 +35,7 @@ public static class DataAccessServiceRegistration
         services.AddScoped<IMovieDirectorDal, EfMovieDirectorDal>();
         services.AddScoped<IMovieExclusiveLoungeDal, EfMovieExclusiveLoungeDal>();
         services.AddScoped<IMovieImageDal, EfMovieImageDal>();
+        services.AddScoped<ICampaignDal, EfCampaignDal>();
 
         return services;
     }
